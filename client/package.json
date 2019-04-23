@@ -1,0 +1,52 @@
+{
+  "name": "Qingliu_shop",
+  "version": "1.0.0",
+  "description": "青榴商城",
+  "main": "index.js",
+  "repository": "",
+  "author": "liuhuihui <244701374@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn webpack-dev-server",
+    "dev": "set NODE_ENV=development&& yarn webpack --progress --hide-modules --config webpack.config.js",
+    "dev:dll": "yarn webpack --config webpack.dll.config.js",
+    "build": "set NODE_ENV=production&& yarn run build:dll && yarn webpack --progress --hide-modules --config webpack.config.js",
+    "build:dll": "set NODE_ENV=production&& yarn webpack --config webpack.dll.config.js"
+  },
+  "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "css-loader": "0.28.8",
+    "extract-text-webpack-plugin": "2.1.2",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "2.30.1",
+    "imports-loader": "^0.8.0",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "style-loader": "0.19.1",
+    "url-loader": "^1.1.1",
+    "webpack": "3.10.0",
+    "webpack-dev-server": "2.9.7"
+  },
+  "dependencies": {
+    "antd": "^3.9.3",
+    "axios": "^0.18.0",
+    "open-browser-webpack-plugin": "^0.0.5",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.0",
+    "react-redux": "^5.0.7",
+    "redux-thunk": "^2.3.0"
+  }
+}

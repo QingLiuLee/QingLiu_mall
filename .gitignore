@@ -1,0 +1,8 @@
+/.idea/
+/client/node_modules/
+/client/src/assert/css/container.css
+/client/src/assert/css/style.css
+/client/src/assert/css/thems.css
+/client/src/assert/css/container.css.map
+/client/src/assert/css/style.css.map
+/client/src/assert/css/thems.css.map
