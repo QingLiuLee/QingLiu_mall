@@ -14,7 +14,7 @@ class App extends Component {
             avatarDefault: adminImg,
             search: false,   //搜索
             showSkin: false,  //皮肤
-            skinColor: 'themsSVGL',
+            skinColor: 'themsSVGLF',
             skinNormal: [
                 {color: 'themsBlack', name: '夜间'},
                 // {color: 'themsPurple', name: '紫色'},

@@ -86,10 +86,6 @@ textarea {
 @topBarColorGhost:rgb(239,243,246);
 @topBarFontColorGhost:rgb(83,83,83);
 
-/*thems*/
-@themsColor:rgb(88,104,217);
-@thems2Color:rgb(70,212,186);
-
 @liCurrentColor:rgb(230,231,234);
 
 /*themsPurpleGhost*/
@@ -117,9 +113,9 @@ textarea {
     display: flex;
     flex-flow: row;
   }
-  .themsPurple {
+ /* .themsPurple {
     .leeThem();
-  }
+  }*/
 
   /*themsBlack*/
   @logoBlack:rgb(42,50,89);
@@ -172,9 +168,9 @@ textarea {
   /* 蓝粉色 */
   .themsSVGLF {
     .leeThem(
-            #dcdaeb, rgb(158,186,217),
-            @fontW,rgba(213, 213, 232,.3),rgb(220, 218, 235),
-            rgb(158,186,217),rgb(158,186,217),
+            #dcdaeb, #dcdaeb,
+            @fontW,rgba(158, 186, 217,.3),#9ebad9,
+            rgb(158,186,217),@fontW,
             @rightBgSVG,#d2d4e8, @fontW
     )
   }
