@@ -9,5 +9,5 @@ MONGODB = dict(
     MONGO_PORT='27017',
     MONGO_USERNAME='lee',
     MONGO_PASSWORD='10241026',
-    DATABASE='qingliu_mall',
+    DATABASE='qing_liu',
 )

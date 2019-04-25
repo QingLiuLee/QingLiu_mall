@@ -5,11 +5,12 @@
 from sanic import Sanic
 
 from commodity import product_blueprint_group
+from system.database import MotorBase
+
+app = Sanic()
 
 
 def create_app():
-    app = Sanic()
-
     register_blueprints(app)
     return app
 
@@ -22,3 +23,7 @@ def register_blueprints(app):
     app.blueprint(product_blueprint_group)
     return app
 
+
+@app.listener('before_server_start')
+async def setup_db(app, loop):
+    pass
