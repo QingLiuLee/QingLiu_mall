@@ -2,9 +2,6 @@
 # @Time     : 4/24/19 1:17 PM
 # @Author   : Lee才晓
 # @Describe :
-import asyncio
-import pprint
-
 from sanic import Blueprint
 from sanic.response import json
 
@@ -15,7 +12,13 @@ blueprint = Blueprint(name="category", url_prefix="/category", version=1)
 
 @blueprint.route(uri='/create/info', methods=['GET'])
 async def create_category_info(request):
-    test1 = await Category().get_info_list_by_pageSize()
 
-    print(test1)
+    params = request.json
+
+    # create_info_result = await Category().create_info()
+
+    category = Category()
+    category.init_data(**{'category_name':'test'})
+    await category.create_model_info()
+
     return json({'result': 'success'})
