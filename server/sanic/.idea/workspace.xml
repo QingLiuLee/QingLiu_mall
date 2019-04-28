@@ -37,10 +37,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commodity/category/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/commodity/category/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commodity/category/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/commodity/category/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/start.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/system/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/system/base_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/base_config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/system/base_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/base_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/system/extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/extensions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/util.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,8 +53,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/commodity/category/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+            <state relative-caret-position="399">
+              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
               <folding>
                 <element signature="e#88#115#0" expanded="true" />
               </folding>
@@ -62,11 +62,32 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utils/authenticator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="18" column="27" lean-forward="true" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+              <folding>
+                <element signature="e#89#116#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/system/extensions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/commodity/category/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+            <state relative-caret-position="563">
+              <caret line="30" selection-start-line="30" selection-end-line="30" />
               <folding>
                 <element signature="e#88#103#0" expanded="true" />
               </folding>
@@ -74,16 +95,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/utils/util.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/system/base_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="639">
-              <caret line="49" column="23" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+            <state relative-caret-position="225">
+              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
               <folding>
                 <element signature="e#89#112#0" expanded="true" />
               </folding>
@@ -129,7 +145,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/system/extensions.py" />
         <option value="$PROJECT_DIR$/product/category/models.py" />
         <option value="$PROJECT_DIR$/product/category/__init__.py" />
         <option value="$PROJECT_DIR$/utils/singleton.py" />
@@ -142,12 +157,14 @@
         <option value="$PROJECT_DIR$/system/database.py" />
         <option value="$PROJECT_DIR$/start.py" />
         <option value="$PROJECT_DIR$/system/log_config.py" />
-        <option value="$PROJECT_DIR$/system/app.py" />
         <option value="$PROJECT_DIR$/system/base_config.py" />
-        <option value="$PROJECT_DIR$/commodity/category/views.py" />
-        <option value="$PROJECT_DIR$/system/base_model.py" />
-        <option value="$PROJECT_DIR$/commodity/category/models.py" />
         <option value="$PROJECT_DIR$/utils/util.py" />
+        <option value="$PROJECT_DIR$/system/base_model.py" />
+        <option value="$PROJECT_DIR$/commodity/category/views.py" />
+        <option value="$PROJECT_DIR$/commodity/category/models.py" />
+        <option value="$PROJECT_DIR$/system/extensions.py" />
+        <option value="$PROJECT_DIR$/system/app.py" />
+        <option value="$PROJECT_DIR$/utils/authenticator.py" />
       </list>
     </option>
   </component>
@@ -186,6 +203,12 @@
               <item name="sanic" type="b2602c69:ProjectViewProjectNode" />
               <item name="sanic" type="462c0819:PsiDirectoryNode" />
               <item name="commodity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sanic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sanic" type="462c0819:PsiDirectoryNode" />
+              <item name="commodity" type="462c0819:PsiDirectoryNode" />
+              <item name="category" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sanic" type="b2602c69:ProjectViewProjectNode" />
@@ -271,18 +294,19 @@
       <workItem from="1556081121258" duration="1938000" />
       <workItem from="1556106652975" duration="1513000" />
       <workItem from="1556157302476" duration="10959000" />
-      <workItem from="1556243003609" duration="4000000" />
+      <workItem from="1556243003609" duration="4911000" />
+      <workItem from="1556428016093" duration="1639000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20307000" />
+    <option name="totallyTimeSpent" value="22857000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="74" y="24" width="1642" height="893" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1956798" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19949174" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -332,20 +356,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Pipfile">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/singleton.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/system/extensions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/commodity/category/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -467,16 +477,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/system/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
-          <folding>
-            <element signature="e#89#112#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/system/database.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
@@ -487,12 +487,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/commodity/category/views.py">
+    <entry file="file://$PROJECT_DIR$/utils/util.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        <state relative-caret-position="304">
+          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
           <folding>
-            <element signature="e#88#115#0" expanded="true" />
+            <element signature="e#99#114#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -506,8 +506,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/system/base_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="639">
-          <caret line="49" column="23" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+        <state relative-caret-position="225">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
           <folding>
             <element signature="e#89#112#0" expanded="true" />
           </folding>
@@ -516,16 +516,57 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/commodity/category/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+        <state relative-caret-position="563">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
           <folding>
             <element signature="e#88#103#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/util.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/utils/singleton.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commodity/category/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#88#115#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/system/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#89#112#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/system/extensions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/authenticator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="18" column="27" lean-forward="true" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+          <folding>
+            <element signature="e#89#116#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

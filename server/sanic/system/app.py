@@ -6,6 +6,7 @@ from sanic import Sanic
 
 from commodity import product_blueprint_group
 from system import base_config
+from system.extensions import auth
 
 app = Sanic()
 
@@ -18,6 +19,7 @@ def create_app():
 
 
 def register_extensions(app):
+    auth.init_app(app)
     return app
 
 

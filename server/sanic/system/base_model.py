@@ -47,4 +47,15 @@ class IBaseModel(object):
 
         return self.__collection.find({'_id': {'$gt': ObjectId(last_id)}}).limit(page_size)
 
-    def delete_info_by_
+    def delete_info_by_id(self, model_id=None):
+
+        return self.__collection.find_one_and_delete({'_id': model_id})
+
+    def update_info_by_id(self, model_id=None, model_info=None):
+        if model_id and model_info:
+            return self.__collection.find_one_and_update(filter={'_id': model_id}, update=model_info)
+        return False
+
+    def update_many(self, condition=None, update_info=None):
+        if filter and update_info:
+            return self.__collection.update_many(filter=condition, update=update_info)

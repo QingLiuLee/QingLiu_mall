@@ -15,10 +15,7 @@ async def create_category_info(request):
 
     params = request.json
 
-    # create_info_result = await Category().create_info()
-
-    category = Category()
-    category.init_data(**{'category_name':'test'})
-    await category.create_model_info()
+    category = Category(**{'category_name':'test'})
+    await category.create_info()
 
     return json({'result': 'success'})
