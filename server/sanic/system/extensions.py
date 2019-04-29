@@ -2,6 +2,6 @@
 # @Time     : 4/24/19 10:10 AM
 # @Author   : Lee才晓
 # @Describe :
-from utils.authenticator import TokenAuth
+from sanic_cors import CORS
 
-auth = TokenAuth(secret_key='super-secret', header='Authentication-Token')
+cors = CORS()

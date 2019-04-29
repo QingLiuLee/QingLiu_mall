@@ -15,3 +15,11 @@ MONGODB = dict(
 # 日志配置
 LOGCONFIG = log_config.LogConfig
 LOGCONFIG_QUEUE = ['root']
+
+JWT_SECRET_KEY = 'super-secret'
+JWT_TOKEN_LOCATION = 'headers'
+JWT_ALGORITHM = 'HS256'
+JWT_IDENTITY_CLAIM = 'identity'
+JWT_USER_CLAIMS = 'user_claims'
+JWT_HEADER_NAME = 'Authorization-token'
+JWT_HEADER_TYPE = ''

@@ -3,10 +3,12 @@
 # @Author   : Lee才晓
 # @Describe :
 from sanic import Sanic
+from sanic.response import json
+from sanic_cors import CORS
+from sanic_jwt_extended import JWTManager
 
 from commodity import product_blueprint_group
 from system import base_config
-from system.extensions import auth
 
 app = Sanic()
 
@@ -14,12 +16,15 @@ app = Sanic()
 def create_app():
     app.config.from_object(base_config)
 
+    register_extensions(app)
     register_blueprints(app)
+
     return app
 
 
 def register_extensions(app):
-    auth.init_app(app)
+    JWTManager(app)
+    CORS(app)
     return app
 
 
@@ -46,3 +51,4 @@ async def before_server_stop(app, loop):
 @app.listener('after_server_stop')
 async def after_server_stop(app, loop):
     pass
+
