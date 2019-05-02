@@ -56,6 +56,15 @@ class IBaseModel(object):
             return self.__collection.find_one_and_update(filter={'_id': model_id}, update=model_info)
         return False
 
+    def update_info_by_custom(self, condition=None, info_json=None):
+        """
+        根据自定义条件更新数据
+        :return:
+        """
+        if condition and info_json:
+            return self.__collection.find_one_and_update(filter=condition, update=info_json)
+        return False
+
     def update_many(self, condition=None, update_info=None):
         if filter and update_info:
             return self.__collection.update_many(filter=condition, update=update_info)

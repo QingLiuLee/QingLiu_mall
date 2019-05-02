@@ -7,7 +7,8 @@ from sanic.response import json
 from sanic_cors import CORS
 from sanic_jwt_extended import JWTManager
 
-from commodity import product_blueprint_group
+import commodity
+import merchant
 from system import base_config
 
 app = Sanic()
@@ -18,7 +19,6 @@ def create_app():
 
     register_extensions(app)
     register_blueprints(app)
-
     return app
 
 
@@ -29,7 +29,8 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.blueprint(product_blueprint_group)
+    app.blueprint(commodity.product_blueprint_group)
+    app.blueprint(merchant.product_blueprint_group)
     return app
 
 
@@ -51,4 +52,3 @@ async def before_server_stop(app, loop):
 @app.listener('after_server_stop')
 async def after_server_stop(app, loop):
     pass
-

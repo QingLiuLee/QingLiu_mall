@@ -5,7 +5,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from system.base_config import MONGODB
-from utils.singleton import singleton
+from utils.decorator.singleton import singleton
 
 
 @singleton
@@ -61,3 +61,28 @@ class MotorBase:
             self._collection[collection_key] = self.get_db(db_name)[collection]
 
         return self._collection[collection_key]
+
+    ######################################################################################
+    # def connect_db(self, db=MONGODB):
+    #     self.motor_uri = 'mongodb://{account}{host}:{port}/{database}'.format(
+    #         account='{username}:{password}@'.format(
+    #             username=db['MONGO_USERNAME'],
+    #             password=db['MONGO_PASSWORD']) if db['MONGO_USERNAME'] else '',
+    #         host=db['MONGO_HOST'] if db['MONGO_HOST'] else 'localhost',
+    #         port=db['MONGO_PORT'] if db['MONGO_PORT'] else 27017,
+    #         database=db['DATABASE'])
+    #     self._db = AsyncIOMotorClient(self.motor_uri)
+    #     return self._db
+    #
+    # def connect_mongo(self,mongo=MONGODB):
+    #     pass
+    #
+    # def get_collection(self, collection):
+    #
+    #     if collection not in self._collection:
+    #         self._collection[collection] = self._db['qingliu'][collection]
+    #
+    #     return self._collection[collection]
+    #
+    # def test_get_data(self, collection):
+    #     return self._collection[collection]
