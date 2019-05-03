@@ -14,6 +14,8 @@ motor = "==2.0.0"
 pymongo = "==3.7.1"
 sanic-plugins-framework = "==0.7.0"
 uvloop = "==0.12.2"
+uwsgi = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"

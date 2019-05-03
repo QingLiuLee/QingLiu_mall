@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6244d01bfd0ff17e4aeecc55332d565933cf53696c8363aeef2a46fc52d07b6a"
+            "sha256": "910696513f45731ca75b636d42a01399339b84f25122be927381b427b96adcbd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -22,6 +22,14 @@
                 "sha256:1e644c2573f953664368de28d2aa4c89dfd64550429d0c27c4680ccd3aa4985d"
             ],
             "version": "==0.4.0"
+        },
+        "gunicorn": {
+            "hashes": [
+                "sha256:aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471",
+                "sha256:fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"
+            ],
+            "index": "pypi",
+            "version": "==19.9.0"
         },
         "httptools": {
             "hashes": [
@@ -175,6 +183,13 @@
             ],
             "index": "pypi",
             "version": "==0.12.2"
+        },
+        "uwsgi": {
+            "hashes": [
+                "sha256:4972ac538800fb2d421027f49b4a1869b66048839507ccf0aa2fda792d99f583"
+            ],
+            "index": "pypi",
+            "version": "==2.0.18"
         },
         "websockets": {
             "hashes": [
