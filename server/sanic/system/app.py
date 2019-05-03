@@ -3,6 +3,7 @@
 # @Author   : Lee才晓
 # @Describe :
 from sanic import Sanic
+from sanic.exceptions import NotFound, ServerError, Unauthorized, InvalidUsage
 from sanic.response import json
 from sanic_cors import CORS
 from sanic_jwt_extended import JWTManager
@@ -52,3 +53,27 @@ async def before_server_stop(app, loop):
 @app.listener('after_server_stop')
 async def after_server_stop(app, loop):
     pass
+
+
+@app.exception(NotFound)
+async def not_found(request, exception):
+    return json(body={'code': NotFound.status_code, 'msg': '{0} 请求函数找不到'.format(str(request))},
+                status=NotFound.status_code)
+
+
+@app.exception(ServerError)
+async def server_error(request, exception):
+    return json(body={'code': ServerError.status_code, 'msg': '{0} 请求函数出现异常 {1}'.format(str(request), str(exception))},
+                status=ServerError.status_code)
+
+
+@app.exception(Unauthorized)
+async def unauthorized(request, exception):
+    return json(body={'code': Unauthorized.status_code, 'msg': '{0} 请求函数token 已过期'.format(str(request))},
+                status=Unauthorized.status_code)
+
+
+@app.exception(InvalidUsage)
+async def invalid_usage(request, exception):
+    return json(body={'code': InvalidUsage.status_code, 'msg': '{0} 请求函数出现错误 {1}'.format(str(request), str(exception))},
+                status=InvalidUsage.status_code)

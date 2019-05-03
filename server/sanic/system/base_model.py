@@ -16,7 +16,14 @@ class IBaseModel(object):
         self.__db = MotorBase().get_db()
         self.__collection = self.__db[collection]
 
+    def get_collection(self):
+        return self.__collection
+
     def get_json_by_obj(self):
+        """
+        将类的属性转为字典
+        :return:
+        """
         pr = {}
         for name in dir(self):
             value = getattr(self, name)
@@ -25,7 +32,12 @@ class IBaseModel(object):
         return pr
 
     def get_obj_by_dic(self, json={}):
-        top = type('new', (object,), json)
+        """
+        将字典转为类属性
+        :param json:
+        :return:
+        """
+        top = type(self.__class__, (object,), json)
         seqs = tuple, list, set, frozenset
         for i, j in json.items():
             if isinstance(j, dict):
@@ -68,3 +80,8 @@ class IBaseModel(object):
     def update_many(self, condition=None, update_info=None):
         if filter and update_info:
             return self.__collection.update_many(filter=condition, update=update_info)
+
+    def find_one(self, condition, ):
+        return self.__collection.find_one(filter=condition)
+
+        # return self.__collection.find(condition, {'_id': 0, 'create_time': 0}).limit(1).to_list(1)

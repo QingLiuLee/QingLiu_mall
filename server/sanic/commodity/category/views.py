@@ -9,6 +9,7 @@ from sanic_jwt_extended import create_access_token, jwt_required
 from sanic_jwt_extended.tokens import Token
 
 from commodity.category.models import Category
+from utils.decorator.exception import response_exception
 
 blueprint = Blueprint(name="category", url_prefix="/category", version=1)
 
@@ -28,11 +29,10 @@ async def create_category_info(request):
 async def test(request):
     user_claim = {"VERI TAS": "LUX MEA"}
     token = await create_access_token(app=request.app, identity='username', user_claims=user_claim)
-    print(token)
     return json({'token': token})
 
 
 @blueprint.route('/protected', methods=['GET', 'POST'])
-@jwt_required
+@response_exception
 async def protected(request: Request, token: Token):
     print('access token')

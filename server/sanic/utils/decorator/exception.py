@@ -2,14 +2,14 @@
 # @Time     : 4/30/19 4:32 PM
 # @Author   : Lee才晓
 # @Describe :
-
-from sanic.response import json
+from sanic.exceptions import abort
+from sanic_jwt_extended import jwt_required
 
 
 def try_except(func):
-    def dec():
+    def dec(*args, **kwargs):
         try:
-            func()
+            return func(*args, **kwargs)
         except Exception as e:
             raise e
 
@@ -17,10 +17,11 @@ def try_except(func):
 
 
 def response_exception(func):
-    def wrapper(request, *args, **kwargs):
+    @jwt_required
+    async def wrapper(request, *args, **kwargs):
         try:
-            func(request, *args, **kwargs)
+            await func(request, *args, **kwargs)
         except Exception as e:
-            return json({'dec': '{0} 函数出现异常 {1}'.format(func.__name__, str(e))}), 500
+            return abort(status_code=500, message=e)
 
     return wrapper

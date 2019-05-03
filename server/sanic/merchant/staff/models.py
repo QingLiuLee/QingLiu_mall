@@ -3,8 +3,10 @@
 # @Author   : Lee才晓
 # @Describe : 商家员工信息
 import datetime
+import hashlib
 
 from system.base_model import IBaseModel
+from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
 
 
@@ -22,6 +24,7 @@ class Staff(IBaseModel):
         'roles',  # 相对应商家的角色
     }
 
+    @try_except
     def __init__(self):
         super(Staff, self).__init__('merchant_staff')
         self.staff_code = ''
@@ -33,6 +36,7 @@ class Staff(IBaseModel):
         self.roles = []
 
     @classmethod
+    @try_except
     def init_staff_info(cls, **kwargs):
         """
         初始化员工信息
@@ -49,6 +53,7 @@ class Staff(IBaseModel):
         staff.roles = kwargs.get('roles', [])
         return staff
 
+    @try_except
     def create_staff_info(self):
         """
         创建商家员工信息
@@ -56,8 +61,24 @@ class Staff(IBaseModel):
         """
         if all([self.mobile, self.nickname, self.password]):
             self.staff_code = make_code_or_id('S')
+            self.password = hashlib.md5(self.password.encode("utf-8")).digest()
             self.create_time = datetime.datetime.now()
             self.create_info()
             return self.staff_code
         else:
             return None
+
+    @try_except
+    def find_staff_by_mobile_or_nickname(self, mobile='', nickname=''):
+        return self.find_one(condition={'$or': [{'mobile': mobile}, {'nickname': nickname}]})
+
+    @try_except
+    def check_staff_password(self, password=''):
+        """
+        检测密码是否正确
+        :return:
+        """
+        pwd_tmp = hashlib.md5(password.encode("utf-8")).digest()
+        if self.password == pwd_tmp:
+            return True
+        return False
