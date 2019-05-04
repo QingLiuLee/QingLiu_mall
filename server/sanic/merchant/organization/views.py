@@ -56,3 +56,31 @@ async def create_org_info(request: Request, token: Token):
         return response_data.set_response_success(msg="{0} 商铺创建成功".format(merchant_name))
     else:
         return response_data.set_system_error()
+
+
+@blueprint.route(uri='/update/info', methods=['POST'])
+@response_exception
+async def get_org_list(request: Request, token: Token):
+    """
+    获取商家列表
+    :param request:
+    :param token:
+    :return:
+    """
+    params = request.json
+    response_data = BaseResponse()
+
+    merchant_code = params.get('merchant_code', '')
+    merchant_name = params.get('merchant_name', '')
+    explain = params.get('explain', '')
+    img_list = params.get('img_list', [])
+    sale_type = params.get('sale_type', [])
+    owner_code = params.get('owner_code', '')
+
+    if not all([merchant_code, merchant_name, explain, img_list, sale_type, owner_code]):
+        return response_data.set_params_error()
+
+    org_obj = Organization.init_org_info(**params)
+    org_obj.update_merchant_info()
+
+    return response_data.set_response_success(msg='更新成功')

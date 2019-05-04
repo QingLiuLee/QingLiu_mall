@@ -89,5 +89,5 @@ class Staff(IBaseModel):
         更新角色列表
         :return:
         """
-        return self.update_one_by_custom(condition={'staff_code': self.staff_code}, info_json={
+        return self.update_one_by_custom(condition={'staff_code': self.staff_code}, update={
             '$push': {'roles': {'org_code': org_code, 'role_code': role_code}}})

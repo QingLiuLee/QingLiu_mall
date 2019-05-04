@@ -5,26 +5,66 @@
 import datetime
 
 from system.base_model import IBaseModel
+from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
 
 
 class Category(IBaseModel):
     __slots__ = {
-        'category_id',
+        'category_code',
+        'merchant_code',
         'category_name',
         'create_time',
     }
 
-    def __init__(self, **kwargs):
-        super(Category, self).__init__('category')
+    def __init__(self):
+        super(Category, self).__init__('commodity_category')
+        self.category_code = ''
+        self.category_name = ''
+        self.merchant_code = ''
+        self.create_time = None
 
-    def create_category_info(self, **kwargs):
+    @classmethod
+    @try_except
+    def init_category_info(cls, **kwargs):
         """
-        ceate new category info
+        初始化品类信息
         :param kwargs:
         :return:
         """
-        self.category_id = make_code_or_id('C')
-        self.category_name = kwargs.get('category_name', '')
-        self.create_time = datetime.datetime.now()
-        self.create_info()
+        category = cls()
+        category.category_code = kwargs.get('category_code', '')
+        category.merchant_code = kwargs.get('merchant_code', '')
+        category.category_name = kwargs.get('category_name', '')
+        category.create_time = kwargs.get('create_time', None)
+        return category
+
+    @try_except
+    def create_category_info(self):
+        """
+        创建新品类
+        :return:
+        """
+        if all([self.category_name, self.merchant_code]):
+            self.category_code = make_code_or_id('C')
+            self.create_time = datetime.datetime.now()
+            self.create_info()
+            return self.category_code
+        return False
+
+    @try_except
+    def update_category_info(self):
+        """
+        更新品类
+        :return:
+        """
+        return self.update_one_by_custom(condition={'category_code': self.category_code},
+                                         update={'$set': {'category_name': self.category_name}})
+
+    @try_except
+    def find_category_by_merchant_code_and_category_name(self):
+        """
+        根据商铺编码与品类名查找品类信息
+        :return:
+        """
+        return self.find_one(condition={'merchant_code': self.merchant_code, 'category_name': self.category_name})

@@ -59,15 +59,13 @@ class IBaseModel(object):
             return self.__collection.find_one_and_update(filter=condition, update=info_json)
         return False
 
-    def update_one_by_custom(self, condition=None, info_json=None):
+    def update_one_by_custom(self, condition=None, update=None):
         """
         根据自定义条件更新数据
-        :param condition:
-        :param info_json:
         :return:
         """
-        if condition and info_json:
-            return self.__collection.update_one(filter=condition, update=info_json)
+        if condition and update:
+            return self.__collection.update_one(filter=condition, update=update)
         return False
 
     def update_many(self, condition=None, update_info=None):

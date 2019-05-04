@@ -24,7 +24,7 @@ class Organization(IBaseModel):
     }
 
     def __init__(self):
-        super(Organization, self).__init__('merchant')
+        super(Organization, self).__init__('merchant_org')
         self.merchant_code = ''
         self.merchant_name = ''
         self.explain = ''
@@ -85,3 +85,16 @@ class Organization(IBaseModel):
         :return:
         """
         return self.find_one(condition={'merchant_name': merchant_name})
+
+    @try_except
+    def update_merchant_info(self):
+        """
+        更新商铺信息
+        :return:
+        """
+        return self.update_one_by_custom(condition={'merchant_code': self.merchant_code}, update={'$set': {
+            'merchant_name': self.merchant_name,
+            'explain': self.explain,
+            'img_list': self.img_list,
+            'sale_type': self.sale_type
+        }})
