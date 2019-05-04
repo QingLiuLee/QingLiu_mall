@@ -30,6 +30,7 @@ async def create_staff_info(request):
         if staff_info:
             return response_data.set_exist_error()
 
+        staff = staff.init_staff_info(mobile=mobile, nickname=nickname, password=password)
         staff_code = staff.create_staff_info()
 
         if staff_code:
