@@ -23,3 +23,4 @@ JWT_IDENTITY_CLAIM = 'identity'
 JWT_USER_CLAIMS = 'user_claims'
 JWT_HEADER_NAME = 'Authorization-token'
 JWT_HEADER_TYPE = ''
+JWT_ACCESS_TOKEN_EXPIRES = False

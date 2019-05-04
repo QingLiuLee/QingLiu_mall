@@ -56,24 +56,24 @@ async def after_server_stop(app, loop):
 
 
 @app.exception(NotFound)
-async def not_found(request, exception):
+def not_found(request, exception):
     return json(body={'code': NotFound.status_code, 'msg': '{0} 请求函数找不到'.format(str(request))},
                 status=NotFound.status_code)
 
 
 @app.exception(ServerError)
-async def server_error(request, exception):
+def server_error(request, exception):
     return json(body={'code': ServerError.status_code, 'msg': '{0} 请求函数出现异常 {1}'.format(str(request), str(exception))},
                 status=ServerError.status_code)
 
 
 @app.exception(Unauthorized)
-async def unauthorized(request, exception):
+def unauthorized(request, exception):
     return json(body={'code': Unauthorized.status_code, 'msg': '{0} 请求函数token 已过期'.format(str(request))},
                 status=Unauthorized.status_code)
 
 
 @app.exception(InvalidUsage)
-async def invalid_usage(request, exception):
+def invalid_usage(request, exception):
     return json(body={'code': InvalidUsage.status_code, 'msg': '{0} 请求函数出现错误 {1}'.format(str(request), str(exception))},
                 status=InvalidUsage.status_code)

@@ -5,6 +5,7 @@
 import datetime
 
 from system.base_model import IBaseModel
+from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
 
 
@@ -39,16 +40,18 @@ class Organization(IBaseModel):
         :param kwargs:
         :return:
         """
-        cls.merchant_code = kwargs.get('merchant_code', '')
-        cls.merchant_name = kwargs.get('merchant_name', '')
-        cls.explain = kwargs.get('explain', '')
-        cls.create_time = kwargs.get('create_time', None)
-        cls.img_list = kwargs.get('img_list', [])
-        cls.owner_code = kwargs.get('owner_code', '')
-        cls.sale_type = kwargs.get('sale_type', [])
+        org = cls()
+        org.merchant_code = kwargs.get('merchant_code', '')
+        org.merchant_name = kwargs.get('merchant_name', '')
+        org.explain = kwargs.get('explain', '')
+        org.create_time = kwargs.get('create_time', None)
+        org.img_list = kwargs.get('img_list', [])
+        org.owner_code = kwargs.get('owner_code', '')
+        org.sale_type = kwargs.get('sale_type', [])
 
-        return cls
+        return org
 
+    @try_except
     def create_org_info(self):
         """
         创建商家信息
@@ -71,5 +74,14 @@ class Organization(IBaseModel):
         """
         if owner_code:
             self.owner_code = owner_code
-            self.update_info_by_custom(condition={'merchant_code': self.merchant_code},
-                                       info_json=self.get_json_by_obj())
+            self.find_one_and_update_info_by_custom(condition={'merchant_code': self.merchant_code},
+                                                    info_json=self.get_json_by_obj())
+
+    @try_except
+    def find_org_by_merchant_name(self, merchant_name=''):
+        """
+        根据商铺名称查找
+        :param merchant_name:
+        :return:
+        """
+        return self.find_one(condition={'merchant_name': merchant_name})

@@ -34,7 +34,7 @@ class BaseResponse(object):
         self.data = data
         self.msg = msg
 
-    def set_response_success(self, data=None, msg='响应成功'):
+    def set_response_success(self, data='', msg='响应成功'):
         """
         响应成功
         :return:

@@ -18,9 +18,9 @@ def try_except(func):
 
 def response_exception(func):
     @jwt_required
-    async def wrapper(request, *args, **kwargs):
+    def wrapper(request, *args, **kwargs):
         try:
-            await func(request, *args, **kwargs)
+            return func(request, *args, **kwargs)
         except Exception as e:
             return abort(status_code=500, message=e)
 

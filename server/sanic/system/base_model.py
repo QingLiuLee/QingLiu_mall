@@ -31,24 +31,6 @@ class IBaseModel(object):
                 pr[name] = value
         return pr
 
-    def get_obj_by_dic(self, json={}):
-        """
-        将字典转为类属性
-        :param json:
-        :return:
-        """
-        top = type(self.__class__, (object,), json)
-        seqs = tuple, list, set, frozenset
-        for i, j in json.items():
-            if isinstance(j, dict):
-                setattr(top, i, self.get_obj_by_dic(j))
-            elif isinstance(j, seqs):
-                setattr(top, i,
-                        type(j)(self.get_obj_by_dic(sj) if isinstance(sj, dict) else sj for sj in j))
-            else:
-                setattr(top, i, j)
-        return top
-
     def create_info(self, model_info=None):
         if not model_info:
             model_info = self.get_json_by_obj()
@@ -68,13 +50,24 @@ class IBaseModel(object):
             return self.__collection.find_one_and_update(filter={'_id': model_id}, update=model_info)
         return False
 
-    def update_info_by_custom(self, condition=None, info_json=None):
+    def find_one_and_update_info_by_custom(self, condition=None, info_json=None):
         """
-        根据自定义条件更新数据
+        根据自定义条件更新一条数据
         :return:
         """
         if condition and info_json:
             return self.__collection.find_one_and_update(filter=condition, update=info_json)
+        return False
+
+    def update_one_by_custom(self, condition=None, info_json=None):
+        """
+        根据自定义条件更新数据
+        :param condition:
+        :param info_json:
+        :return:
+        """
+        if condition and info_json:
+            return self.__collection.update_one(filter=condition, update=info_json)
         return False
 
     def update_many(self, condition=None, update_info=None):
@@ -83,5 +76,3 @@ class IBaseModel(object):
 
     def find_one(self, condition, ):
         return self.__collection.find_one(filter=condition)
-
-        # return self.__collection.find(condition, {'_id': 0, 'create_time': 0}).limit(1).to_list(1)

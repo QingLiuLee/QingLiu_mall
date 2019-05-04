@@ -54,7 +54,7 @@ class Staff(IBaseModel):
         return staff
 
     @try_except
-    def create_staff_info(self):
+    def create_admin_info(self):
         """
         创建商家员工信息
         :return:
@@ -82,3 +82,12 @@ class Staff(IBaseModel):
         if self.password == pwd_tmp:
             return True
         return False
+
+    @try_except
+    def set_org_roles_by_staff_code(self, org_code='', role_code=''):
+        """
+        更新角色列表
+        :return:
+        """
+        return self.update_one_by_custom(condition={'staff_code': self.staff_code}, info_json={
+            '$push': {'roles': {'org_code': org_code, 'role_code': role_code}}})
