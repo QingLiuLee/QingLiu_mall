@@ -5,7 +5,7 @@
 from system import log_config
 
 MONGODB = dict(
-    MONGO_HOST='127.0.0.1',
+    MONGO_HOST='107.172.122.19',
     MONGO_PORT='27017',
     MONGO_USERNAME='lee',
     MONGO_PASSWORD='10241026',

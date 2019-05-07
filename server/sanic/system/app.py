@@ -9,6 +9,7 @@ from sanic_cors import CORS
 from sanic_jwt_extended import JWTManager
 
 import commodity
+import consumer
 import merchant
 from system import base_config
 
@@ -32,6 +33,7 @@ def register_extensions(app):
 def register_blueprints(app):
     app.blueprint(commodity.product_blueprint_group)
     app.blueprint(merchant.product_blueprint_group)
+    app.blueprint(consumer.product_blueprint_group)
     return app
 
 

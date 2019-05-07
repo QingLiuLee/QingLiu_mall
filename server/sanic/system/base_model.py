@@ -7,6 +7,39 @@ from abc import ABCMeta
 from bson import ObjectId
 
 from system.database import MotorBase
+from utils.decorator.exception import try_except
+
+
+class IEmbedded(object):
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        pass
+
+    def get_json_by_obj(self):
+        """
+        将类的属性转为字典
+        :return:
+        """
+        pr = {}
+        for name in dir(self):
+            value = getattr(self, name)
+            if not name.startswith('__') and not callable(value):
+                pr[name] = value
+        return pr
+
+    @try_except
+    def check_params_is_none(self, except_list=[]):
+        """
+        检测全部属性是否为空
+        :param except_list: 特定属性除外
+        :return:
+        """
+        for name in dir(self):
+            value = getattr(self, name)
+            if not name.startswith('__') and not callable(value) and (value not in except_list) and (not value):
+                return False
+        return True
 
 
 class IBaseModel(object):
