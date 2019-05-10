@@ -70,21 +70,40 @@ class VIPPrivilege(IEmbedded):
     def __init__(self):
         super(VIPPrivilege, self).__init__()
         self.level = None
-        self.honorary_title = None
+        self.honorary_title = []
         self.recharge_record = []
 
+    @classmethod
     @try_except
-    def init_vip_privilege(self, **kwargs):
-        self.level = kwargs.get('level', None)
-        self.honorary_title = kwargs.get('honorary_title', None)
-        self.recharge_record = kwargs.get('recharge_record', None)
+    def init_vip_privilege(cls, **kwargs):
+        vip_privilege = cls()
+        vip_privilege.level = kwargs.get('level', None)
+        vip_privilege.honorary_title = kwargs.get('honorary_title', None)
+        vip_privilege.recharge_record = kwargs.get('recharge_record', None)
+        return vip_privilege
 
 
 class Integral(IEmbedded):
     """
     积分
     """
-    pass
+    __slots__ = {
+        'total_integral',  # 总积分
+        'history_list',  # 积分的历史列表 {'type':'收入', 'integral':'5', time:'2019/05/10'}
+    }
+
+    def __init__(self):
+        super(Integral, self).__init__()
+        self.total_integral = 0
+        self.history_list = []
+
+    @classmethod
+    @try_except
+    def init_integral(cls, **kwargs):
+        integral = cls()
+        integral.total_integral = kwargs.get('total_integral', 0)
+        integral.history_list = kwargs.get('history_list', [])
+        return integral
 
 
 class Coupon(IEmbedded):
@@ -98,7 +117,29 @@ class ReceivingAddress(IEmbedded):
     """
     收货地址
     """
-    pass
+    __slots__ = {
+        'address',  # 详细地址
+        'region_code',  # 区域编码
+        'mobile',  # 手机号
+        'contacts',  # 联系人
+    }
+
+    def __init__(self):
+        super(ReceivingAddress, self).__init__()
+        self.address = ''
+        self.region_code = ''
+        self.mobile = ''
+        self.contacts = ''
+
+    @classmethod
+    @try_except
+    def init_receiving_address(cls, **kwargs):
+        receive_address = cls()
+        receive_address.address = kwargs.get('address', '')
+        receive_address.region_code = kwargs.get('region_code', '')
+        receive_address.mobile = kwargs.get('mobile', '')
+        receive_address.contacts = kwargs.get('contacts', '')
+        return receive_address
 
 
 class ThirdPartyInfo(IEmbedded):
@@ -173,7 +214,18 @@ class Consumer(IBaseModel):
         """
         return self.find_one(condition={
             '$or': [{'base_info.mobile': self.base_info['mobile']},
-                    {'base_info.nickname': self.base_info['nickname']}]})
+                    {'base_info.nickname': self.base_info['nickname']}]},
+            stipulated={'_id': 0, 'base_info': 1, 'base_info.password': 0, 'create_time': 1,
+                        'vip_privilege': 1, 'integral': 1, 'coupon': 1, 'receiving_address': 1,
+                        'third_party_info': 1})
+
+    @try_except
+    def check_consumer_password(self, password=''):
+        """检测密码是否正确"""
+        pwd_tmp = hashlib.md5(password.encode("utf-8")).digest()
+        if self.base_info['password'] == pwd_tmp:
+            return True
+        return False
 
     @try_except
     def create_consumer_info(self):
@@ -181,10 +233,10 @@ class Consumer(IBaseModel):
         创建消费者信息
         :return:
         """
-        if all([self.base_info, self.base_info.check_params()]):
+        if all([self.base_info]):
             self.consumer_code = make_code_or_id('C')
             self.create_time = datetime.datetime.now()
-            self.base_info.password = hashlib.md5(self.base_info.password.encode("utf-8")).digest()
+            self.base_info['password'] = hashlib.md5(self.base_info['password'].encode("utf-8")).digest()
             self.create_info()
             return self.consumer_code
         return None
@@ -195,7 +247,7 @@ class Consumer(IBaseModel):
         更新消费者信息
         :return:
         """
-        if all([base_info, base_info.check_params_is_none()]):
+        if all([self.consumer_code, base_info, base_info.check_params_is_none()]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code}, update={
                 '$set': {'base_info': base_info.get_json_by_obj()}})
         return None
@@ -207,7 +259,7 @@ class Consumer(IBaseModel):
         :param vip_privilege:
         :return:
         """
-        if all([vip_privilege, vip_privilege.check_params_is_none()]):
+        if all([self.consumer_code, vip_privilege, vip_privilege.check_params_is_none()]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                              update={'$set': {'vip_privilege': vip_privilege.get_json_by_obj()}})
         return None
@@ -219,7 +271,7 @@ class Consumer(IBaseModel):
         :param integral:
         :return:
         """
-        if all([integral, integral.check_params_is_none()]):
+        if all([self.consumer_code, integral, integral.check_params_is_none()]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                              update={'$set': {'integral': integral.get_json_by_obj()}})
         return None
@@ -231,7 +283,7 @@ class Consumer(IBaseModel):
         :param coupon:
         :return:
         """
-        if all([coupon, coupon.check_params_is_none()]):
+        if all([self.consumer_code, coupon, coupon.check_params_is_none()]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                              update={'$set': {'integral': coupon.get_json_by_obj()}})
         return None
@@ -243,7 +295,7 @@ class Consumer(IBaseModel):
         :param receiving_address:
         :return:
         """
-        if all([receiving_address, receiving_address.check_params_is_none()]):
+        if all([self.consumer_code, receiving_address, receiving_address.check_params_is_none()]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                              update={'$set': {'integral': receiving_address.get_json_by_obj()}})
         return None
@@ -255,7 +307,36 @@ class Consumer(IBaseModel):
         :param third_party_info:
         :return:
         """
-        if all([third_party_info, third_party_info.check_params_is_none()]):
+        if all([self.consumer_code, third_party_info, third_party_info.check_params_is_none()]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                              update={'$set': {'integral': third_party_info.get_json_by_obj()}})
+        return None
+
+    @try_except
+    def update_consumer_vip_level(self, old_level, new_level):
+        """更新消费者VIP等级信息"""
+        if all([self.consumer_code]):
+            return self.update_one_by_custom(
+                condition={'consumer_code': self.consumer_code, 'vip_privilege.level': old_level},
+                update={'$set': {'vip_privilege.level': new_level}})
+        return None
+
+    @try_except
+    def add_consumer_vip_honorary_title(self, honorary_title):
+        """添加消费者VIP荣耀称号"""
+        if all([self.consumer_code]):
+            return self.update_one_by_custom(
+                condition={'consumer_code': self.consumer_code},
+                update={'$push': {'vip_privilege.honorary_title': honorary_title}}
+            )
+        return None
+
+    @try_except
+    def add_consumer_receive_address(self, address: ReceivingAddress):
+        """添加消费者收货地址"""
+        if all([self.consumer_code]):
+            return self.update_one_by_custom(
+                condition={'consumer_code': self.consumer_code},
+                update={'$push': {'receiving_address': address}}
+            )
         return None

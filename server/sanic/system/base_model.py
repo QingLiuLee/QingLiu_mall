@@ -105,5 +105,5 @@ class IBaseModel(object):
         if filter and update_info:
             return self.__collection.update_many(filter=condition, update=update_info)
 
-    def find_one(self, condition, ):
-        return self.__collection.find_one(filter=condition)
+    def find_one(self, condition={}, stipulated={}):
+        return self.__collection.find_one(filter=condition, **stipulated)
