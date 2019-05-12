@@ -12,7 +12,8 @@ from utils.util import make_code_or_id
 class Category(IBaseModel):
     __slots__ = {
         'category_code',
-        'merchant_code',
+        'org_code',
+        'staff_code',
         'category_name',
         'create_time',
     }
@@ -21,7 +22,7 @@ class Category(IBaseModel):
         super(Category, self).__init__('commodity_category')
         self.category_code = ''
         self.category_name = ''
-        self.merchant_code = ''
+        self.org_code = ''
         self.create_time = None
 
     @classmethod
@@ -34,7 +35,8 @@ class Category(IBaseModel):
         """
         category = cls()
         category.category_code = kwargs.get('category_code', '')
-        category.merchant_code = kwargs.get('merchant_code', '')
+        category.org_code = kwargs.get('org_code', '')
+        category.staff_code = kwargs.get('staff_code', '')
         category.category_name = kwargs.get('category_name', '')
         category.create_time = kwargs.get('create_time', None)
         return category
@@ -45,7 +47,7 @@ class Category(IBaseModel):
         创建新品类
         :return:
         """
-        if all([self.category_name, self.merchant_code]):
+        if all([self.category_name, self.org_code, self.staff_code]):
             self.category_code = make_code_or_id('C')
             self.create_time = datetime.datetime.now()
             self.create_info()
@@ -62,9 +64,14 @@ class Category(IBaseModel):
                                          update={'$set': {'category_name': self.category_name}})
 
     @try_except
-    def find_category_by_merchant_code_and_category_name(self):
+    def find_category_by_org_code_and_category_name(self):
         """
         根据商铺编码与品类名查找品类信息
         :return:
         """
-        return self.find_one(condition={'merchant_code': self.merchant_code, 'category_name': self.category_name})
+        return self.find_one(condition={'org_code': self.org_code, 'category_name': self.category_name})
+
+    @try_except
+    def find_category_list_by_org_code(self):
+        """获取商家品类信息"""
+        return self.find(condition={'org_code': self.org_code}, projection={'_id': 0})

@@ -52,6 +52,7 @@ class IBaseModel(object):
     def get_collection(self):
         return self.__collection
 
+    @try_except
     def get_json_by_obj(self):
         """
         将类的属性转为字典
@@ -63,6 +64,19 @@ class IBaseModel(object):
             if not name.startswith('__') and not callable(value):
                 pr[name] = value
         return pr
+
+    @try_except
+    def check_params_is_none(self, except_list=[]):
+        """
+        检测全部属性是否为空
+        :param except_list: 特定属性除外
+        :return:
+        """
+        for name in dir(self):
+            value = getattr(self, name)
+            if not name.startswith('__') and not callable(value) and (name not in except_list) and (not value):
+                return False
+        return True
 
     def create_info(self, model_info=None):
         if not model_info:
@@ -107,3 +121,7 @@ class IBaseModel(object):
 
     def find_one(self, condition={}, stipulated={}):
         return self.__collection.find_one(filter=condition, **stipulated)
+
+    @try_except
+    def find(self, condition={}, projection={}, limit=10):
+        return self.__collection.find(filter=condition, projection=projection).to_list(length=limit)

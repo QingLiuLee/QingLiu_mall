@@ -4,6 +4,6 @@
 # @Describe : 消费者信息
 from sanic import Blueprint
 
-from . import views
+from . import base_info
 
-product_blueprint_group = Blueprint.group(views.blueprint, url_prefix='/consumer')
+product_blueprint_group = Blueprint.group(base_info.views.blueprint, url_prefix='/consumer')

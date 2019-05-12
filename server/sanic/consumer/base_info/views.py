@@ -7,17 +7,17 @@ from bson import json_util
 from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
-from consumer.models import Consumer, ConsumerBaseInfo, ReceivingAddress
+from consumer.base_info.models import ConsumerBaseInfo, Consumer, ReceivingAddress
 from system.response import BaseResponse
 from sanic_jwt_extended import create_access_token
 
 from utils.decorator.exception import response_exception
 
-blueprint = Blueprint(name="consumer", version=1)
+blueprint = Blueprint(name="base_info", url_prefix='/base_info', version=1)
 
 
 @blueprint.route(uri='/create/info', methods=['POST'])
-async def create_admin_info(request):
+async def create_consumer_info(request):
     params = request.json
     response_data = BaseResponse()
     try:

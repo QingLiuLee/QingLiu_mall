@@ -71,7 +71,7 @@ async def sign_in(request):
         if staff.check_staff_password(password):
             token = await create_access_token(app=request.app, identity='nickname',
                                               user_claims=json_util.dumps(staff_info))
-            return response_data.set_response_success(data=token)
+            return response_data.set_response_success(data={'token': token, 'staff_code': staff.staff_code})
         else:
             return response_data.identity_authentication_error()
 

@@ -91,3 +91,8 @@ class Staff(IBaseModel):
         """
         return self.update_one_by_custom(condition={'staff_code': self.staff_code}, update={
             '$push': {'roles': {'org_code': org_code, 'role_code': role_code}}})
+
+    @try_except
+    def get_staff_info_by_staff_code(self):
+        """根据员工编码获取员工信息"""
+        return self.find_one(condition={'staff_code': self.staff_code})
