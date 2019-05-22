@@ -5,7 +5,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from system.base_config import MONGODB
-from utils.singleton import singleton
+from utils.decorator.singleton import singleton
 
 
 @singleton

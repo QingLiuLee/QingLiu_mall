@@ -3,10 +3,15 @@
 # @Author   : Lee才晓
 # @Describe :
 from sanic import Sanic
+from sanic.exceptions import NotFound, ServerError, Unauthorized, InvalidUsage
+from sanic.response import json
+from sanic_cors import CORS
+from sanic_jwt_extended import JWTManager
 
-from commodity import product_blueprint_group
+import commodity
+import consumer
+import merchant
 from system import base_config
-from system.extensions import auth
 
 app = Sanic()
 
@@ -14,17 +19,21 @@ app = Sanic()
 def create_app():
     app.config.from_object(base_config)
 
+    register_extensions(app)
     register_blueprints(app)
     return app
 
 
 def register_extensions(app):
-    auth.init_app(app)
+    JWTManager(app)
+    CORS(app)
     return app
 
 
 def register_blueprints(app):
-    app.blueprint(product_blueprint_group)
+    app.blueprint(commodity.product_blueprint_group)
+    app.blueprint(merchant.product_blueprint_group)
+    app.blueprint(consumer.product_blueprint_group)
     return app
 
 
@@ -46,3 +55,27 @@ async def before_server_stop(app, loop):
 @app.listener('after_server_stop')
 async def after_server_stop(app, loop):
     pass
+
+
+@app.exception(NotFound)
+def not_found(request, exception):
+    return json(body={'code': NotFound.status_code, 'msg': '{0} 请求函数找不到'.format(str(request))},
+                status=NotFound.status_code)
+
+
+@app.exception(ServerError)
+def server_error(request, exception):
+    return json(body={'code': ServerError.status_code, 'msg': '{0} 请求函数出现异常 {1}'.format(str(request), str(exception))},
+                status=ServerError.status_code)
+
+
+@app.exception(Unauthorized)
+def unauthorized(request, exception):
+    return json(body={'code': Unauthorized.status_code, 'msg': '{0} 请求函数token 已过期'.format(str(request))},
+                status=Unauthorized.status_code)
+
+
+@app.exception(InvalidUsage)
+def invalid_usage(request, exception):
+    return json(body={'code': InvalidUsage.status_code, 'msg': '{0} 请求函数出现错误 {1}'.format(str(request), str(exception))},
+                status=InvalidUsage.status_code)
