@@ -10,11 +10,11 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            toggle: true,
+            toggle: false,
             avatarDefault: adminImg,
             search: false,   //搜索
             showSkin: false,  //皮肤
-            skinColor: 'themsSVGLF',
+            skinColor: 'themsSVGLFZ',
             skinNormal: [
                 {color: 'themsBlack', name: '夜间'},
                 // {color: 'themsPurple', name: '紫色'},

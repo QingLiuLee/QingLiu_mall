@@ -194,36 +194,40 @@ textarea {
   background: #1f2438;
 }
 .lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: #242b49;
+  border-right: 3px solid #5b6be3;
+}
+.lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsBlack .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -306,6 +310,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsBlack .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsBlack .search-div .ant-input,
+.lee-admin .themsBlack .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsBlack .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsBlack .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsBlack .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsBlack .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsBlack .lee-login {
   position: fixed;
@@ -411,14 +442,12 @@ textarea {
 .lee-admin .themsSVGL .liCurrentColor {
   background: rgba(95, 137, 189, 0.1);
 }
-.lee-admin .themsSVGL .liCurrentColor a {
-  color: #5f89bd;
-}
 .lee-admin .themsSVGL .lee-leftBar-bot-BG {
   background: rgba(95, 137, 189, 0.1);
   border-right: 2px solid #6fa2cc;
 }
-.lee-admin .themsSVGL .lee-leftBar-bot-BG ul li a {
+.lee-admin .themsSVGL .lee-leftBar-bot-BG ul li a,
+.lee-admin .themsSVGL .lee-leftBar-bot-BG ul li .links {
   color: #5f89bd !important;
 }
 .lee-admin .themsSVGL .lee-rightBar-bot-BG {
@@ -445,44 +474,46 @@ textarea {
   background: rgba(95, 137, 189, 0.1);
   border-right: 2px solid #6fa2cc;
 }
-.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot ul li a {
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot ul li a,
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot ul li .links {
   color: #5f89bd !important;
 }
 .lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: rgba(255, 255, 255, 0.5);
   background: rgba(95, 137, 189, 0.1);
+  border-right: 3px solid #fff;
 }
-.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active a {
-  color: #5f89bd;
+.lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsSVGL .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -566,6 +597,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsSVGL .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsSVGL .search-div .ant-input,
+.lee-admin .themsSVGL .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsSVGL .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsSVGL .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsSVGL .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsSVGL .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsSVGL .lee-login {
   position: fixed;
@@ -688,36 +746,40 @@ textarea {
   background: #dcdaeb;
 }
 .lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: rgba(158, 186, 217, 0.3);
+  border-right: 3px solid #9ebad9;
+}
+.lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsSVGLF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -800,6 +862,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsSVGLF .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsSVGLF .search-div .ant-input,
+.lee-admin .themsSVGLF .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsSVGLF .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsSVGLF .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsSVGLF .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsSVGLF .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsSVGLF .lee-login {
   position: fixed;
@@ -905,14 +994,12 @@ textarea {
 .lee-admin .themsSVGLFZ .liCurrentColor {
   background: rgba(153, 146, 197, 0.1);
 }
-.lee-admin .themsSVGLFZ .liCurrentColor a {
-  color: #9992c5;
-}
 .lee-admin .themsSVGLFZ .lee-leftBar-bot-BG {
   background: rgba(153, 146, 197, 0.1);
   border-right: 2px solid #fff;
 }
-.lee-admin .themsSVGLFZ .lee-leftBar-bot-BG ul li a {
+.lee-admin .themsSVGLFZ .lee-leftBar-bot-BG ul li a,
+.lee-admin .themsSVGLFZ .lee-leftBar-bot-BG ul li .links {
   color: #9992c5 !important;
 }
 .lee-admin .themsSVGLFZ .lee-rightBar-bot-BG {
@@ -939,44 +1026,46 @@ textarea {
   background: rgba(153, 146, 197, 0.1);
   border-right: 2px solid #fff;
 }
-.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot ul li a {
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot ul li a,
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot ul li .links {
   color: #9992c5 !important;
 }
 .lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: rgba(213, 213, 232, 0.3);
   background: rgba(153, 146, 197, 0.1);
+  border-right: 3px solid #946fa7;
 }
-.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active a {
-  color: #9992c5;
+.lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsSVGLFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -1060,6 +1149,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsSVGLFZ .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsSVGLFZ .search-div .ant-input,
+.lee-admin .themsSVGLFZ .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsSVGLFZ .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsSVGLFZ .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsSVGLFZ .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsSVGLFZ .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsSVGLFZ .lee-login {
   position: fixed;
@@ -1165,14 +1281,12 @@ textarea {
 .lee-admin .themsSVGF .liCurrentColor {
   background: rgba(204, 148, 199, 0.1);
 }
-.lee-admin .themsSVGF .liCurrentColor a {
-  color: #cc94c7;
-}
 .lee-admin .themsSVGF .lee-leftBar-bot-BG {
   background: rgba(204, 148, 199, 0.1);
   border-right: 2px solid #fff;
 }
-.lee-admin .themsSVGF .lee-leftBar-bot-BG ul li a {
+.lee-admin .themsSVGF .lee-leftBar-bot-BG ul li a,
+.lee-admin .themsSVGF .lee-leftBar-bot-BG ul li .links {
   color: #cc94c7 !important;
 }
 .lee-admin .themsSVGF .lee-rightBar-bot-BG {
@@ -1199,44 +1313,46 @@ textarea {
   background: rgba(204, 148, 199, 0.1);
   border-right: 2px solid #fff;
 }
-.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot ul li a {
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot ul li a,
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot ul li .links {
   color: #cc94c7 !important;
 }
 .lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: rgba(255, 255, 255, 0.5);
   background: rgba(204, 148, 199, 0.1);
+  border-right: 3px solid #cc94c7;
 }
-.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active a {
-  color: #cc94c7;
+.lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsSVGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -1320,6 +1436,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsSVGF .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsSVGF .search-div .ant-input,
+.lee-admin .themsSVGF .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsSVGF .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsSVGF .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsSVGF .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsSVGF .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsSVGF .lee-login {
   position: fixed;
@@ -1425,14 +1568,12 @@ textarea {
 .lee-admin .themsSVGFZ .liCurrentColor {
   background: rgba(166, 137, 196, 0.1);
 }
-.lee-admin .themsSVGFZ .liCurrentColor a {
-  color: #a689c4;
-}
 .lee-admin .themsSVGFZ .lee-leftBar-bot-BG {
   background: rgba(166, 137, 196, 0.1);
   border-right: 2px solid #a689c4;
 }
-.lee-admin .themsSVGFZ .lee-leftBar-bot-BG ul li a {
+.lee-admin .themsSVGFZ .lee-leftBar-bot-BG ul li a,
+.lee-admin .themsSVGFZ .lee-leftBar-bot-BG ul li .links {
   color: #a689c4 !important;
 }
 .lee-admin .themsSVGFZ .lee-rightBar-bot-BG {
@@ -1459,44 +1600,46 @@ textarea {
   background: rgba(166, 137, 196, 0.1);
   border-right: 2px solid #a689c4;
 }
-.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot ul li a {
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot ul li a,
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot ul li .links {
   color: #a689c4 !important;
 }
 .lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: rgba(255, 255, 255, 0.5);
   background: rgba(166, 137, 196, 0.1);
+  border-right: 3px solid #fff;
 }
-.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active a {
-  color: #a689c4;
+.lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsSVGFZ .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -1580,6 +1723,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsSVGFZ .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsSVGFZ .search-div .ant-input,
+.lee-admin .themsSVGFZ .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsSVGFZ .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsSVGFZ .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsSVGFZ .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsSVGFZ .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsSVGFZ .lee-login {
   position: fixed;
@@ -1685,14 +1855,12 @@ textarea {
 .lee-admin .themsSVGGF .liCurrentColor {
   background: rgba(250, 160, 180, 0.1);
 }
-.lee-admin .themsSVGGF .liCurrentColor a {
-  color: #faa0b4;
-}
 .lee-admin .themsSVGGF .lee-leftBar-bot-BG {
   background: rgba(250, 160, 180, 0.1);
   border-right: 2px solid #fff;
 }
-.lee-admin .themsSVGGF .lee-leftBar-bot-BG ul li a {
+.lee-admin .themsSVGGF .lee-leftBar-bot-BG ul li a,
+.lee-admin .themsSVGGF .lee-leftBar-bot-BG ul li .links {
   color: #faa0b4 !important;
 }
 .lee-admin .themsSVGGF .lee-rightBar-bot-BG {
@@ -1719,44 +1887,46 @@ textarea {
   background: rgba(250, 160, 180, 0.1);
   border-right: 2px solid #fff;
 }
-.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot ul li a {
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot ul li a,
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot ul li .links {
   color: #faa0b4 !important;
 }
 .lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul {
-  padding-top: 25px;
   position: relative;
 }
 .lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  min-height: 40px;
+  line-height: 40px;
   transition: all 2s ease;
 }
-.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a {
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a,
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links {
   display: block;
   width: 100%;
   height: 100%;
-  padding-left: 25px;
-  font-size: 15px;
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 14px;
   color: #fff;
 }
-.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon {
-  margin-right: 9px;
-  font-size: 18px;
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a .anticon,
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links .anticon {
+  margin-right: 7px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active {
   background: rgba(255, 255, 255, 0.5);
   background: rgba(250, 160, 180, 0.1);
+  border-right: 3px solid #faa0b4;
 }
-.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li.active a {
-  color: #faa0b4;
+.lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li ul li {
+  padding-left: 10px;
 }
 .lee-admin .themsSVGGF .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), height 0.5s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: absolute;
   width: 4px;
-  height: 50px;
+  height: 40px;
   z-index: 1;
   top: 25px;
   right: -2px;
@@ -1840,6 +2010,33 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 15px;
+}
+.lee-admin .themsSVGGF .search-div {
+  min-height: 40px;
+  margin-top: 10px;
+}
+.lee-admin .themsSVGGF .search-div .ant-input,
+.lee-admin .themsSVGGF .search-div .ant-select {
+  min-width: 100px;
+}
+.lee-admin .themsSVGGF .search-div .ant-btn {
+  margin-right: 10px;
+}
+.lee-admin .themsSVGGF .search-div > div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.lee-admin .themsSVGGF .search-div > div label {
+  text-align: right;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+.lee-admin .themsSVGGF .search-div > div label:after {
+  content: ":";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
 }
 .lee-admin .themsSVGGF .lee-login {
   position: fixed;
@@ -1939,7 +2136,8 @@ textarea {
 .lee-admin .lee-in .lee-leftBar {
   width: 70px;
 }
-.lee-admin .lee-in .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a > span {
+.lee-admin .lee-in .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li a > span,
+.lee-admin .lee-in .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul li .links > span {
   display: none;
 }
 .lee-admin .lee-in .lee-leftBar .lee-leftBar-bot .lee-leftBar-list ul .libar {

@@ -109,6 +109,34 @@
   //right botBg | thems | global font color
   @rightBg:@rightBg,@thems:@thems,@fontColor:@fontColor
 ) {
+  //common
+  .search-div{
+    min-height: 40px;
+    margin-top: 10px;
+    .ant-input, .ant-select{
+      min-width: 100px;
+    }
+    .ant-btn{
+      margin-right: 10px;
+    }
+    &>div{
+      display: inline-block;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      label{
+        text-align: right;
+        display: inline-block;
+        color: rgba(0, 0, 0, 0.85);
+        &:after {
+          content: ":";
+          margin: 0 4px 0 2px;
+          position: relative;
+          top: -0.5px;
+        }
+      }
+    }
+  }
+
   /*login*/
   .lee-login {
     position: fixed;

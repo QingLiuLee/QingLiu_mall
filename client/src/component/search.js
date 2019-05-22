@@ -1,57 +1,45 @@
 import React,{Component} from 'react';
-import { Form, Icon, Input, Button } from 'antd';
-const FormItem = Form.Item;
+import { Input, Button } from 'antd';
 
 class SearchForm extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            userName:'hui',
-            password:'1111'
+            userName:'hui'
         }
     }
 
-    componentDidMount() {
-        this.props.form.validateFields();
+    onSearch = ()=>{
+        this.props.onSearch(this.state);
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    onReset = ()=>{
+        this.setState({
+            userName:''
+        })
     }
 
     render() {
-        const { userName,password } = this.state;
-        const { getFieldDecorator} = this.props.form;
+        const { userName } = this.state;
 
         return (
-            <Form layout="inline" onSubmit={this.handleSubmit}>
-                <FormItem>
-                    {getFieldDecorator('userName', {
-                        rules: [{ required: false, message: 'Please input your username!' }],
-                    })(
-                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-                    )}
-                </FormItem>
-                <FormItem>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: false, message: 'Please input your Password!' }],
-                    })(
-                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-                    )}
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" style={{marginRight:10}}>查询</Button>
-                    <Button type="primary" ghost>重置</Button>
-                </FormItem>
-            </Form>
+            <div className="search-div">
+                <div>
+                    {/*<label><em className="red">*</em>学年学期</label>*/}
+                    <label>用户名</label>
+                    <Input
+                        style={{width:150}}
+                        placeholder="Username"
+                        value={userName}
+                        onClick={(e)=>this.setState({userName:e.target.value})}
+                    />
+                </div>
+                <Button type="primary" onClick={this.onSearch}>查询</Button>
+                <Button type="primary" ghost onClick={this.onReset}>重置</Button>
+            </div>
         );
     }
 }
 
-export default Form.create()(SearchForm);
+export default SearchForm;

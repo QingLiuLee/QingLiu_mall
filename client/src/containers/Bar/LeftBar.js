@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route,Link,withRouter } from 'react-router-dom'
-import { Menu, Icon } from 'antd';
+import { Icon } from 'antd';
 
 @withRouter
 export default class LeftBar extends Component {
@@ -9,7 +9,20 @@ export default class LeftBar extends Component {
         this.state = {
             active:0,
             links:[
-                { path:'/home', icon:'home', title:'首页'}
+                { path:'/home', icon:'home', title:'首页'},
+                {
+                    icon:'coffee', title:'商铺管理',
+                    children:[
+                        { path:'/shops/1', icon:'copy', title:'商铺管理1',},
+                        { path:'/shops/2', icon:'copy', title:'商铺管理2',}
+                    ]
+                },
+                {
+                    icon:'coffee', title:'商品管理',
+                    children:[
+                        { path:'/goods/1', icon:'copy', title:'商铺管理',}
+                    ]
+                }
             ],
         }
     }
@@ -37,14 +50,41 @@ export default class LeftBar extends Component {
                 </div>
                 <div className="lee-leftBar-bot">
                     <div className="lee-leftBar-list">
-                        <ul>
+                        <ul style={{paddingTop:25}}>
                             {links.map((item, index)=>{
-                                return <li className={pathname == item.path ? "active animated jackInTheBox":null} key={index}>
-                                            <Link to={item.path} onClick={()=>this.setState({active:index})}><Icon type={item.icon} /><span>{item.title}</span></Link>
-                                       </li>
+                                let html = [];
+                                if(item.children){
+                                    let itemHtml = item.children.map((itemC, indexC) =>{
+                                        return <li className={pathname == itemC.path ? "active animated jackInTheBox":null} key={indexC}>
+                                            <Link to={itemC.path} onClick={()=>this.setState({active:index})}>
+                                                <Icon type={itemC.icon} />
+                                                <span>{itemC.title}</span>
+                                            </Link>
+                                        </li>
+                                    })
+                                    html.push(<ul>
+                                                <li>
+                                                    <div className="links">
+                                                        <Icon type={item.icon} />
+                                                        <span>{item.title}</span>
+                                                    </div>
+                                                    <ul>
+                                                        {itemHtml}
+                                                    </ul>
+                                                </li>
+                                            </ul>);
+                                    return html;
+                                }else{
+                                    return <li className={pathname == item.path ? "active animated jackInTheBox":null} key={index}>
+                                        <Link to={item.path} onClick={()=>this.setState({active:index})}>
+                                            <Icon type={item.icon} />
+                                            <span>{item.title}</span>
+                                        </Link>
+                                    </li>
+                                }
                             })}
 
-                            <div className="libar" style={{transform: `translate3d(0px, ${active * 50}px, 0px)`}}></div>
+                            {/*<div className="libar" style={{transform: `translate3d(0px, ${active * 40}px, 0px)`}}></div>*/}
                         </ul>
                     </div>
                 </div>
