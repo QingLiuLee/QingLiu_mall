@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import { Table, Icon, Divider } from 'antd';
+import ComTable from '../common/ComTable';
 import SearchForm from '../search';
 
 /**
@@ -10,7 +11,22 @@ import SearchForm from '../search';
 export default class Profile extends Component{
     constructor(props){
         super(props);
-        this.state = {}
+        this.state = {
+            url:'/v1/merchant/staff/create/inner/info',
+            refresh: 0,//table改变时对应刷新变化值
+            postParam:{},
+            getParam:{}
+        }
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            refresh:1
+        },()=>{
+            this.setState({
+                refresh: 0
+            })
+        })
     }
 
     onSearch = (val)=>{
@@ -72,6 +88,14 @@ export default class Profile extends Component{
 
                 <div className="lee-home-table">
                     <Table columns={columns} dataSource={data} />
+
+                    <ComTable
+                        columns={columns}
+                        url={this.state.url}
+                        refresh={this.state.refresh}
+                        postParam={this.state.postParam}
+                        getParam={this.state.getParam}
+                    />
                 </div>
             </div>
         )

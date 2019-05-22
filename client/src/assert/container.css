@@ -424,7 +424,6 @@ textarea {
 .lee-admin .themsBlack .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsBlack .lee-home .lee-home-search {
   width: 100%;
@@ -711,7 +710,6 @@ textarea {
 .lee-admin .themsSVGL .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsSVGL .lee-home .lee-home-search {
   width: 100%;
@@ -976,7 +974,6 @@ textarea {
 .lee-admin .themsSVGLF .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsSVGLF .lee-home .lee-home-search {
   width: 100%;
@@ -1263,7 +1260,6 @@ textarea {
 .lee-admin .themsSVGLFZ .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsSVGLFZ .lee-home .lee-home-search {
   width: 100%;
@@ -1550,7 +1546,6 @@ textarea {
 .lee-admin .themsSVGF .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsSVGF .lee-home .lee-home-search {
   width: 100%;
@@ -1837,7 +1832,6 @@ textarea {
 .lee-admin .themsSVGFZ .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsSVGFZ .lee-home .lee-home-search {
   width: 100%;
@@ -2124,7 +2118,6 @@ textarea {
 .lee-admin .themsSVGGF .lee-home {
   width: 100%;
   padding: 15px;
-  background: #fff;
 }
 .lee-admin .themsSVGGF .lee-home .lee-home-search {
   width: 100%;
@@ -2186,4 +2179,156 @@ textarea {
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color: #bbb;
+}
+.ant-table {
+  /*table td:hover span*/
+}
+.ant-table .span {
+  /*max-width: 250px;*/
+  /*max-width: 21em;*/
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  display: block;
+}
+.ant-table td {
+  white-space: nowrap;
+}
+.ant-table tr {
+  color: rgba(0, 0, 0, 0.65);
+}
+.ant-table tr:nth-child(odd) {
+  background: #fefefe;
+}
+.ant-table tr:nth-child(even) {
+  background: #f7fcff;
+}
+.ant-table tr:hover {
+  background: #e7f7ff;
+}
+.ant-table tr.ant-table-row-selected {
+  background: #fafafa;
+}
+.ant-table > .ant-table-content > .ant-table-header > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-body > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-thead > tr,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-thead > tr {
+  background: #fafafa;
+}
+.ant-table > .ant-table-content > .ant-table-header > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-body > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-thead > tr > th,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-thead > tr > th {
+  padding: 0 7px;
+  line-height: 35px;
+  height: 35px;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  font-size: 12px;
+  background: #fafafa;
+  user-select: none;
+}
+.ant-table > .ant-table-content > .ant-table-header > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-body > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-thead > tr > th > div,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-thead > tr > th > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ant-table > .ant-table-content > .ant-table-header > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-body > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr.ant-table-row-selected > td,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr.ant-table-row-selected > td {
+  background: #abd3f9;
+}
+.ant-table > .ant-table-content > .ant-table-header > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-body > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-header > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-header > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td,
+.ant-table > .ant-table-content > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td {
+  padding: 0 7px;
+  line-height: 35px;
+  height: 35px;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  word-break: break-all;
+}
+/*table cell hide or show */
+.table-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 998;
+  height: 30px;
+}
+.table-btn .ant-btn i {
+  font-size: 14px;
+  margin-right: 3px;
+}
+.table-btn > span {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 0 !important;
+}
+.table-btn .table-checkbox {
+  min-width: 80px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.table-btn .table-checkbox .ant-checkbox-wrapper {
+  margin-left: 8px !important;
+}
+.table-btn #table-popover .ant-popover {
+  top: 30px !important;
+}
+.table-btn #table-popover .ant-popover-title {
+  display: none;
+}
+.table-btn #table-popover .ant-popover-placement-bottomRight > .ant-popover-content > .ant-popover-arrow {
+  right: 30px;
+}
+.table-btn #table-popover .ant-popover-content {
+  box-shadow: rgba(0, 0, 0, 0.5) -3px 4px 12px;
+}
+.table-btn #table-popover .ant-popover-inner-content {
+  min-width: 177px;
+  max-height: 308px;
+  overflow-y: auto;
+}
+/*table td:hover*/
+.table-hovers .ant-tooltip-arrow {
+  border-top-color: #fff !important;
+}
+.table-hovers .ant-tooltip-inner {
+  background-color: #fff;
+  color: #666;
+  padding: 10px;
+  white-space: normal;
+  max-width: 500px;
 }

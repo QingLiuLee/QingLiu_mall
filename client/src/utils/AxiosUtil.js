@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import axios from "axios";
-const prefix = '107.172.122.19:8000';
+const prefix = 'mall-api.qingliu.tk';
 const indexUrl = '/home/';
 const logoutPath = '/signOut';
 const maxTimeoutTime = 7200000; //30min
@@ -35,36 +35,7 @@ function query(url, params) {
 function post(url, datas, params,auth_token) {
     return new Promise((resolve, reject) => {
         axios.post(`${prefix}${url}`,datas,{params:params}).then(res => {
-            resolve(res.data)
-        }).catch(err => {
-            reject(err.data)
-        })
-    })
-}
-
-function insert(url, datas, params) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${prefix}${url}`, datas,{params:params}).then(res => {
-            resolve(res.data)
-        }).catch(err => {
-            reject(err.data)
-        })
-    })
-}
-
-function update(url, datas, params) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${prefix}${url}`, datas,{params:params}).then(res => {
-            resolve(res.data)
-        }).catch(err => {
-            reject(err.data)
-        })
-    })
-}
-
-function remove(url, datas, params) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${prefix}${url}`, datas,{params:params}).then(res => {
+            debugger
             resolve(res.data)
         }).catch(err => {
             reject(err.data)
@@ -106,4 +77,4 @@ function deletes(url, params){
     })
 }
 
-export default {query, post, insert, update, remove, requestAll, deletes}
+export {query, post, requestAll, deletes}

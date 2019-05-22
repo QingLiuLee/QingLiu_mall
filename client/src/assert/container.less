@@ -79,6 +79,13 @@ textarea {
   height: 100%;
 }
 
+@thColor:#fafafa;
+@tdCheckedColor:@thColor;
+@tdOldColor:#fefefe;
+@tdEvenColor:#f7fcff;
+@tdHoverColor:#e7f7ff;
+@tdFontColor:rgba(0,0,0,0.65);
+
 @color:#fff;
 @rightBgColor:#E9EEF1;
 
@@ -279,4 +286,146 @@ textarea {
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color:#bbb;
+}
+
+.ant-table{
+  /*table td:hover span*/
+  .span {
+    /*max-width: 250px;*/
+    /*max-width: 21em;*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    display: block;
+  }
+  td {
+    white-space: nowrap;
+  }
+  tr{
+    color: @tdFontColor;
+    &:nth-child(odd){
+      background: @tdOldColor;
+    }
+    &:nth-child(even){
+      background: @tdEvenColor;
+    }
+    &:hover{
+      background: @tdHoverColor;
+    }
+    &.ant-table-row-selected{
+      background: @tdCheckedColor;
+    }
+  }
+  & > .ant-table-content{
+    & > .ant-table-header,
+    & > .ant-table-body,
+    & > .ant-table-scroll > .ant-table-header,
+    & > .ant-table-scroll > .ant-table-body,
+    & > .ant-table-fixed-left > .ant-table-header,
+    & > .ant-table-fixed-right > .ant-table-header,
+    & > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner,
+    & > .ant-table-fixed-right > .ant-table-body-outer > .ant-table-body-inner{
+      & > table {
+        & > .ant-table-thead > tr {
+          background: #fafafa;
+          & > th {
+            padding: 0 7px;
+            line-height: 35px;
+            height: 35px;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: bold;
+            font-size: 12px;
+            background: #fafafa;
+            user-select: none;
+            &>div{
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+
+        & > .ant-table-tbody > tr {
+          &.ant-table-row-selected{
+            & > td {
+              background: #abd3f9;
+            }
+          }
+          & > td {
+            padding: 0 7px;
+            line-height: 35px;
+            height: 35px;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+/*table cell hide or show */
+.table-btn{
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 998;
+  height: 30px;
+  .ant-btn i{
+    font-size: 14px;
+    margin-right: 3px;
+  }
+  &>span {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 0 !important;
+  }
+  .table-checkbox{
+    min-width: 80px;
+    max-height: 300px;
+    overflow-y: auto;
+    .ant-checkbox-wrapper{
+      margin-left: 8px !important;
+    }
+  }
+  #table-popover{
+    .ant-popover{
+      top: 30px !important;
+    }
+    .ant-popover-title{
+      display: none;
+    }
+    .ant-popover-placement-bottomRight > .ant-popover-content > .ant-popover-arrow {
+      right: 30px;
+    }
+    .ant-popover-content {
+      box-shadow: rgba(0,0,0,.5) -3px 4px 12px;
+    }
+    .ant-popover-inner-content{
+      min-width: 177px;
+      max-height: 308px;
+      overflow-y: auto;
+    }
+  }
+}
+
+/*table td:hover*/
+.table-hovers{
+  .ant-tooltip-arrow{
+    border-top-color: @color !important;
+  }
+  .ant-tooltip-inner{
+    background-color: @color;
+    color: #666;
+    padding: 10px;
+    white-space: normal;
+    max-width: 500px;
+  }
 }

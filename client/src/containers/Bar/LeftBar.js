@@ -13,14 +13,15 @@ export default class LeftBar extends Component {
                 {
                     icon:'coffee', title:'商铺管理',
                     children:[
-                        { path:'/shops/1', icon:'copy', title:'商铺管理1',},
-                        { path:'/shops/2', icon:'copy', title:'商铺管理2',}
+                        { path:'/shops/1', icon:'copy', title:'用户管理',},
+                        { path:'/shops/2', icon:'copy', title:'商铺管理',}
                     ]
                 },
                 {
                     icon:'coffee', title:'商品管理',
                     children:[
-                        { path:'/goods/1', icon:'copy', title:'商铺管理',}
+                        { path:'/goods/1', icon:'copy', title:'品类管理',},
+                        { path:'/goods/2', icon:'copy', title:'商品关联',}
                     ]
                 }
             ],
@@ -54,15 +55,15 @@ export default class LeftBar extends Component {
                             {links.map((item, index)=>{
                                 let html = [];
                                 if(item.children){
-                                    let itemHtml = item.children.map((itemC, indexC) =>{
-                                        return <li className={pathname == itemC.path ? "active animated jackInTheBox":null} key={indexC}>
+                                    let itemHtml = item.children.map(itemC =>{
+                                        return <li className={pathname == itemC.path ? "active animated jackInTheBox":null} key={itemC.path}>
                                             <Link to={itemC.path} onClick={()=>this.setState({active:index})}>
                                                 <Icon type={itemC.icon} />
                                                 <span>{itemC.title}</span>
                                             </Link>
                                         </li>
                                     })
-                                    html.push(<ul>
+                                    html.push(<ul key={index}>
                                                 <li>
                                                     <div className="links">
                                                         <Icon type={item.icon} />
