@@ -62,14 +62,14 @@ async def update_org_info(request: Request, token: Token):
     params = request.json
     response_data = BaseResponse()
 
-    merchant_code = params.get('merchant_code', '')
-    merchant_name = params.get('merchant_name', '')
+    org_code = params.get('org_code', '')
+    org_name = params.get('org_name', '')
     explain = params.get('explain', '')
     img_list = params.get('img_list', [])
     sale_type = params.get('sale_type', [])
     owner_code = params.get('owner_code', '')
 
-    if not all([merchant_code, merchant_name, explain, img_list, sale_type, owner_code]):
+    if not all([org_code, org_name, explain, img_list, sale_type, owner_code]):
         return response_data.set_params_error()
 
     org_obj = Organization.init_org_info(**params)

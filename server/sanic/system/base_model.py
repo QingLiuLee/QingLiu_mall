@@ -84,9 +84,9 @@ class IBaseModel(object):
 
         return self.__collection.insert_one(model_info)
 
-    def get_info_by_last_id_and_page_size(self, last_id, page_size=10):
+    def get_info_list_by_last_limit(self, condition=None, projection=None, limit=10):
 
-        return self.__collection.find({'_id': {'$gt': ObjectId(last_id)}}).limit(page_size)
+        return self.__collection.find(filter=condition, projection=projection).limit(limit).to_list(length=limit)
 
     def delete_info_by_id(self, model_id=None):
 
@@ -125,3 +125,8 @@ class IBaseModel(object):
     @try_except
     def find(self, condition={}, projection={}, limit=10):
         return self.__collection.find(filter=condition, projection=projection).to_list(length=limit)
+
+    @try_except
+    def get_info_count_by_filter(self, condition):
+        """根据条件获取总数量"""
+        return self.__collection.count_documents(filter=condition)
