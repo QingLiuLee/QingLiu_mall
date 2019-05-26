@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import axios from "axios";
-const prefix = 'mall-api.qingliu.tk';
+const prefix = '/api';
 const indexUrl = '/home/';
 const logoutPath = '/signOut';
 const maxTimeoutTime = 7200000; //30min
@@ -8,7 +8,6 @@ const maxTimeoutTime = 7200000; //30min
 axios.defaults.withCredentials = true;
 axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';//Ajax get请求标识
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';//Ajax post请求标识
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';//POST请求参数获取不到的问题
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 axios.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';//Ajax put请求标识
 axios.defaults.headers.delete['X-Requested-With'] = 'XMLHttpRequest';//Ajax delete请求标识
@@ -32,7 +31,7 @@ function query(url, params) {
 }
 
 //post请求会有post参数也可能有get参数
-function post(url, datas, params,auth_token) {
+function post(url, datas, params) {
     return new Promise((resolve, reject) => {
         axios.post(`${prefix}${url}`,datas,{params:params}).then(res => {
             debugger

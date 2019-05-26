@@ -146,6 +146,15 @@ module.exports = {
         stats: {
             modules: false,
             chunks: false
+        },
+        proxy: {
+            '/api': {
+                // target: 'https://mall-api.qingliu.tk',
+                target: 'https://v1.itooi.cn',
+                pathRewrite: {'^/api' : ''},
+                changeOrigin: true,     // target是域名的话，需要这个参数，
+                secure: false,          // 设置支持https协议的代理
+            },
         }
-    },
+    }
 };

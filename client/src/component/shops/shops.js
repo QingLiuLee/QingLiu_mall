@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { Table, Icon, Divider } from 'antd';
 import ComTable from '../common/ComTable';
 import SearchForm from '../search';
+import {query} from "../../utils/AxiosUtil";
 
 /**
  * @author hui
@@ -12,19 +13,23 @@ export default class Profile extends Component{
     constructor(props){
         super(props);
         this.state = {
-            url:'/v1/merchant/staff/create/inner/info',
+            url:'/v1/merchant/staff/create/administrators/info',
+            url2:'/tencent/artist/list?sexId=-100&areaId=-100&genre=-100&index=-100&page=0&pageSize=10',
             refresh: 0,//table改变时对应刷新变化值
-            postParam:{},
-            getParam:{}
+            postParam:{
+                "nickname":"11",
+                "password":"111",
+                "mobile":"111"
+            },
+            getParam:{},
+            dataSource:[]
         }
     }
 
     componentDidMount = () => {
-        this.setState({
-            refresh:1
-        },()=>{
+        query(this.state.url2, null).then(res => {
             this.setState({
-                refresh: 0
+                dataSource: res.data
             })
         })
     }
@@ -87,11 +92,11 @@ export default class Profile extends Component{
                 </div>
 
                 <div className="lee-home-table">
-                    <Table columns={columns} dataSource={data} />
+                    <Table columns={columns} dataSource={this.state.dataSource} />
 
                     <ComTable
                         columns={columns}
-                        url={this.state.url}
+                        url={this.state.url2}
                         refresh={this.state.refresh}
                         postParam={this.state.postParam}
                         getParam={this.state.getParam}
