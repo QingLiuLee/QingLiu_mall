@@ -2,6 +2,8 @@
 # @Time     : 4/30/19 6:12 PM
 # @Author   : Lee才晓
 # @Describe :
+from datetime import datetime
+
 from bson import json_util
 from sanic import Blueprint
 from sanic.request import Request
@@ -94,9 +96,9 @@ async def create_inner_info(request: Request, token: Token):
     nickname = params.get('nickname', '')
     password = params.get('password', '')
     role_code = params.get('role_code', '')
-    merchant_code = params.get('merchant_code', '')
+    org_code = params.get('org_code', '')
 
-    if not all([mobile, nickname, password, role_code, merchant_code]):
+    if not all([mobile, nickname, password, role_code, org_code]):
         return response_data.set_params_error()
 
     staff = Staff.init_staff_info(**params)
@@ -107,7 +109,34 @@ async def create_inner_info(request: Request, token: Token):
     staff_code = staff.create_admin_info()
 
     if staff_code:
-        await staff.set_org_roles_by_staff_code(org_code=merchant_code, role_code=role_code)
+        await staff.set_org_roles_by_staff_code(org_code=org_code, role_code=role_code)
         return response_data.set_response_success()
 
     return response_data.set_system_error()
+
+
+@blueprint.route(uri='/get/inner/list', methods=['POST'])
+@response_exception
+async def get_inner_list(request: Request, token: Token):
+    """
+    获取内部员工列表
+    :param request:
+    :param token:
+    :return:
+    """
+    params = request.json
+    response_data = BaseResponse()
+
+    org_code = params.get('org_code', '')
+    if not all([org_code]):
+        return response_data.set_params_error()
+
+    staff = Staff()
+    staff_list = await staff.get_staff_list_by_org_code(org_code=org_code)
+    total_count = await staff.get_all_staff_count_by_org_code(org_code=org_code)
+
+    for staff in staff_list:
+        staff['_id'] = str(staff['_id'])
+        staff['create_time'] = staff['create_time'].strftime('%Y-%m-%d %H:%M:%S')
+
+    return response_data.set_response_success(data={"list": staff_list, "count": total_count})

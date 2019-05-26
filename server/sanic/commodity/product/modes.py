@@ -15,7 +15,7 @@ class Product(IBaseModel):
     __slots__ = {
         'product_code',
         'category_code',
-        'merchant_code',
+        'org_code',
         'product_name',
         'img_list',
         'explain',
@@ -29,7 +29,7 @@ class Product(IBaseModel):
         self.product_code = ''
         self.category_code = ''
         self.product_name = ''
-        self.merchant_code = ''
+        self.org_code = ''
         self.img_list = []
         self.explain = ''
         self.sale_price = ''
@@ -43,7 +43,7 @@ class Product(IBaseModel):
         product.product_code = kwargs.get('product_code', '')
         product.category_code = kwargs.get('category_code', '')
         product.product_name = kwargs.get('product_name', '')
-        product.merchant_code = kwargs.get('merchant_code', '')
+        product.org_code = kwargs.get('org_code', '')
         product.img_list = kwargs.get('img_list', [])
         product.explain = kwargs.get('explain', '')
         product.sale_price = kwargs.get('sale_price', '')
@@ -56,7 +56,7 @@ class Product(IBaseModel):
         创建商品信息
         :return:
         """
-        if all([self.category_code, self.product_name, self.merchant_code, self.sale_price]):
+        if all([self.category_code, self.product_name, self.org_code, self.sale_price]):
             self.product_code = make_code_or_id('P')
             self.create_time = datetime.datetime.now()
             self.create_info()
@@ -64,12 +64,12 @@ class Product(IBaseModel):
         return False
 
     @try_except
-    def find_info_by_merchant_code_and_product_name(self):
+    def find_info_by_org_code_and_product_name(self):
         """
         根据商铺编码与产品名称查找产品信息
         :return:
         """
-        return self.find_one(condition={'merchant_code': self.merchant_code, 'product_name': self.product_name})
+        return self.find_one(condition={'org_code': self.org_code, 'product_name': self.product_name})
 
     @try_except
     def update_info_by_product_code(self):

@@ -5,6 +5,8 @@
 import datetime
 import hashlib
 
+from bson import ObjectId
+
 from system.base_model import IBaseModel
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
@@ -96,3 +98,24 @@ class Staff(IBaseModel):
     def get_staff_info_by_staff_code(self):
         """根据员工编码获取员工信息"""
         return self.find_one(condition={'staff_code': self.staff_code})
+
+    @try_except
+    def get_staff_list_by_org_code(self, org_code, last_id=None, limit=10):
+        """ 根据商家编码获取员工列表"""
+
+        condition = {'$and': [{'roles.org_code': org_code}]}
+
+        if last_id:
+            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+
+        return self.get_info_list_by_last_limit(condition=condition, projection={'password': 0}, limit=limit)
+
+    @try_except
+    def get_all_staff_count_by_org_code(self, org_code, role_type=[]):
+        """根据商家编码获取员工数量"""
+
+        condition = {'$and': [{'roles.org_code': org_code}]}
+        if role_type:
+            condition['$and'].append({'roles.role_code': {'$in': role_type}})
+
+        return self.get_info_count_by_filter(condition=condition)

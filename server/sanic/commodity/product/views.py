@@ -22,16 +22,16 @@ async def create_product_info(request: Request, token: Token):
 
     category_code = params.get('category_code', '')
     product_name = params.get('product_name', '')
-    merchant_code = params.get('merchant_code', '')
+    org_code = params.get('org_code', '')
     img_list = params.get('img_list', '')
     explain = params.get('explain', '')
     sale_price = params.get('sale_price', '')
 
-    if not all([category_code, product_name, merchant_code, img_list, explain, sale_price]):
+    if not all([category_code, product_name, org_code, img_list, explain, sale_price]):
         return response_data.set_params_error()
 
     product = Product.init_product_info(**params)
-    is_exists = await product.find_info_by_merchant_code_and_product_name()
+    is_exists = await product.find_info_by_org_code_and_product_name()
     if is_exists:
         return response_data.set_exist_error()
 
@@ -48,14 +48,14 @@ async def create_update_info(request: Request, token: Token):
     params = request.json
     response_data = BaseResponse()
 
-    merchant_code = params.get('merchant_code', '')
+    org_code = params.get('org_code', '')
     product_code = params.get('product_code', '')
     product_name = params.get('product_name', '')
     img_list = params.get('img_list', '')
     explain = params.get('explain', '')
     sale_price = params.get('sale_price', '')
 
-    if not all([merchant_code, product_code, product_name, img_list, explain, sale_price]):
+    if not all([org_code, product_code, product_name, img_list, explain, sale_price]):
         return response_data.set_params_error()
 
     product = Product.init_product_info(**params)
