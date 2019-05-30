@@ -147,10 +147,12 @@ module.exports = {
             modules: false,
             chunks: false
         },
+        // publicPath: "/",
+        // host: '0.0.0.0',
         proxy: {
             '/api': {
-                // target: 'https://mall-api.qingliu.tk',
-                target: 'https://v1.itooi.cn',
+                target: 'https://mall-api.qingliu.tk',
+                // target: 'https://v1.itooi.cn',
                 pathRewrite: {'^/api' : ''},
                 changeOrigin: true,     // target是域名的话，需要这个参数，
                 secure: false,          // 设置支持https协议的代理

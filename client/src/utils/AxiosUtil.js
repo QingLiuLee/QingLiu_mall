@@ -34,7 +34,6 @@ function query(url, params) {
 function post(url, datas, params) {
     return new Promise((resolve, reject) => {
         axios.post(`${prefix}${url}`,datas,{params:params}).then(res => {
-            debugger
             resolve(res.data)
         }).catch(err => {
             reject(err.data)

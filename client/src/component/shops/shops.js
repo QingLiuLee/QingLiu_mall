@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Table, Icon, Divider } from 'antd';
 import ComTable from '../common/ComTable';
 import SearchForm from '../search';
-import {query} from "../../utils/AxiosUtil";
+import {post} from "../../utils/AxiosUtil";
 
 /**
  * @author hui
@@ -17,9 +17,9 @@ export default class Profile extends Component{
             url2:'/tencent/artist/list?sexId=-100&areaId=-100&genre=-100&index=-100&page=0&pageSize=10',
             refresh: 0,//table改变时对应刷新变化值
             postParam:{
-                "nickname":"11",
-                "password":"111",
-                "mobile":"111"
+                "nickname":"7",
+                "password":"7",
+                "mobile":"7"
             },
             getParam:{},
             dataSource:[]
@@ -27,7 +27,7 @@ export default class Profile extends Component{
     }
 
     componentDidMount = () => {
-        query(this.state.url2, null).then(res => {
+        post(this.state.url,this.state.postParam, null).then(res => {
             this.setState({
                 dataSource: res.data
             })
