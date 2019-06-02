@@ -36,9 +36,9 @@ async def create_category_info(request: Request, token: Token):
     category_code = category.create_category_info()
 
     if category_code:
-        return response_data.set_response_success(msg='品类创建成功')
+        return response_data.set_response_success(msg='{0} 品类创建成功'.format(category.category_name))
 
-    return response_data.set_system_error(message='品类创建失败')
+    return response_data.set_system_error(message='{0} 品类创建失败'.format(category.category_name))
 
 
 @blueprint.route(uri='/update/info', methods=['POST'])
@@ -86,4 +86,21 @@ async def get_category_info_list(request: Request, token: Token):
         return response_data.set_params_error()
 
     category_list = await category.find_category_list_by_org_code()
+    return response_data.set_response_success(data=category_list)
+
+
+@blueprint.route(uri='/delete/info', methods=['POST'])
+@response_exception
+async def delete_category_info(request: Request, token: Token):
+    """删除商家的品类信息"""
+
+    params = request.json
+    response_data = BaseResponse()
+
+    category = Category.init_category_info(**params)
+    if not category or not category.org_code:
+        return response_data.set_params_error()
+
+    category_list = await category.delete_category_by_org_code_and_category_code_list(
+        category_code_list=params['category_code_list'])
     return response_data.set_response_success(data=category_list)
