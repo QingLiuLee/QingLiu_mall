@@ -130,3 +130,7 @@ class IBaseModel(object):
     def get_info_count_by_filter(self, condition):
         """根据条件获取总数量"""
         return self.__collection.count_documents(filter=condition)
+
+    @try_except
+    def delete_many_by_condition(self, condition):
+        return self.__collection.delete_many(filter=condition)

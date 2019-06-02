@@ -50,7 +50,7 @@ async def create_org_info(request: Request, token: Token):
 
         await staff.set_org_roles_by_staff_code(org_code=org_code, role_code=ROLES['1'])
 
-        return response_data.set_response_success(msg="{0} 商铺创建成功".format(org_obj.org_name))
+        return response_data.set_response_success(msg="{0} 商铺创建成功".format(org_obj.org_name), data=org_obj.org_code)
     else:
         return response_data.set_system_error()
 

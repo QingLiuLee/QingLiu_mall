@@ -82,3 +82,8 @@ class Product(IBaseModel):
                                                           'img_list': self.img_list,
                                                           'explain': self.explain,
                                                           'sale_price': self.sale_price}})
+
+    @try_except
+    def delete_info_by_product_code(self, product_code_list):
+        """根据产品ID删除产品"""
+        return self.delete_many_by_condition(condition={'product_code': {'$in': product_code_list}})

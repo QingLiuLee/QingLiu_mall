@@ -44,7 +44,7 @@ async def create_product_info(request: Request, token: Token):
 
 @blueprint.route(uri='/update/info', methods=['POST'])
 @response_exception
-async def create_update_info(request: Request, token: Token):
+async def update_product_info(request: Request, token: Token):
     params = request.json
     response_data = BaseResponse()
 
@@ -65,3 +65,19 @@ async def create_update_info(request: Request, token: Token):
         return response_data.set_response_success()
 
     return response_data.set_system_error(message='更新失败')
+
+
+@blueprint.route(uri='/delete/info', methods=['POST'])
+@response_exception
+async def delete_product_info(request: Request, token: Token):
+    """删除产品信息"""
+
+    params = request.json
+    response_data = BaseResponse()
+
+    product = Product.init_product_info(**params)
+    if not product or product.org_code:
+        return response_data.set_params_error()
+
+    product_list = await product.delete_info_by_product_code(product_code_list=params['product_code_list'])
+    return response_data.set_response_success(data=product_list)

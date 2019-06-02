@@ -7,9 +7,39 @@ import hashlib
 
 from bson import ObjectId
 
-from system.base_model import IBaseModel
+from system.base_model import IBaseModel, IEmbedded
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
+
+
+class Roles(IEmbedded):
+    """角色信息"""
+
+    __slots__ = {
+        'role_code',
+        'org_code',
+        'start_time',
+        'end_time',
+    }
+
+    @try_except
+    def __init__(self):
+        super(Roles, self).__init__()
+        self.role_code = ''
+        self.org_code = ''
+        self.start_time = None
+        self.end_time = None
+
+    @classmethod
+    @try_except
+    def ini_roles_data(cls, **kwargs):
+        role = Roles()
+        role.role_code = kwargs.get('role_code', '')
+        role.org_code = kwargs.get('org_code', '')
+        role.start_time = kwargs.get('start_time', None)
+        role.end_time = kwargs.get('end_time', None)
+
+        return role
 
 
 class Staff(IBaseModel):
@@ -91,8 +121,11 @@ class Staff(IBaseModel):
         更新角色列表
         :return:
         """
+
+        role = Roles.ini_roles_data(org_code=org_code, role_code=role_code, start_time=datetime.datetime.now())
+
         return self.update_one_by_custom(condition={'staff_code': self.staff_code}, update={
-            '$push': {'roles': {'org_code': org_code, 'role_code': role_code}}})
+            '$push': {'roles': role.get_json_by_obj()}})
 
     @try_except
     def get_staff_info_by_staff_code(self):

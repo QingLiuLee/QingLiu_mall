@@ -2,8 +2,6 @@
 # @Time     : 4/30/19 6:12 PM
 # @Author   : Lee才晓
 # @Describe :
-from datetime import datetime
-
 from bson import json_util
 from sanic import Blueprint
 from sanic.request import Request
