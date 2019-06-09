@@ -5,6 +5,8 @@
 from sanic.exceptions import abort
 from sanic_jwt_extended import jwt_required
 
+from system.response import ServerErrorCode
+
 
 def try_except(func):
     def dec(*args, **kwargs):
@@ -12,16 +14,18 @@ def try_except(func):
             return func(*args, **kwargs)
         except Exception as e:
             raise e
-
     return dec
 
 
 def response_exception(func):
     @jwt_required
-    def wrapper(request, *args, **kwargs):
+    async def wrapper(request, *args, **kwargs):
         try:
-            return func(request, *args, **kwargs)
+            return await func(request, *args, **kwargs)
         except Exception as e:
-            return abort(status_code=500, message=e)
+            if hasattr(e, 'status_code'):
+                raise e
+            else:
+                abort(status_code=ServerErrorCode, message=e)
 
     return wrapper
