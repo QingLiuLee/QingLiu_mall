@@ -3,9 +3,6 @@
 # @Author   : Lee才晓
 # @Describe :
 from abc import ABCMeta
-
-from bson import ObjectId
-
 from system.database import MotorBase
 from utils.decorator.exception import try_except
 

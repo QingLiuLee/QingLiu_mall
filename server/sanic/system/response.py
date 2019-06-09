@@ -4,77 +4,36 @@
 # @Author  : Lee才晓
 # @File    : response
 # @Function:
-from sanic.exceptions import abort, InvalidUsage, ServerError
-from sanic.response import json
+from sanic.exceptions import SanicException, add_status_code
+from sanic.response import json, html
 
 NormalCode = 200
+JsonSuccessCode = 207
+HtmlSuccessCode = 208
+
+NotFoundCode = 404
 
 ParamsErrorCode = 400  # 请求参数错误
 UnAuthorizedCode = 401  # 身份认证过期
 TimeOutCode = 408  # 连接超时
 
-SystemErrorCode = 500  # 系统内部错误
+ServerErrorCode = 500  # 系统内部错误
+ExistsErrorCode = 555  # 数据重复错误
+NoExistsErrorCode = 556  # 数据不存在错误
 
 
-class BaseResponse(object):
-    """
-    响应类
-    """
-    __slots__ = {
-        'code', 'data', 'msg',
-    }
+class BaseResponse(SanicException):
 
-    def __init__(self, code=SystemErrorCode, data=None, msg='系统异常', ):
-        self.code = code
-        self.data = data
-        self.msg = msg
+    def __init__(self, message, status_code):
+        self.message = message
+        self.status_code = status_code
 
-    def set_response_data(self, code=None, data=None, msg='', ):
-        self.code = code
-        self.data = data
-        self.msg = msg
+    def response_json(self, message, data):
+        return json(status=self.status_code, body={'msg': message, 'data': data})
 
-    def set_response_success(self, data='', msg='响应成功'):
-        """
-        响应成功
-        :return:
-        """
-        return json(body={'code': NormalCode, 'msg': msg, 'data': data})
-
-    def set_params_error(self, message='请求参数错误'):
-        """
-        请求参数错误
-        :return:
-        """
-        abort(status_code=InvalidUsage.status_code, message=str(message))
-
-    def set_system_error(self, message='系统内部错误'):
-        """
-        系统内部错误
-        :return:
-        """
-        abort(status_code=ServerError.status_code, message=str(message))
-
-    def set_exist_error(self, message='数据已存在'):
-        """
-        数据存在错误
-        :return:
-        """
-        abort(status_code=InvalidUsage.status_code, message=str(message))
-
-    def set_no_exist_error(self, message='数据不存在'):
-        """
-        数据不存在错误
-        :return:
-        """
-        abort(status_code=InvalidUsage.status_code, message=str(message))
-
-    def identity_authentication_error(self, message='身份认证错误'):
-        """
-        身份认证错误
-        :return:
-        """
-        abort(status_code=InvalidUsage.status_code, message=str(message))
+    def response_html(self):
+        with open(self.message) as f:
+            return html(status=self.status_code, body=f.read())
 
     def get_dict(self):
         data = {}
@@ -83,3 +42,53 @@ class BaseResponse(object):
                 data[name] = getattr(self, name)
 
         return data
+
+
+@add_status_code(JsonSuccessCode)
+class JsonResponse(BaseResponse):
+
+    def __init__(self, message, status_code):
+        super(JsonResponse, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(HtmlSuccessCode)
+class HtmlResponse(BaseResponse):
+    def __init__(self, message, status_code):
+        super(HtmlResponse, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(NotFoundCode)
+class NotFound(BaseResponse):
+
+    def __init__(self, message, status_code):
+        super(NotFound, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(ServerErrorCode)
+class ServerError(BaseResponse):
+    def __init__(self, message, status_code):
+        super(ServerError, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(UnAuthorizedCode)
+class Unauthorized(BaseResponse):
+    def __init__(self, message, status_code):
+        super(Unauthorized, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(ParamsErrorCode)
+class InvalidUsage(BaseResponse):
+    def __init__(self, message, status_code):
+        super(InvalidUsage, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(ExistsErrorCode)
+class DataExistsError(BaseResponse):
+    def __init__(self, message, status_code):
+        super(DataExistsError, self).__init__(message=message, status_code=status_code)
+
+
+@add_status_code(NoExistsErrorCode)
+class NoExistsError(BaseResponse):
+    def __init__(self, message, status_code):
+        super(NoExistsError, self).__init__(message=message, status_code=status_code)

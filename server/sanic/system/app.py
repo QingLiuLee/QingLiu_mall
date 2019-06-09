@@ -4,8 +4,6 @@
 # @Describe :
 
 from sanic import Sanic
-from sanic.exceptions import NotFound, ServerError, Unauthorized, InvalidUsage
-from sanic.response import json
 from sanic_cors import CORS
 from sanic_jwt_extended import JWTManager
 
@@ -13,6 +11,7 @@ import commodity
 import consumer
 import merchant
 from system import base_config
+from system.response import *
 
 app = Sanic()
 
@@ -59,24 +58,40 @@ async def after_server_stop(app, loop):
 
 
 @app.exception(NotFound)
-def not_found(request, exception):
-    return json(body={'code': NotFound.status_code, 'msg': '{0} 请求函数找不到'.format(str(request))},
-                status=NotFound.status_code)
+def not_found(request, response):
+    return response.response_json(message='请求地址错误', data=request.url)
 
 
 @app.exception(ServerError)
-def server_error(request, exception):
-    return json(body={'code': ServerError.status_code, 'msg': '{0} 请求函数出现异常 {1}'.format(str(request), str(exception))},
-                status=ServerError.status_code)
+def server_error(request, response):
+    return response.response_json(message='服务器异常', data=response.message)
 
 
 @app.exception(Unauthorized)
-def unauthorized(request, exception):
-    return json(body={'code': Unauthorized.status_code, 'msg': '{0} 请求函数token 已过期'.format(str(request))},
-                status=Unauthorized.status_code)
+def unauthorized(request, response):
+    return response.response_json(message='请求参数已过期', data='Authorization-token')
 
 
 @app.exception(InvalidUsage)
-def invalid_usage(request, exception):
-    return json(body={'code': InvalidUsage.status_code, 'msg': '{0} 请求函数出现错误 {1}'.format(str(request), str(exception))},
-                status=InvalidUsage.status_code)
+def invalid_usage(request, response):
+    return response.response_json(message='请求参数错误', data=response.message)
+
+
+@app.exception(DataExistsError)
+def data_exists_error(request, response):
+    return response.response_json(message='数据重复错误', data=response.message)
+
+
+@app.exception(NoExistsError)
+def no_exists_error(request, response):
+    return response.response_json(message='数据不存在', data=response.message)
+
+
+@app.exception(JsonResponse)
+def json_response(request, response):
+    return response.response_json(message='请求成功', data=response.message)
+
+
+@app.exception(HtmlResponse)
+def html_response(request, response):
+    return response.response_html()

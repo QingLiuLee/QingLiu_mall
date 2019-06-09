@@ -3,11 +3,12 @@
 # @Author   : Lee才晓
 # @Describe :
 from sanic import Blueprint
+from sanic.exceptions import abort
 from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
 from commodity.category.models import Category
-from system.response import BaseResponse
+from system.response import *
 from utils.decorator.exception import response_exception
 
 blueprint = Blueprint(name="category", url_prefix="/category", version=1)
@@ -23,22 +24,20 @@ async def create_category_info(request: Request, token: Token):
          org_code
     """
     params = request.json
-    response_data = BaseResponse()
 
     category = Category.init_category_info(**params)
     if not category.check_params_is_none(['category_code', 'create_time']):
-        return response_data.set_params_error()
+        abort(status_code=ParamsErrorCode)
 
     is_exists = await category.find_category_by_org_code_and_category_name()
     if is_exists:
-        return response_data.set_exist_error()
+        abort(status_code=ExistsErrorCode, message='商家品类信息已存在')
 
     category_code = category.create_category_info()
 
     if category_code:
-        return response_data.set_response_success(msg='{0} 品类创建成功'.format(category.category_name))
-
-    return response_data.set_system_error(message='{0} 品类创建失败'.format(category.category_name))
+        abort(status_code=JsonSuccessCode, message=category_code)
+    abort(status_code=ServerErrorCode, message='商家品类创建失败')
 
 
 @blueprint.route(uri='/update/info', methods=['POST'])
@@ -52,22 +51,21 @@ async def update_category_info(request: Request, token: Token):
          staff_code
     """
     params = request.json
-    response_data = BaseResponse()
 
     category = Category.init_category_info(**params)
     if not all([category, category.check_params_is_none([category.create_time])]):
-        return response_data.set_params_error()
+        abort(status_code=ParamsErrorCode)
 
     is_exists = category.find_category_by_org_code_and_category_name()
     if is_exists:
-        return response_data.set_exist_error()
+        abort(status_code=ExistsErrorCode, message='品类信息已存在')
 
     result = await category.update_category_info()
 
     if result.modified_count or result.matched_count:
-        return response_data.set_response_success(msg='品类更新成功')
+        abort(status_code=JsonSuccessCode, message='品类更新成功')
 
-    return response_data.set_system_error(message='品类更新失败')
+    abort(status_code=ServerErrorCode, message='品类更新失败')
 
 
 @blueprint.route(uri='/get/info/list', methods=['POST'])
@@ -79,14 +77,13 @@ async def get_category_info_list(request: Request, token: Token):
     """
 
     params = request.json
-    response_data = BaseResponse()
 
     category = Category.init_category_info(**params)
     if not category or not category.org_code:
-        return response_data.set_params_error()
+        abort(status_code=ParamsErrorCode)
 
     category_list = await category.find_category_list_by_org_code()
-    return response_data.set_response_success(data=category_list)
+    abort(status_code=JsonSuccessCode, message=category_list)
 
 
 @blueprint.route(uri='/delete/info', methods=['POST'])
@@ -95,12 +92,11 @@ async def delete_category_info(request: Request, token: Token):
     """删除商家的品类信息"""
 
     params = request.json
-    response_data = BaseResponse()
 
     category = Category.init_category_info(**params)
     if not category or not category.org_code:
-        return response_data.set_params_error()
+        abort(status_code=ParamsErrorCode)
 
     category_list = await category.delete_category_by_org_code_and_category_code_list(
         category_code_list=params['category_code_list'])
-    return response_data.set_response_success(data=category_list)
+    abort(status_code=JsonSuccessCode, message=category_list)
