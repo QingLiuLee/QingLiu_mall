@@ -8,17 +8,19 @@ const maxTimeoutTime = 7200000; //30min
 axios.defaults.withCredentials = true;
 axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';//Ajax get请求标识
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';//Ajax post请求标识
-axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
+// axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 axios.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';//Ajax put请求标识
 axios.defaults.headers.delete['X-Requested-With'] = 'XMLHttpRequest';//Ajax delete请求标识
 
 //添加token
-let token = null;
-let storage = window.localStorage;
+let token = '123123131';
+axios.defaults.headers.common['Authorization-token'] = token;
+
+/*let storage = window.localStorage;
 if(storage.getItem("auth_token")){
     token = storage.getItem("auth_token");
-    axios.defaults.headers.common['Authentication-Token'] = token;
-}
+    axios.defaults.headers.common['Authorization-token'] = token;
+}*/
 
 function query(url, params) {
     return new Promise((resolve, reject) => {

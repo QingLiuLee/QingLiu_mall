@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
-import { Table, Icon, Divider } from 'antd';
+import { Button } from 'antd';
 import ComTable from '../common/ComTable';
+import ComModal from '../common/ComModal';
 import SearchForm from '../search';
 import {post} from "../../utils/AxiosUtil";
 
@@ -13,13 +14,15 @@ export default class Profile extends Component{
     constructor(props){
         super(props);
         this.state = {
-            url:'/v1/merchant/staff/create/administrators/info',
-            url2:'/tencent/artist/list?sexId=-100&areaId=-100&genre=-100&index=-100&page=0&pageSize=10',
+            shopUrl:'/v1/merchant/organization/create/info',
+            addShopUrl: '/v1/merchant/organization/create/info',
             refresh: 0,//table改变时对应刷新变化值
             postParam:{
-                "nickname":"7",
-                "password":"7",
-                "mobile":"7"
+                "org_name":"",
+                "explain":"",
+                "img_list":["图片地址1","图片地址2"],
+                "sale_type":["美妆","家电"],
+                "owner_code":"登录获取到的staff_code"
             },
             getParam:{},
             dataSource:[]
@@ -39,67 +42,64 @@ export default class Profile extends Component{
     }
 
     render (){
-        const columns = [{
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: text => <a href="#">{text}</a>,
-        }, {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        }, {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        }, {
-            title: 'Action',
-            key: 'action',
-            render: (text, record) => (
-                <span>
-                  <a href="#">Action 一 {record.name}</a>
-                  <Divider type="vertical" />
-                  <a href="#">Delete</a>
-                  <Divider type="vertical" />
-                  <a href="#" className="ant-dropdown-link">
-                    More actions <Icon type="down" />
-                  </a>
-                </span>
-            ),
-        }];
+        const columns = [
+            {
+                title: '商铺名称',
+                dataIndex: 'org_name',
+                key: 'org_name',
+                render: text => <a href="#">{text}</a>,
+            },
+            {
+                title: '商铺简介',
+                dataIndex: 'explain',
+                key: 'explain',
+            },
+            {
+                title: '商铺图片',
+                dataIndex: 'img_list',
+                key: 'img_list',
+            },
+            {
+                title: '售货类型',
+                dataIndex: 'sale_type',
+                key: 'sale_type'
+            },
+            {
+                title: '商铺管理员编码',
+                dataIndex: 'owner_code',
+                key: 'owner_code',
+            }
+        ];
 
-        const data = [{
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-        }, {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        }, {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-        }];
+        const { shopUrl, refresh, postParam, getParam, visible } = this.state
 
         return (
             <div className="lee-home">
+                {/*创建商铺*/}
+                <ComModal
+                    visible={visible}
+                    onCancel={()=>this.setState({auditVisible:false})}
+                    onSubmit={this.auditConfirm}
+                    title='审核'
+                >
+                    <p>aaaaaaaaaaaa</p>
+                </ComModal>
+
                 <div className="lee-home-search">
                     <SearchForm onSearch={this.onSearch}/>
                 </div>
 
-                <div className="lee-home-table">
-                    <Table columns={columns} dataSource={this.state.dataSource} />
+                <div className="lee-home-btn">
+                    <Button>创建商铺</Button>
+                </div>
 
+                <div className="lee-home-table">
                     <ComTable
                         columns={columns}
-                        url={this.state.url2}
-                        refresh={this.state.refresh}
-                        postParam={this.state.postParam}
-                        getParam={this.state.getParam}
+                        url={shopUrl}
+                        refresh={refresh}
+                        postParam={postParam}
+                        getParam={getParam}
                     />
                 </div>
             </div>
