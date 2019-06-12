@@ -5,6 +5,8 @@ import { Link,withRouter } from 'react-router-dom';
 import LeftBar from '../Bar/LeftBar';
 import RightBar from '../Bar/RightBar';
 import adminImg from '../../assert/images/admin.jpg';
+import Login from '../login/login';
+import Register from '../login/register';
 
 class App extends Component {
     constructor(props) {
@@ -27,6 +29,8 @@ class App extends Component {
                 {color: 'themsSVGFZ', name: '粉紫色'},
                 {color: 'themsSVGGF', name: '橘粉色'},
             ],
+            showLogin:false,
+            showRegister:false,
         };
     }
 
@@ -37,11 +41,20 @@ class App extends Component {
         this.setState({skinColor: item.color});
 	}
 
+    //隐藏显示登录 | 注册
+    toggle = (flag,flag2)=>{
+        this.setState({
+            showLogin:flag,
+            showRegister:flag2
+        });
+    }
+
 	render() {
         const Search = Input.Search;
         const {
         	avatarDefault, search,toggle,
             skinColor, skinNormal, skinSvg,
+            showLogin, showRegister
         } = this.state;
 
         const menu  =
@@ -61,7 +74,7 @@ class App extends Component {
         const logins = (
             <Menu>
                 <Menu.Item>
-                    <div className="login-in"  onClick={()=>this.props.history.push('/login')}>
+                    <div className="login-in"  onClick={()=>this.toggle(true,false)}>
                         <Icon type="smile" />登录
                     </div>
                 </Menu.Item>
@@ -70,6 +83,17 @@ class App extends Component {
 		return(
 			<div className="lee-admin" style={{position:'absolute'}}>
 				<div className={`thems ${skinColor} ${toggle ? 'lee-in':''}`}>
+
+                    {/*login*/}
+                    {this.state.showLogin ? <Login
+                        toggleLogin={this.toggle}
+                    /> : null}
+
+                    {/*login*/}
+                    {this.state.showRegister ? <Register
+                        toggleRegister={this.toggle}
+                    /> : null}
+
                     <LeftBar toggle={toggle}/>
 					<div className="lee-rightBar">
 						<div className="lee-rightBar-top">
