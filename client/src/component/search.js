@@ -24,7 +24,7 @@ class SearchForm extends React.Component {
         const { userName } = this.state;
 
         return (
-            <div className="search-div">
+            <div className="ql-search-div">
                 <div>
                     {/*<label><em className="red">*</em>学年学期</label>*/}
                     <label>用户名</label>

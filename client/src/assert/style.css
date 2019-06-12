@@ -1,3 +1,4 @@
+/* mixin */
 /*字体图标*/
 [class^=icon-] {
   font-family: "iconfont" !important;
@@ -17,20 +18,30 @@
 .fr {
   float: right;
 }
-/* common moudle style */
-.lee-cards {
-  background: #fff;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  padding: 15px;
-  font-size: 14px;
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
+/* animate */
+@-webkit-keyframes spinAround {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinAround {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spinAround {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
 /* moudle style */
 /*start*/

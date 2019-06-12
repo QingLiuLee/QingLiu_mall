@@ -13,19 +13,19 @@ axios.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';//Ajax put请�
 axios.defaults.headers.delete['X-Requested-With'] = 'XMLHttpRequest';//Ajax delete请求标识
 
 //添加token
-let token = '123123131';
-axios.defaults.headers.common['Authorization-token'] = token;
-
-/*let storage = window.localStorage;
+let token = '';
+let storage = window.localStorage;
 if(storage.getItem("auth_token")){
     token = storage.getItem("auth_token");
-    axios.defaults.headers.common['Authorization-token'] = token;
-}*/
+}else{
+    token = '123123131';
+}
+axios.defaults.headers.common['Authorization-token'] = token;
 
 function query(url, params) {
     return new Promise((resolve, reject) => {
         axios.get(`${prefix}${url}`, {params: params}).then(res => {
-            resolve(res.data)
+            resolve(res)
         }).catch(err => {
             reject(err.data)
         })

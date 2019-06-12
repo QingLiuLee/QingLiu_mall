@@ -88,7 +88,7 @@ class MyTable extends Component {
     //获取数据
     fetch = (getParams,postParams)=>{
         this.setState({ loading: true });
-        let postParam = {...this.state.pagination,total: true};
+        /*let postParam = {...this.state.pagination};
 
         if(Object.keys(postParams).length == 0){
             // console.log(postParams)
@@ -100,10 +100,10 @@ class MyTable extends Component {
                         pageSize:postParams.pageSize
                     }
                 });
-                postParam = {...postParams,total: true};
+                postParam = {...postParams};
             }else{
                 let size = this.state.pagination.pageSize;
-                postParam = {pageNo:1,pageSize:size, total: true, ...postParams}
+                postParam = {pageNo:1,pageSize:size, ...postParams}
                 this.setState({
                     pagination:{
                         pageNo:1,
@@ -111,16 +111,13 @@ class MyTable extends Component {
                     }
                 });
             }
-        }
-        post(this.props.url, postParam, this.props.getParam).then(res => {
+        }*/
+        post(this.props.url, postParams, this.props.getParam).then(res => {
             let data = [];
             let total = 0;
             if (res.data){
                 data = res.data.rows;
                 total = res.data.total;
-            }
-            if(this.props.rowMerge!=undefined && this.props.rowMerge){
-                data = this.rowMerge(res.data.rows);
             }
             this.setState({
                 data: data,
@@ -130,9 +127,7 @@ class MyTable extends Component {
             });
         }).catch(err => {
             this.setState({ loading: false });
-            if(err.code){
-                ProptModal.MyWarningModal(err.code + " : " + err.message);
-            }else{
+            if(!err.code){
                 console.log("table错误")
             }
         });
@@ -206,30 +201,29 @@ class MyTable extends Component {
     };
 
     render() {
-        const newColumns = this.state.newColumns.map((col, index) => ({
+        const { visible, scrollWidth, newColumns, border, size, loading, data, refresh, plainOptions, total, pagination } = this.state;
+        const { showBtn, tops, url, rowKeys, pageSizeOpt, newDatas } = this.props;
+
+        /*const newColumns = newColumns.map((col, index) => ({
             ...col,
-            width: this.props.scrollWidth ? this.props.scrollWidth[index] : col.width,
-        }));
+            width: scrollWidth ? scrollWidth[index] : col.width,
+        }));*/
 
         const content = (
             <div className="table-checkbox">
                 {
-                    [...this.state.plainOptions].map((item)=>{
-                        if(item.checked == true){
-                            return <Checkbox checked onChange={this.onChecked.bind(this,item)} key={item + Math.random()*10000} style={{display: 'block'}}>{item.title}</Checkbox>
-                        }else{
-                            return <Checkbox onChange={this.onChecked.bind(this,item)} key={item + Math.random()*10000} style={{display: 'block'}}>{item.title}</Checkbox>
-                        }
+                    [...plainOptions].map((item, index)=>{
+                        return <Checkbox checked={item.checked} onChange={this.onChecked.bind(this,item)} key={index} style={{display: 'block'}}>{item.title}</Checkbox>
                     })
                 }
             </div>
         );
 
         let top = 0;
-        if(this.props.showBtn){if(this.props.top){top = 0;} else{top = -40;}}
+        if(showBtn){if(tops){top = 0;} else{top = -40;}}
         return (
             <div style={{position:'relative',top:top + 'px'}} className="com-table-all">
-                <div style={{display:this.props.showBtn ? 'inline-block':'none',height:'30px',marginBottom: '10px'}}>
+                <div style={{display:showBtn ? 'inline-block':'none',height:'30px',marginBottom: '10px'}}>
                     <div className="table-btn">
                         <Popover
                             title="隐藏/显示列"
@@ -237,7 +231,7 @@ class MyTable extends Component {
                             trigger="click"
                             arrowPointAtCenter
                             content={content}
-                            visible={this.state.visible}
+                            visible={visible}
                             onVisibleChange={(visible) => {this.setState({ visible });}}
                             getPopupContainer={(node)=> node.parentNode}
                         >
@@ -245,22 +239,19 @@ class MyTable extends Component {
                         </Popover>
                     </div>
                 </div>
-                {/*<div id="table-popover"></div>*/}
                 <Table
                     {...this.props}
-                    bordered = {this.state.border}
-                    size = {this.state.size}
+                    bordered = {border}
+                    size = {size}
                     pagination = {false}
-                    loading = {this.state.loading}
-                    dataSource={this.state.data}
-                    refresh = {this.state.refresh}
+                    loading = {loading}
+                    dataSource={newDatas ? newDatas : data}
+                    refresh = {refresh}
                     onChange={this.handleTableChange}
-                    url = {this.props.url}
-                    rowKey={this.props.rowKeys != null ? this.props.rowKeys : record => record.id}
+                    url = {url}
+                    rowKey={rowKeys != null ? rowKeys : record => record.id}
                     columns={newColumns}
-                    components={this.props.isResize ? components : undefined}
-
-                    plainOptions = {this.state.plainOptions}
+                    plainOptions = {plainOptions}
                 />
 
                 {this.props.display ? null :
@@ -270,12 +261,12 @@ class MyTable extends Component {
                         showQuickJumper={true}
                         // hideOnSinglePage={true}  //默认只有一页不显示分页
 
-                        current={this.state.pagination.pageNo}
-                        pageSize={this.state.pagination.pageSize}
+                        current={pagination.pageNo}
+                        pageSize={pagination.pageSize}
 
-                        total={this.state.total}
+                        total={total}
                         showTotal={(total, range) => `共有 ${total} 条记录`}
-                        pageSizeOptions={this.props.pageSizeOpt==undefined?['10', '20', '30', '50', '100']:this.props.pageSizeOpt}
+                        pageSizeOptions={pageSizeOpt == undefined ? ['10', '20', '30', '50', '100'] : pageSizeOpt }
 
                         onChange={this.changeSize}
                         onShowSizeChange={this.changeSize}

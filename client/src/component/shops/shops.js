@@ -3,42 +3,60 @@ import { Button } from 'antd';
 import ComTable from '../common/ComTable';
 import ComModal from '../common/ComModal';
 import SearchForm from '../search';
-import {post} from "../../utils/AxiosUtil";
+import AddShopModal from './addShopModal';
 
 /**
  * @author hui
  * @date 2019/4/28
  * @Description: 商铺管理
 */
+const storge = window.localStorage;
+let staff_code = '';
+if(storge.getItem('staff_code')){
+    staff_code = storge.getItem('staff_code')
+}
 export default class Profile extends Component{
     constructor(props){
         super(props);
         this.state = {
-            shopUrl:'/v1/merchant/organization/create/info',
+            shopUrl: '/v1/merchant/organization/create/info',
             addShopUrl: '/v1/merchant/organization/create/info',
             refresh: 0,//table改变时对应刷新变化值
-            postParam:{
-                "org_name":"",
-                "explain":"",
-                "img_list":["图片地址1","图片地址2"],
-                "sale_type":["美妆","家电"],
-                "owner_code":"登录获取到的staff_code"
+            postParam: {
+                org_name: "商家名2",
+                explain: "简介",
+                img_list: ["logo3","logo2"],
+                sale_type: ["美妆","家电"],
+                owner_code: staff_code
             },
-            getParam:{},
-            dataSource:[]
+            getParam: {},
+            dataSource: [],
+            visible: false,
+            imgs: 'logo2'
         }
     }
 
     componentDidMount = () => {
-        post(this.state.url,this.state.postParam, null).then(res => {
+        // import logo from 'assert/images/logo/logo2.png';
+        // this.onSearch(null)
+    }
+
+    // 查询
+    onSearch = (val)=>{
+        this.setState({
+            refresh:1
+        },()=>{
             this.setState({
-                dataSource: res.data
+                refresh:0
             })
         })
     }
 
-    onSearch = (val)=>{
-
+    // 创建商铺
+    addModal = () =>{
+        this.setState({
+            visible:true
+        })
     }
 
     render (){
@@ -58,6 +76,10 @@ export default class Profile extends Component{
                 title: '商铺图片',
                 dataIndex: 'img_list',
                 key: 'img_list',
+                render: text => {
+                    {/*<img src={imgs == undefined ? default_admin : require(`../../assert/images/${imgs}.png`)} alt=""/>*/}
+                    return <img style={{maxWidth: 100,height: 'auto'}} src={require(`assert/images/logo/${imgs}.png`)} alt=""/>
+                }
             },
             {
                 title: '售货类型',
@@ -71,35 +93,53 @@ export default class Profile extends Component{
             }
         ];
 
-        const { shopUrl, refresh, postParam, getParam, visible } = this.state
+        const { shopUrl, refresh, postParam, getParam, visible,imgs } = this.state
+
+        const data = [{
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+        }, {
+            key: '2',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        }, {
+            key: '3',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sidney No. 1 Lake Park',
+        }];
 
         return (
-            <div className="lee-home">
+            <div className="ql-home">
                 {/*创建商铺*/}
                 <ComModal
                     visible={visible}
-                    onCancel={()=>this.setState({auditVisible:false})}
-                    onSubmit={this.auditConfirm}
-                    title='审核'
+                    onCancel={()=>this.setState({visible:false})}
+                    onSubmit={this.addModal}
+                    title='创建商铺'
                 >
-                    <p>aaaaaaaaaaaa</p>
+                    <AddShopModal />
                 </ComModal>
 
-                <div className="lee-home-search">
+                <div className="ql-home-search">
                     <SearchForm onSearch={this.onSearch}/>
                 </div>
 
-                <div className="lee-home-btn">
-                    <Button>创建商铺</Button>
+                <div className="ql-home-btn">
+                    <Button onClick={this.addModal}>创建商铺</Button>
                 </div>
 
-                <div className="lee-home-table">
+                <div className="ql-home-table">
                     <ComTable
                         columns={columns}
                         url={shopUrl}
                         refresh={refresh}
                         postParam={postParam}
                         getParam={getParam}
+                        newDatas={data}
                     />
                 </div>
             </div>

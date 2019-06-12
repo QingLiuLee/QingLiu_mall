@@ -1,9 +1,24 @@
+/* mixin */
+/*字体图标*/
+[class^=icon-] {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .text-overflow {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
-/*rotate360*/
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+/* animate */
 @-webkit-keyframes spinAround {
   from {
     -webkit-transform: rotate(0deg);
