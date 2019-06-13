@@ -4,47 +4,12 @@ import {
     Input,
     Select
 } from 'antd';
-
 const { Option } = Select;
-const residences = [
-    {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-            {
-                value: 'hangzhou',
-                label: 'Hangzhou',
-                children: [
-                    {
-                        value: 'xihu',
-                        label: 'West Lake',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-            {
-                value: 'nanjing',
-                label: 'Nanjing',
-                children: [
-                    {
-                        value: 'zhonghuamen',
-                        label: 'Zhong Hua Men',
-                    },
-                ],
-            },
-        ],
-    },
-];
 
 /**
  * @author hui
  * @date 2019/6/12
- * @Description: 商铺管理 -> 创建商铺
+ * @Description: 商铺管理 - 商品模块 -> 创建|修改商铺
 */
 class AddShopModal extends Component{
     constructor(props){
@@ -67,7 +32,7 @@ class AddShopModal extends Component{
 
     render (){
         const { img_list, sale_type } = this.state
-        const { shopDatas } = this.props;
+        const { datas } = this.props;
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {
@@ -86,7 +51,7 @@ class AddShopModal extends Component{
                     <Form {...formItemLayout}>
                         <Form.Item label="商铺名称" hasFeedback>
                             {getFieldDecorator('org_name', {
-                                initialValue: shopDatas ? shopDatas.org_name : undefined,
+                                initialValue: datas ? datas.org_name : undefined,
                                 rules: [
                                     {
                                         required: true,
@@ -99,7 +64,7 @@ class AddShopModal extends Component{
                         </Form.Item>
                         <Form.Item label="商铺简介" hasFeedback>
                             {getFieldDecorator('explain', {
-                                initialValue: shopDatas ? shopDatas.explain : undefined,
+                                initialValue: datas ? datas.explain : undefined,
                                 rules: [
                                     {
                                         required: true,
@@ -112,7 +77,7 @@ class AddShopModal extends Component{
                         </Form.Item>
                         <Form.Item label="商铺图片" hasFeedback>
                             {getFieldDecorator('img_list', {
-                                initialValue: shopDatas ? shopDatas.img_list : undefined,
+                                initialValue: datas ? datas.img_list : undefined,
                                 rules: [
                                     {
                                         required: true,
@@ -136,7 +101,7 @@ class AddShopModal extends Component{
                         </Form.Item>
                         <Form.Item label="售货类型" hasFeedback>
                             {getFieldDecorator('sale_type', {
-                                initialValue: shopDatas ? shopDatas.sale_type : undefined,
+                                initialValue: datas ? datas.sale_type : undefined,
                                 rules: [
                                     {
                                         required: true,
@@ -160,7 +125,7 @@ class AddShopModal extends Component{
                         </Form.Item>
                         <Form.Item label="商铺管理员编码" hasFeedback>
                             {getFieldDecorator('staff_code', {
-                                initialValue: shopDatas ? shopDatas.staff_code : undefined,
+                                initialValue: datas ? datas.staff_code : undefined,
                                 rules: [
                                     {
                                         required: true,

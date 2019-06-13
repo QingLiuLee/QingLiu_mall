@@ -1,26 +1,28 @@
 import React,{Component} from 'react';
 import { Button,message } from 'antd';
-import ComTable from '../common/ComTable';
-import ComModal from '../common/ComModal';
-import SearchForm from '../search';
-import AddShopModal from './addShopModal';
-import { post } from '../../utils/axiosUtil'
-import { getLocalStorage } from '../../utils/localStorage'
+import ComTable from '../../common/ComTable';
+import ComModal from '../../common/ComModal';
+import SearchForm from '../../search';
+import ShopModal from './addShopModal';
+import { post } from '../../../utils/axiosUtil'
+import { getLocalStorage } from '../../../utils/localStorage'
 
 /**
  * @author hui
  * @date 2019/4/28
- * @Description: 商铺管理
+ * @Description: 商铺管理 - 商铺模块
 */
-export default class Profile extends Component{
+export default class Shops extends Component{
     constructor(props){
         super(props);
         this.state = {
-            shopUrl: '/v1/merchant/organization/create/info',
+            shopUrl: '/v1/merchant/organization/get/info/list',
             addShopUrl: '/v1/merchant/organization/create/info',
             editShopUrl: '/v1/merchant/organization/update/info',
             refresh: 0,//table改变时对应刷新变化值
-            postParam: {},
+            postParam: {
+                staff_code: getLocalStorage('staff_code')
+            },
             getParam: {},
             dataSource: [],
             visible: false,
@@ -32,21 +34,13 @@ export default class Profile extends Component{
                 img_list: undefined,
                 sale_type: undefined,
                 staff_code: getLocalStorage('staff_code')
-            },
-            shopDatas2: {
-                explain: "商铺1-简介1",
-                img_list: "img1",
-                org_code: "M201906130428176",
-                org_name: "商铺11",
-                sale_type: "美妆",
-                staff_code: "S2019061204090878"
             }
         }
     }
 
     componentDidMount = () => {
         // import logo from 'assert/images/logo/logo2.png';
-        // this.onSearch(null)
+        this.onSearch(null)
     }
 
     // 查询
@@ -69,10 +63,11 @@ export default class Profile extends Component{
     }
 
     // 更新商铺
-    editModal = () =>{
+    editModal = (val) =>{
         this.setState({
             visible:true,
-            isAdd: false
+            isAdd: false,
+            shopDatas:val
         })
     }
 
@@ -80,24 +75,24 @@ export default class Profile extends Component{
     onSubmit = () =>{
         this.refs.shopform.validateFields((err, formData) => {
             if (!err) {
-                console.info('success');
-                const { isAdd, addShopUrl, editShopUrl, shopDatas2} = this.state
+                const { isAdd, addShopUrl, editShopUrl,shopDatas } = this.state
                 const url = isAdd ? addShopUrl : editShopUrl
 
                 if(!isAdd){
-                    formData.org_code = shopDatas2.org_code
-                    console.log(formData)
+                    formData.org_code = shopDatas.org_code
                 }
                 post(url,formData,null).then(res =>{
-                    if(isAdd){
-                        formData.org_code = res.data
-                    }else{
+                    if(!isAdd){
                         message.success(res.data)
                     }
-                    console.log(formData);
                     this.setState({
                         visible: false,
-                        shopDatas: formData
+                        shopDatas: [],
+                        refresh:1
+                    },()=>{
+                        this.setState({
+                            refresh:0
+                        })
                     })
                 }).catch(err =>{
                     message.warning(err.data)
@@ -112,7 +107,7 @@ export default class Profile extends Component{
     render (){
         const {
             shopUrl, visible, isAdd, imgs,
-            shopDatas, shopDatas2,
+            shopDatas,
             refresh, postParam, getParam
         } = this.state
 
@@ -134,7 +129,7 @@ export default class Profile extends Component{
                 key: 'img_list',
                 render: text => {
                     {/*<img src={imgs == undefined ? default_admin : require(`../../assert/images/${imgs}.png`)} alt=""/>*/}
-                    return <img style={{maxWidth: 100,height: 'auto'}} src={require(`assert/images/logo/${imgs}.png`)} alt=""/>
+                    return <img style={{maxHeight: 50}} src={require(`assert/images/logo/${imgs}.png`)} alt=""/>
                 }
             },
             {
@@ -143,9 +138,12 @@ export default class Profile extends Component{
                 key: 'sale_type'
             },
             {
-                title: '商铺管理员编码',
-                dataIndex: 'owner_code',
-                key: 'owner_code',
+                title: '操作',
+                dataIndex: 'opera',
+                key: 'opera',
+                render: (text,record) =>{
+                    return <a onClick={()=>this.editModal(record)}>修改</a>
+                }
             }
         ];
 
@@ -158,7 +156,7 @@ export default class Profile extends Component{
                     onSubmit={this.onSubmit}
                     title={isAdd ? '创建商铺':'修改商铺'}
                 >
-                    <AddShopModal ref="shopform" shopDatas={shopDatas2}/>
+                    <ShopModal ref="shopform" datas={shopDatas}/>
                 </ComModal>
 
                 <div className="ql-main-search home-search">
@@ -166,8 +164,7 @@ export default class Profile extends Component{
                 </div>
 
                 <div className="ql-main-btns home-btn">
-                    <Button onClick={this.addModal}>创建商铺</Button>
-                    <Button onClick={this.editModal}>更新商铺</Button>
+                    <Button type="primary" onClick={this.addModal}>创建商铺</Button>
                 </div>
 
                 <div className="ql-main-table home-table">
