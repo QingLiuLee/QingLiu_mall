@@ -16,7 +16,7 @@ class Roles(IEmbedded):
     """角色信息"""
 
     __slots__ = {
-        'role_code',
+        'role_name'
         'org_code',
         'start_time',
         'end_time',
@@ -25,7 +25,7 @@ class Roles(IEmbedded):
     @try_except
     def __init__(self):
         super(Roles, self).__init__()
-        self.role_code = ''
+        self.role_name = ''
         self.org_code = ''
         self.start_time = None
         self.end_time = None
@@ -34,7 +34,7 @@ class Roles(IEmbedded):
     @try_except
     def ini_roles_data(cls, **kwargs):
         role = Roles()
-        role.role_code = kwargs.get('role_code', '')
+        role.role_name = kwargs.get('role_name', '')
         role.org_code = kwargs.get('org_code', '')
         role.start_time = kwargs.get('start_time', None)
         role.end_time = kwargs.get('end_time', None)
@@ -116,13 +116,13 @@ class Staff(IBaseModel):
         return False
 
     @try_except
-    def set_org_roles_by_staff_code(self, org_code='', role_code=''):
+    def set_org_roles_by_staff_code(self, org_code='', role_name=''):
         """
         更新角色列表
         :return:
         """
 
-        role = Roles.ini_roles_data(org_code=org_code, role_code=role_code, start_time=datetime.datetime.now())
+        role = Roles.ini_roles_data(org_code=org_code, role_name=role_name, start_time=datetime.datetime.now())
 
         return self.update_one_by_custom(condition={'staff_code': self.staff_code}, update={
             '$push': {'roles': role.get_json_by_obj()}})
@@ -149,6 +149,6 @@ class Staff(IBaseModel):
 
         condition = {'$and': [{'roles.org_code': org_code}]}
         if role_type:
-            condition['$and'].append({'roles.role_code': {'$in': role_type}})
+            condition['$and'].append({'roles.role_name': {'$in': role_type}})
 
         return self.get_info_count_by_filter(condition=condition)

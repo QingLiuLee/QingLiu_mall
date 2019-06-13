@@ -48,7 +48,7 @@ async def create_org_info(request: Request, token: Token):
 
     if org_code:
 
-        await staff.set_org_roles_by_staff_code(org_code=org_code, role_code=ROLES['1'])
+        await staff.set_org_roles_by_staff_code(org_code=org_code, role_name=ROLES['1'])
         abort(status_code=JsonSuccessCode, message=org_obj.org_code)
     else:
         abort(status_code=ServerErrorCode, message='商家创建失败')
