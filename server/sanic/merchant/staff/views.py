@@ -83,10 +83,10 @@ async def create_inner_info(request: Request, token: Token):
     mobile = params.get('mobile', '')
     nickname = params.get('nickname', '')
     password = params.get('password', '')
-    role_code = params.get('role_code', '')
+    role_name = params.get('role_name', '')
     org_code = params.get('org_code', '')
 
-    if not all([mobile, nickname, password, role_code, org_code]):
+    if not all([mobile, nickname, password, role_name, org_code]):
         abort(status_code=ParamsErrorCode)
 
     staff = Staff.init_staff_info(**params)
@@ -97,7 +97,7 @@ async def create_inner_info(request: Request, token: Token):
     staff_code = staff.create_admin_info()
 
     if staff_code:
-        await staff.set_org_roles_by_staff_code(org_code=org_code, role_code=role_code)
+        await staff.set_org_roles_by_staff_code(org_code=org_code, role_name=role_name)
         abort(status_code=JsonSuccessCode, message=staff_code)
 
     abort(status_code=ServerErrorCode, message='创建账号失败')

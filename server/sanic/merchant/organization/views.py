@@ -48,7 +48,7 @@ async def create_org_info(request: Request, token: Token):
 
     if org_code:
 
-        await staff.set_org_roles_by_staff_code(org_code=org_code, role_code=ROLES['1'])
+        await staff.set_org_roles_by_staff_code(org_code=org_code, role_name=ROLES['1'])
         abort(status_code=JsonSuccessCode, message=org_obj.org_code)
     else:
         abort(status_code=ServerErrorCode, message='商家创建失败')
@@ -60,17 +60,14 @@ async def update_org_info(request: Request, token: Token):
     """更新商家信息"""
     params = request.json
 
-    org_code = params.get('org_code', '')
-    org_name = params.get('org_name', '')
-    explain = params.get('explain', '')
-    img_list = params.get('img_list', [])
-    sale_type = params.get('sale_type', [])
-    owner_code = params.get('owner_code', '')
-
-    if not all([org_code, org_name, explain, img_list, sale_type, owner_code]):
+    org_obj = Organization.init_org_info(**params)
+    if not org_obj.check_params_is_none(['create_time']):
         abort(status_code=ParamsErrorCode)
 
-    org_obj = Organization.init_org_info(**params)
+    old_org = await org_obj.find_org_by_org_name()
+    if old_org and old_org['org_code'] != org_obj.org_code:
+        abort(status_code=ExistsErrorCode, message="商家名已被注册")
+
     org_obj.update_merchant_info()
     abort(status_code=JsonSuccessCode, message='更新成功')
 
