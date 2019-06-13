@@ -116,8 +116,8 @@ class MyTable extends Component {
             let data = [];
             let total = 0;
             if (res.data){
-                data = res.data.rows;
-                total = res.data.total;
+                data = res.data;
+                // total = res.data.total;
             }
             this.setState({
                 data: data,
@@ -251,6 +251,7 @@ class MyTable extends Component {
 
                 {this.props.display ? null :
                     <Pagination
+                        style={{marginTop: 10}}
                         pagination="bottom"
                         showSizeChanger={true}
                         showQuickJumper={true}
