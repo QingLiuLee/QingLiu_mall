@@ -1,6 +1,6 @@
 import React,{ Component } from "react"
 import {Table,Pagination,Button,Checkbox,Popover} from 'antd'
-import { post } from "../../utils/AxiosUtil";
+import { post } from "../../utils/axiosUtil";
 const ButtonGroup = Button.Group;
 
 /**
@@ -201,13 +201,8 @@ class MyTable extends Component {
     };
 
     render() {
-        const { visible, scrollWidth, newColumns, border, size, loading, data, refresh, plainOptions, total, pagination } = this.state;
+        const { visible, newColumns, border, size, loading, data, refresh, plainOptions, total, pagination } = this.state;
         const { showBtn, tops, url, rowKeys, pageSizeOpt, newDatas } = this.props;
-
-        /*const newColumns = newColumns.map((col, index) => ({
-            ...col,
-            width: scrollWidth ? scrollWidth[index] : col.width,
-        }));*/
 
         const content = (
             <div className="table-checkbox">

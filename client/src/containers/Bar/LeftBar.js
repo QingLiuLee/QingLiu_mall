@@ -50,6 +50,8 @@ export default class LeftBar extends Component {
                     </div>
                 </div>
                 <div className="lee-leftBar-bot">
+                    <div className="lee-leftBar-bot-bar"></div>
+
                     <div className="lee-leftBar-list">
                         <ul style={{paddingTop:25}}>
                             {links.map((item, index)=>{

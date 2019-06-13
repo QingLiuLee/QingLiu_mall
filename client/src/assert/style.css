@@ -43,5 +43,17 @@
     -webkit-transform: rotate(360deg);
   }
 }
+/* antd */
+/* form */
+.ql-search .ant-form .ant-form-item {
+  margin-bottom: 10px;
+}
+/* modal */
+.ant-modal .ant-modal-header {
+  padding: 10px 15px;
+}
+.ant-modal .ant-modal-body {
+  padding: 10px 20px;
+}
 /* moudle style */
 /*start*/

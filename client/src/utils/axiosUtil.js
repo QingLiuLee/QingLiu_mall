@@ -1,24 +1,26 @@
 import React,{ Component } from 'react';
 import axios from "axios";
-const prefix = '/api';
-const indexUrl = '/home/';
-const logoutPath = '/signOut';
-const maxTimeoutTime = 7200000; //30min
+import { getLocalStorage } from '../utils/localStorage'
 
+/**
+ * @author hui
+ * @date 2019/6/13
+ * @Description: axios封装
+*/
+const prefix = '/api';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';//Ajax get请求标识
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';//Ajax post请求标识
-// axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
+axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 axios.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';//Ajax put请求标识
 axios.defaults.headers.delete['X-Requested-With'] = 'XMLHttpRequest';//Ajax delete请求标识
 
 //添加token
 let token = '';
-let storage = window.localStorage;
-if(storage.getItem("auth_token")){
-    token = storage.getItem("auth_token");
+if(getLocalStorage('auth_token')){
+    token = getLocalStorage('auth_token');
 }else{
-    token = '123123131';
+    token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9';
 }
 axios.defaults.headers.common['Authorization-token'] = token;
 
@@ -27,7 +29,7 @@ function query(url, params) {
         axios.get(`${prefix}${url}`, {params: params}).then(res => {
             resolve(res)
         }).catch(err => {
-            reject(err.data)
+            reject(err.response.data)
         })
     })
 }
@@ -38,7 +40,7 @@ function post(url, datas, params) {
         axios.post(`${prefix}${url}`,datas,{params:params}).then(res => {
             resolve(res.data)
         }).catch(err => {
-            reject(err.data)
+            reject(err.response.data)
         })
     })
 }

@@ -165,48 +165,67 @@ textarea {
 
   /* 蓝色 */
   .themsSVGL {
-   .leeThem(
-            #5f89bd, #6fa2cc,
-            @fontW,rgba(255,255,255,.5),@fontW,
-            #5f89bd,@topBarFontSVG,
-            @rightBgSVG,#5f89bd, @fontW
+    @color_gl: #5f89bd;
+    .leeThem(
+          // left_bar: bg_top | border_color
+          @color_gl, #6fa2cc,
+
+          // left_bar_li: font | SVG: 颜色不使用 | .active: border_color
+          @fontW,@transparent,@fontW,
+
+          // right_top: bg | font
+           @color_gl,@topBarFontSVG,
+
+          // right_bot: Bg
+          @rightBgSVG,
+
+          // thems | global_font_color
+           @color_gl, @fontW
     )
   }
 
   /* 蓝粉紫色 */
   .themsSVGLFZ {
+    @color_lfz: #9992c5;
     .leeThem(
-            #9992c5, #fff,
-            @fontW,rgba(213, 213, 232,.3),#946fa7,
-            #9992c5,@fontW,
-            @rightBgSVG,#946fa7, @fontW
+            @color_lfz, @fontW,
+            @fontW,@transparent,#946fa7,
+            @color_lfz,@fontW,
+            @rightBgSVG,
+            @color_lfz, @fontW
     )
   }
   /* 粉色 */
+  @color_f: #cc94c7;
   .themsSVGF {
     .leeThem(
-            #cc94c7, @fontW,
-            @fontW,rgba(255,255,255,.5),#cc94c7,
-            #cc94c7,@fontW,
-            @rightBgSVG,#cc94c7, @fontW
+            @color_f, @fontW,
+            @fontW,@transparent,#cc94c7,
+            @color_f,@fontW,
+            @rightBgSVG,
+            @color_f, @fontW
     )
   }
   /* 粉紫色 */
   .themsSVGFZ {
+    @color_fz: #a689c4;
     .leeThem(
-            #a689c4, #a689c4,
-            @fontW,rgba(255,255,255,.5),#fff,
-            #a689c4,#fff,
-            @rightBgSVG,#a689c4, @fontW
+            @color_fz, @color_fz,
+            @fontW,@transparent,@fontW,
+            @color_fz,@fontW,
+            @rightBgSVG,
+            @color_fz, @fontW
     )
   }
   /* 橘粉色 */
   .themsSVGGF {
+    @color_gf: #faa0b4;
     .leeThem(
-            #faa0b4, @fontW,
-            @fontW,rgba(255,255,255,.5),#faa0b4,
-            #faa0b4,@fontW,
-            @rightBgSVG,#fdd9d5, @fontW
+            @color_gf, @fontW,
+            @fontW,@transparent,@color_gf,
+            @color_gf,@fontW,
+            @rightBgSVG,
+            #fdd9d5, @fontW
     )
   }
 }

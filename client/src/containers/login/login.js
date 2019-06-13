@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import { Input,Icon,Button } from 'antd';
 import logo from 'assert/images/logo/logo2.png';
-import { post } from '../../utils/AxiosUtil'
+import { post } from '../../utils/axiosUtil'
+import { setLocalStorage } from '../../utils/localStorage'
 
 /**
  * @author hui
@@ -22,13 +23,11 @@ export default class Login extends Component{
     login = ()=>{
         const { account, password } = this.state
         post(this.state.loginUrl,{ account, password }, null).then(res => {
-            debugger
             // if(res.code === 200){
             if(res.msg == "请求成功"){
                 this.props.toggleLogin(false,false);
-                let storage = window.localStorage;
-                storage.setItem('auth_token', res.data.token);
-                storage.setItem('staff_code', res.data.staff_code);
+                setLocalStorage('auth_token', res.data.token);
+                setLocalStorage('staff_code', res.data.staff_code);
             }
         })
     }
