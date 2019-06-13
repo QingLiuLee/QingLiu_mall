@@ -63,7 +63,11 @@ async def update_org_info(request: Request, token: Token):
     org_obj = Organization.init_org_info(**params)
     if not org_obj.check_params_is_none(['create_time']):
         abort(status_code=ParamsErrorCode)
-        
+
+    old_org = await org_obj.find_org_by_org_name()
+    if old_org and old_org['org_code'] != org_obj.org_code:
+        abort(status_code=ExistsErrorCode, message="商家名已被注册")
+
     org_obj.update_merchant_info()
     abort(status_code=JsonSuccessCode, message='更新成功')
 
