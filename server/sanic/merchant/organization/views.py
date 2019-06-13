@@ -60,17 +60,10 @@ async def update_org_info(request: Request, token: Token):
     """更新商家信息"""
     params = request.json
 
-    org_code = params.get('org_code', '')
-    org_name = params.get('org_name', '')
-    explain = params.get('explain', '')
-    img_list = params.get('img_list', [])
-    sale_type = params.get('sale_type', [])
-    owner_code = params.get('owner_code', '')
-
-    if not all([org_code, org_name, explain, img_list, sale_type, owner_code]):
-        abort(status_code=ParamsErrorCode)
-
     org_obj = Organization.init_org_info(**params)
+    if not org_obj.check_params_is_none():
+        abort(status_code=ParamsErrorCode)
+        
     org_obj.update_merchant_info()
     abort(status_code=JsonSuccessCode, message='更新成功')
 
