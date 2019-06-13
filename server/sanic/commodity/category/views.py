@@ -53,11 +53,11 @@ async def update_category_info(request: Request, token: Token):
     params = request.json
 
     category = Category.init_category_info(**params)
-    if not all([category, category.check_params_is_none([category.create_time])]):
+    if not all([category, category.check_params_is_none(['create_time'])]):
         abort(status_code=ParamsErrorCode)
 
-    is_exists = category.find_category_by_org_code_and_category_name()
-    if is_exists:
+    old_category = await category.find_category_by_org_code_and_category_name()
+    if old_category and old_category['category_code'] != category.category_code:
         abort(status_code=ExistsErrorCode, message='品类信息已存在')
 
     result = await category.update_category_info()
@@ -83,6 +83,10 @@ async def get_category_info_list(request: Request, token: Token):
         abort(status_code=ParamsErrorCode)
 
     category_list = await category.find_category_list_by_org_code()
+
+    for category in category_list:
+        category['_id'] = str(category['_id'])
+
     abort(status_code=JsonSuccessCode, message=category_list)
 
 

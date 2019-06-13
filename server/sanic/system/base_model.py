@@ -121,6 +121,8 @@ class IBaseModel(object):
 
     @try_except
     def find(self, condition={}, projection={}, limit=10):
+        if not projection:
+            return self.__collection.find(filter=condition).to_list(length=limit)
         return self.__collection.find(filter=condition, projection=projection).to_list(length=limit)
 
     @try_except
@@ -131,3 +133,7 @@ class IBaseModel(object):
     @try_except
     def delete_many_by_condition(self, condition):
         return self.__collection.delete_many(filter=condition)
+
+    @try_except
+    def delete_one_by_condition(self, condition):
+        return self.__collection.delete_one(filter=condition)

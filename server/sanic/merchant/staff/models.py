@@ -16,7 +16,7 @@ class Roles(IEmbedded):
     """角色信息"""
 
     __slots__ = {
-        'role_name'
+        'role_name',
         'org_code',
         'start_time',
         'end_time',
@@ -152,3 +152,9 @@ class Staff(IBaseModel):
             condition['$and'].append({'roles.role_name': {'$in': role_type}})
 
         return self.get_info_count_by_filter(condition=condition)
+
+    @try_except
+    def remove_account(self):
+        """删除账号信息"""
+        condition = {'staff_code': self.staff_code}
+        return self.delete_one_by_condition(condition=condition)

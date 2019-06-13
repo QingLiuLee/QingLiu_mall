@@ -59,6 +59,10 @@ async def update_product_info(request: Request, token: Token):
 
     product = Product.init_product_info(**params)
 
+    old_product = await product.find_info_by_org_code_and_product_name()
+    if old_product and old_product['product_code'] != product_code:
+        abort(status_code=ExistsErrorCode, message='产品名已存在')
+
     result = await product.update_info_by_product_code()
     if result.modified_count or result.matched_count:
         abort(status_code=JsonSuccessCode, message=product_code)
@@ -79,3 +83,21 @@ async def delete_product_info(request: Request, token: Token):
 
     product_list = await product.delete_info_by_product_code(product_code_list=params['product_code_list'])
     abort(status_code=JsonSuccessCode, message=product_list)
+
+
+@blueprint.route(uri='/get/info/list', methods=['POST'])
+@response_exception
+async def get_product_info_list(request: Request, token: Token):
+    """获取产品信息列表"""
+    params = request.json
+
+    product = Product.init_product_info(**params)
+    if not product or not product.org_code:
+        abort(status_code=ParamsErrorCode)
+
+    category_list = await product.find_product_list_by_org_code()
+
+    for category in category_list:
+        category['_id'] = str(category['_id'])
+
+    abort(status_code=JsonSuccessCode, message=category_list)

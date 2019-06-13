@@ -90,4 +90,4 @@ class Organization(IBaseModel):
     def find_all_org_list_by_staff_code(self):
         """根据管理员编码获取商家列表"""
         return self.find(condition={'staff_code': self.staff_code},
-                         projection={'_id': 0, })
+                         )

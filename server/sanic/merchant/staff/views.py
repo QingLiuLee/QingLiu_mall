@@ -7,7 +7,6 @@ from sanic import Blueprint
 from sanic.request import Request
 from sanic_jwt_extended import create_access_token
 from sanic_jwt_extended.tokens import Token
-from sanic.exceptions import abort
 
 from merchant.staff.models import Staff
 from system.response import *
@@ -127,3 +126,22 @@ async def get_inner_list(request: Request, token: Token):
         staff['create_time'] = staff['create_time'].strftime('%Y-%m-%d %H:%M:%S')
 
     abort(status_code=JsonSuccessCode, message={"list": staff_list, "count": total_count})
+
+
+@blueprint.route(uri='/unregister', methods=['POST'])
+@response_exception
+async def unregister_staff(request: Request, token: Token):
+    """注销当前用户信息"""
+    params = request.json
+
+    staff_code = params.get('staff_code', '')
+    if not staff_code:
+        abort(status_code=ParamsErrorCode)
+
+    staff = Staff.init_staff_info(**params)
+    remove_result = await staff.remove_account()
+
+    if remove_result.deleted_count:
+        abort(status_code=JsonSuccessCode, message='账号已移除')
+    else:
+        abort(status_code=JsonSuccessCode, message='找不到该账号')

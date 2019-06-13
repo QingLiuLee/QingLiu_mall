@@ -74,7 +74,7 @@ class Category(IBaseModel):
     @try_except
     def find_category_list_by_org_code(self):
         """获取商家品类信息"""
-        return self.find(condition={'org_code': self.org_code}, projection={'_id': 0})
+        return self.find(condition={'org_code': self.org_code})
 
     @try_except
     def delete_category_by_org_code_and_category_code_list(self, category_code_list):
