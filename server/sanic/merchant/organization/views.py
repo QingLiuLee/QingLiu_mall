@@ -61,7 +61,7 @@ async def update_org_info(request: Request, token: Token):
     params = request.json
 
     org_obj = Organization.init_org_info(**params)
-    if not org_obj.check_params_is_none():
+    if not org_obj.check_params_is_none(['create_time']):
         abort(status_code=ParamsErrorCode)
         
     org_obj.update_merchant_info()
