@@ -13,10 +13,10 @@ export default class RightBar extends Component {
             route:[
                 {exact:true, path:'/login', component:Login},
                 {path:'/home', component:Home},
-                {path:'/shops/1', component:Shops},
-                {path:'/shops/2', component:Shops},
-                {path:'/goods/1', component:Goods},
-                {path:'/goods/2', component:Goods},
+                {path:'/shops_mange/user', component:Shops},
+                {path:'/shops_mange/shops', component:Shops},
+                {path:'/goods_mange/category', component:Goods},
+                {path:'/goods_mange/goods', component:Goods},
             ]
         }
     }
