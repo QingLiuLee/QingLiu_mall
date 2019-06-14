@@ -98,13 +98,11 @@ class IBaseModel(object):
         return False
 
     @try_except
-    def find_one(self, condition={}, stipulated={}):
-        return self.__collection.find_one(filter=condition, **stipulated)
+    def find_one(self, condition=None, projection=None):
+        return self.__collection.find_one(filter=condition, projection=projection)
 
     @try_except
-    def find_many(self, condition={}, projection={}, limit=10):
-        if not projection:
-            return self.__collection.find(filter=condition).to_list(length=limit)
+    def find_many(self, condition=None, projection=None, limit=10):
         return self.__collection.find(filter=condition, projection=projection).to_list(length=limit)
 
     @try_except
