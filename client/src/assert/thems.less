@@ -4,16 +4,17 @@
 @leftBarL: 25px;
 
 /*start*/
-.leeThem(//left bg: top | bot
+.leeThem(
+  //left bg: top | bot
   @logo:@logo,@leftBar:@leftBar,
 
-  //left li: font | li active : bg | font
+  //left li: font | li.active: bg | font
   @liFont:@liFont,@liActiveBg:@liActiveBg,@liActiveBorder:@liActiveBorder,
 
-  //right: top | top font | top left border
+  //right: top | right_top:font | top left border
   @topBar:@topBar,@topFont:@topFont,
 
-  //right botBg | thems | global font color
+  //right_botBg | thems | global_font_color
   @rightBg:@rightBg,@thems:@thems,@fontColor:@fontColor
 ) {
   /*lee-leftBar-bot li active*/
@@ -25,13 +26,9 @@
   }
 
   /*lee-leftBar-bot BG*/
-  .lee-leftBar-bot-BG(@rightBg) {
-    background: @rightBg;
-  }
   .lee-leftBar-bot-BG when (@logo = @topBar) {
     //background: transparent;
     background: rgba(@logo, .1);
-    border-right: 2px solid @leftBar;
     ul li {
       a,.links {
         color: @logo !important;
@@ -61,9 +58,11 @@
       }
     }
     .lee-leftBar-bot {
+      position: relative;
       width: 100%;
       height: calc(100% - 50px);
-      background: @leftBar;
+      //background: @leftBar;
+      background: @rightBg;
       .lee-leftBar-bot-BG;
       .lee-leftBar-list {
         ul {
@@ -110,6 +109,14 @@
           }
         }
 
+      }
+      .lee-leftBar-bot-bar{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: @leftBar;
       }
     }
   }

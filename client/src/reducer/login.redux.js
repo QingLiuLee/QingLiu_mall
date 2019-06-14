@@ -5,7 +5,7 @@
  * @param: registerData:注册信息 | userData:用户信息 | auth_token
  */
 
-import axiosUtil from '../utils/AxiosUtil';
+import axiosUtil from '../utils/axiosUtil';
 const LOGIN = 'LOGIN';
 const REGISTER = 'REGISTER';
 const USER_LIST_DATA = 'USER_LIST_DATA';

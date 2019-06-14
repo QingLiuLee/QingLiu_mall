@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom'
 
 import Login from '../../containers/login/login'
-import Home from "../../component/home";
-import Shops from '../../component/shops/shops';
-import Goods from '../../component/goods/goods';
+import Home from '../../component/home'
+import Shops from '../../component/shops_manage/shops/shops'
+import Category from '../../component/goods_manage/category/category'
+import Goods from '../../component/goods_manage/goods/goods'
 
 export default class RightBar extends Component {
     constructor(props){
@@ -13,10 +14,10 @@ export default class RightBar extends Component {
             route:[
                 {exact:true, path:'/login', component:Login},
                 {path:'/home', component:Home},
-                {path:'/shops/1', component:Shops},
-                {path:'/shops/2', component:Shops},
-                {path:'/goods/1', component:Goods},
-                {path:'/goods/2', component:Goods},
+                {path:'/shops_mange/user', component:Shops},
+                {path:'/shops_mange/shops', component:Shops},
+                {path:'/goods_mange/category', component:Category},
+                {path:'/goods_mange/goods', component:Goods},
             ]
         }
     }

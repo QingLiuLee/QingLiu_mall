@@ -13,15 +13,15 @@ export default class LeftBar extends Component {
                 {
                     icon:'coffee', title:'商铺管理',
                     children:[
-                        { path:'/shops/1', icon:'copy', title:'用户管理',},
-                        { path:'/shops/2', icon:'copy', title:'商铺管理',}
+                        { path:'/shops_mange/user', icon:'copy', title:'用户管理',},
+                        { path:'/shops_mange/shops', icon:'copy', title:'商铺管理',}
                     ]
                 },
                 {
                     icon:'coffee', title:'商品管理',
                     children:[
-                        { path:'/goods/1', icon:'copy', title:'品类管理',},
-                        { path:'/goods/2', icon:'copy', title:'商品关联',}
+                        { path:'/goods_mange/category', icon:'copy', title:'品类管理',},
+                        { path:'/goods_mange/goods', icon:'copy', title:'商品关联',}
                     ]
                 }
             ],
@@ -50,6 +50,8 @@ export default class LeftBar extends Component {
                     </div>
                 </div>
                 <div className="lee-leftBar-bot">
+                    <div className="lee-leftBar-bot-bar"></div>
+
                     <div className="lee-leftBar-list">
                         <ul style={{paddingTop:25}}>
                             {links.map((item, index)=>{
