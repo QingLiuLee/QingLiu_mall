@@ -29,18 +29,19 @@ export default class Shops extends Component{
             isAdd: true,
             imgs: 'logo2',
             shopDatas: {
-                org_name: undefined,
-                explain: undefined,
-                img_list: undefined,
-                sale_type: undefined,
                 staff_code: getLocalStorage('staff_code')
-            }
+            },
+            disabled: false
         }
     }
 
     componentDidMount = () => {
         // import logo from 'assert/images/logo/logo2.png';
         this.onSearch(null)
+    }
+
+    handleFormChange = () => {
+        this.setState({disabled:false});
     }
 
     // 查询
@@ -87,7 +88,9 @@ export default class Shops extends Component{
                     }
                     this.setState({
                         visible: false,
-                        shopDatas: [],
+                        shopDatas: {
+                            staff_code: getLocalStorage('staff_code')
+                        },
                         refresh:1
                     },()=>{
                         this.setState({
@@ -107,7 +110,7 @@ export default class Shops extends Component{
     render (){
         const {
             shopUrl, visible, isAdd, imgs,
-            shopDatas,
+            shopDatas, disabled,
             refresh, postParam, getParam
         } = this.state
 
@@ -152,11 +155,21 @@ export default class Shops extends Component{
                 {/* 创建|修改 商铺*/}
                 <ComModal
                     visible={visible}
-                    onCancel={()=>this.setState({visible:false})}
-                    onSubmit={this.onSubmit}
                     title={isAdd ? '创建商铺':'修改商铺'}
+                    footer={[
+                        <Button key={1}
+                                type="primary"
+                                onClick={this.onSubmit}
+                                disabled={disabled}
+                        >确定</Button>,
+                        <Button key={2} onClick={()=>this.setState({visible:false})}>取消</Button>
+                    ]}
                 >
-                    <ShopModal ref="shopform" datas={shopDatas}/>
+                    <ShopModal
+                        ref="shopform"
+                        datas={shopDatas}
+                        onChange={this.handleFormChange}
+                    />
                 </ComModal>
 
                 <div className="ql-main-search home-search">

@@ -16,9 +16,11 @@ export default class Goods extends Component{
     constructor(props){
         super(props);
         this.state = {
-            goodUrl: '/v1/merchant/organization/create/info',
+            goodUrl: '/v1/commodity/product/get/info/list',
             refresh: 0,//table改变时对应刷新变化值
-            postParam: {},
+            postParam: {
+                org_code: "11111111"
+            },
             getParam: {},
 
             addGoodUrl: '/v1/commodity/product/create/info',
@@ -36,30 +38,35 @@ export default class Goods extends Component{
         }
     }
 
+    componentDidMount = () => {
+        this.onSearch(null)
+    }
+
     // 查询
     onSearch = (val)=>{
         this.setState({
-            refresh:1
+            refresh: 1
         },()=>{
             this.setState({
-                refresh:0
+                refresh: 0
             })
         })
     }
 
-    // 创建商铺
+    // 创建商品
     addModal = () =>{
         this.setState({
-            visible:true,
+            visible: true,
             isAdd: true
         })
     }
 
-    // 更新商铺
-    editModal = () =>{
+    // 更新商品
+    editModal = (val) =>{
         this.setState({
-            visible:true,
-            isAdd: false
+            visible: true,
+            isAdd: false,
+            shopDatas: val
         })
     }
 
@@ -73,12 +80,9 @@ export default class Goods extends Component{
 
                 if(!isAdd){
                     formData.org_code = goodDatas.org_code
-                    console.log(formData)
                 }
                 post(url,formData,null).then(res =>{
-                    if(isAdd){
-                        formData.org_code = res.data
-                    }else{
+                    if(!isAdd){
                         message.success(res.data)
                     }
                     console.log(formData);
@@ -133,17 +137,25 @@ export default class Goods extends Component{
                 title: '商铺管理员编码',
                 dataIndex: 'owner_code',
                 key: 'owner_code',
+            },
+            {
+                title: '操作',
+                dataIndex: 'opera',
+                key: 'opera',
+                render: (text,record) =>{
+                    return <a onClick={()=>this.editModal(record)}>修改</a>
+                }
             }
         ];
 
         return (
             <div className="ql-main home">
-                {/* 创建|修改 商铺*/}
+                {/* 创建|修改 商品*/}
                 <ComModal
                     visible={visible}
                     onCancel={()=>this.setState({visible:false})}
                     onSubmit={this.onSubmit}
-                    title={isAdd ? '创建商铺':'修改商铺'}
+                    title={isAdd ? '创建商品':'修改商品'}
                 >
                     <GoodModal ref="shopform" datas={goodDatas}/>
                 </ComModal>
@@ -153,8 +165,7 @@ export default class Goods extends Component{
                 </div>
 
                 <div className="ql-main-btns home-btn">
-                    <Button onClick={this.addModal}>创建商铺</Button>
-                    <Button onClick={this.editModal}>更新商铺</Button>
+                    <Button type="primary" onClick={this.addModal}>创建商品</Button>
                 </div>
 
                 <div className="ql-main-table home-table">

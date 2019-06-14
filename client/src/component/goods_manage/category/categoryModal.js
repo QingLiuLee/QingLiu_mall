@@ -18,16 +18,6 @@ class CategoryModal extends Component{
         }
     }
 
-    // 售货类型
-    changeSaleType = () =>{
-
-    }
-
-    // 商铺图片
-    changeImgList = () =>{
-
-    }
-
     render (){
         const { datas } = this.props;
         const { getFieldDecorator } = this.props.form;
@@ -42,6 +32,7 @@ class CategoryModal extends Component{
                 sm: { span: 18 },
             },
         };
+        console.log(datas);
         return (
             <div className="ql-modal">
                 <div className="ql-search">
@@ -72,10 +63,28 @@ class CategoryModal extends Component{
                                 <Input />
                             )}
                         </Form.Item>
+                        <Form.Item label="员工编码" hasFeedback>
+                            {getFieldDecorator('staff_code', {
+                                initialValue: datas ? datas.staff_code : undefined,
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: '请输入员工编码',
+                                    },
+                                ]
+                            })(
+                                <Input />
+                            )}
+                        </Form.Item>
                     </Form>
                 </div>
             </div>
         )
     }
 }
-export default Form.create({ name: 'addShop' })(CategoryModal)
+Form.create({
+    name: 'addShop',
+    onFieldsChange(props, changedFields) {   //监听修改是否可保存
+        props.onChange(changedFields);    //onChange对应监听值改变就执行父组件方法
+    }
+})(CategoryModal)
