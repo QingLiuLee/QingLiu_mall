@@ -96,7 +96,7 @@ async def create_inner_info(request: Request, token: Token):
     staff_code = staff.create_admin_info()
 
     if staff_code:
-        await staff.set_org_roles_by_staff_code(org_code=org_code, role_name=role_name)
+        await staff.set_org_roles_by_staff_code(staff_code=staff_code, org_code=org_code, role_name=role_name)
         abort(status_code=JsonSuccessCode, message=staff_code)
 
     abort(status_code=ServerErrorCode, message='创建账号失败')

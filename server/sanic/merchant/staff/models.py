@@ -116,7 +116,7 @@ class Staff(IBaseModel):
         return False
 
     @try_except
-    def set_org_roles_by_staff_code(self, org_code='', role_name=''):
+    def set_org_roles_by_staff_code(self, staff_code='', org_code='', role_name=''):
         """
         添加角色信息
         :return:
@@ -124,7 +124,7 @@ class Staff(IBaseModel):
 
         role = Roles.ini_roles_data(org_code=org_code, role_name=role_name, start_time=datetime.datetime.now())
 
-        return self.update_one_by_custom(condition={'staff_code': self.staff_code}, update={
+        return self.update_one_by_custom(condition={'staff_code': staff_code}, update={
             '$push': {'roles': role.get_json_by_obj()}})
 
     @try_except
