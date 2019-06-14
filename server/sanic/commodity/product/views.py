@@ -91,16 +91,23 @@ async def get_product_info_list(request: Request, token: Token):
     """获取产品信息列表"""
     params = request.json
 
+    limit = params.get('limit', 10)
+    last_id = params.get('last_id', None)
+    category_type = params.get('category_type', [])
+
     product = Product.init_product_info(**params)
     if not product or not product.org_code:
         abort(status_code=ParamsErrorCode)
 
-    category_list = await product.find_product_list_by_org_code()
+    product_list = await product.find_product_list_by_org_code(category_type=category_type, limit=limit,
+                                                               last_id=last_id)
 
-    for category in category_list:
+    total_count = await product.get_all_product_count_by_org_code(category_type=category_type)
+
+    for category in product_list:
         category['_id'] = str(category['_id'])
 
-    abort(status_code=JsonSuccessCode, message=category_list)
+    abort(status_code=JsonSuccessCode, message={"list": product_list, "count": total_count})
 
 
 @blueprint.route(uri='/drop/collection', methods=['POST'])

@@ -133,10 +133,13 @@ class Staff(IBaseModel):
         return self.find_one(condition={'staff_code': self.staff_code})
 
     @try_except
-    def get_staff_list_by_org_code(self, org_code, last_id=None, limit=10):
+    def get_staff_list_by_org_code(self, org_code, role_type=[], last_id=None, limit=10):
         """ 根据商家编码获取员工列表"""
 
         condition = {'$and': [{'roles.org_code': org_code}]}
+
+        if role_type:
+            condition['$and'].append({'roles.role_name': {'$in': role_type}})
 
         if last_id:
             condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})

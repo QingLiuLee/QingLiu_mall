@@ -114,12 +114,16 @@ async def get_inner_list(request: Request, token: Token):
     params = request.json
 
     org_code = params.get('org_code', '')
+    limit = params.get('limit', 10)
+    last_id = params.get('last_id', None)
+    role_type = params.get('role_type', [])
     if not all([org_code]):
         abort(status_code=ParamsErrorCode)
 
     staff = Staff()
-    staff_list = await staff.get_staff_list_by_org_code(org_code=org_code)
-    total_count = await staff.get_all_staff_count_by_org_code(org_code=org_code)
+    staff_list = await staff.get_staff_list_by_org_code(org_code=org_code, role_type=role_type, limit=limit,
+                                                        last_id=last_id)
+    total_count = await staff.get_all_staff_count_by_org_code(org_code=org_code, role_type=role_type)
 
     for staff in staff_list:
         staff['_id'] = str(staff['_id'])
@@ -181,4 +185,3 @@ async def drop_collection(request: Request, token: Token):
     staff = Staff()
     await staff.drop_collection()
     abort(status_code=JsonSuccessCode, message='员工表已清除')
-

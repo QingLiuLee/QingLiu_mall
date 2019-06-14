@@ -97,3 +97,10 @@ class Organization(IBaseModel):
             condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
 
         return self.find_many(condition=condition, limit=limit)
+
+    @try_except
+    def get_all_org_count_by_staff_code(self):
+        """获取商户数量"""
+        condition = {'$and': [{'staff_code': self.staff_code}]}
+
+        return self.get_info_count_by_filter(condition=condition)

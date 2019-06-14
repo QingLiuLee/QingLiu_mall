@@ -103,3 +103,12 @@ class Product(IBaseModel):
             condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
 
         return self.find_many(condition=condition, limit=limit)
+
+    @try_except
+    def get_all_product_count_by_org_code(self, category_type=[]):
+        """获取产品的数量"""
+        condition = {'$and': [{'org_code': self.org_code}]}
+
+        if category_type:
+            condition['$and'].append({'category_code': {'$in': category_type}})
+        return self.get_info_count_by_filter(condition=condition)

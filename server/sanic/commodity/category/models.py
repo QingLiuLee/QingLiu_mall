@@ -83,6 +83,12 @@ class Category(IBaseModel):
         return self.find_many(condition=condition, limit=limit)
 
     @try_except
+    def get_all_category_count_by_org_code(self):
+        """获取品类数量"""
+        condition = {'$and': [{'org_code': self.org_code}]}
+        return self.get_info_count_by_filter(condition=condition)
+
+    @try_except
     def delete_category_by_org_code_and_category_code_list(self, category_code_list):
         """根据品类ID删除品类信息"""
         return self.delete_many_by_condition(condition={'category_code': {'$in': category_code_list}})
