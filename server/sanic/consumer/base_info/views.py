@@ -56,7 +56,7 @@ async def consumer_sign_in(request):
 
     consumer = ConsumerBaseInfo.init_base_info(**params)
 
-    consumer_info = await consumer.find_consumer_by_mobile_or_nickname()
+    consumer_info = await consumer.get_consumer_pwd()
     if not consumer_info:
         abort(status_code=NoExistsErrorCode, message='当前账号不存在')
 

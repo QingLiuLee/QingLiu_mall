@@ -221,3 +221,11 @@ class ConsumerBaseInfo(IBaseModel):
             condition={'consumer_code': self.consumer_code},
             projection={'_id': 0, 'receiving_address': 1}
         )
+
+    @try_except
+    def get_consumer_pwd(self):
+        """获取消费者的登录密码"""
+        return self.find_one(
+            condition={'consumer_code': self.consumer_code},
+            projection={'_id': 0, 'password': 1, 'consumer_code': 1}
+        )
