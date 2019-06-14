@@ -4,6 +4,8 @@
 # @Describe : 商家信息表
 import datetime
 
+from bson import ObjectId
+
 from system.base_model import IBaseModel
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
@@ -87,7 +89,18 @@ class Organization(IBaseModel):
         }})
 
     @try_except
-    def find_all_org_list_by_staff_code(self):
+    def find_all_org_list_by_staff_code(self, last_id=None, limit=10):
         """根据管理员编码获取商家列表"""
-        return self.find(condition={'staff_code': self.staff_code},
-                         projection={'_id': 0, })
+
+        condition = {'$and': [{'staff_code': self.staff_code}]}
+        if last_id:
+            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+
+        return self.find_many(condition=condition, limit=limit)
+
+    @try_except
+    def get_all_org_count_by_staff_code(self):
+        """获取商户数量"""
+        condition = {'$and': [{'staff_code': self.staff_code}]}
+
+        return self.get_info_count_by_filter(condition=condition)

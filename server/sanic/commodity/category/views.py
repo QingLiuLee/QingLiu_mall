@@ -53,11 +53,11 @@ async def update_category_info(request: Request, token: Token):
     params = request.json
 
     category = Category.init_category_info(**params)
-    if not all([category, category.check_params_is_none([category.create_time])]):
+    if not all([category, category.check_params_is_none(['create_time'])]):
         abort(status_code=ParamsErrorCode)
 
-    is_exists = category.find_category_by_org_code_and_category_name()
-    if is_exists:
+    old_category = await category.find_category_by_org_code_and_category_name()
+    if old_category and old_category['category_code'] != category.category_code:
         abort(status_code=ExistsErrorCode, message='品类信息已存在')
 
     result = await category.update_category_info()
@@ -78,12 +78,20 @@ async def get_category_info_list(request: Request, token: Token):
 
     params = request.json
 
+    limit = params.get('limit', 10)
+    last_id = params.get('last_id', None)
+
     category = Category.init_category_info(**params)
     if not category or not category.org_code:
         abort(status_code=ParamsErrorCode)
 
-    category_list = await category.find_category_list_by_org_code()
-    abort(status_code=JsonSuccessCode, message=category_list)
+    category_list = await category.find_category_list_by_org_code(limit=limit, last_id=last_id)
+    total_count = await category.get_all_category_count_by_org_code()
+
+    for category in category_list:
+        category['_id'] = str(category['_id'])
+
+    abort(status_code=JsonSuccessCode, message={"list": category_list, "count": total_count})
 
 
 @blueprint.route(uri='/delete/info', methods=['POST'])
@@ -100,3 +108,13 @@ async def delete_category_info(request: Request, token: Token):
     category_list = await category.delete_category_by_org_code_and_category_code_list(
         category_code_list=params['category_code_list'])
     abort(status_code=JsonSuccessCode, message=category_list)
+
+
+@blueprint.route(uri='/drop/collection', methods=['POST'])
+@response_exception
+async def drop_collection(request: Request, token: Token):
+    """删除品类collection"""
+
+    category = Category()
+    await category.drop_collection()
+    abort(status_code=JsonSuccessCode, message='品类表已清除')

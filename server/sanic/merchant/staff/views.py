@@ -7,7 +7,6 @@ from sanic import Blueprint
 from sanic.request import Request
 from sanic_jwt_extended import create_access_token
 from sanic_jwt_extended.tokens import Token
-from sanic.exceptions import abort
 
 from merchant.staff.models import Staff
 from system.response import *
@@ -97,7 +96,7 @@ async def create_inner_info(request: Request, token: Token):
     staff_code = staff.create_admin_info()
 
     if staff_code:
-        await staff.set_org_roles_by_staff_code(org_code=org_code, role_name=role_name)
+        await staff.set_org_roles_by_staff_code(staff_code=staff_code, org_code=org_code, role_name=role_name)
         abort(status_code=JsonSuccessCode, message=staff_code)
 
     abort(status_code=ServerErrorCode, message='创建账号失败')
@@ -115,15 +114,74 @@ async def get_inner_list(request: Request, token: Token):
     params = request.json
 
     org_code = params.get('org_code', '')
+    limit = params.get('limit', 10)
+    last_id = params.get('last_id', None)
+    role_type = params.get('role_type', [])
     if not all([org_code]):
         abort(status_code=ParamsErrorCode)
 
     staff = Staff()
-    staff_list = await staff.get_staff_list_by_org_code(org_code=org_code)
-    total_count = await staff.get_all_staff_count_by_org_code(org_code=org_code)
+    staff_list = await staff.get_staff_list_by_org_code(org_code=org_code, role_type=role_type, limit=limit,
+                                                        last_id=last_id)
+    total_count = await staff.get_all_staff_count_by_org_code(org_code=org_code, role_type=role_type)
 
     for staff in staff_list:
         staff['_id'] = str(staff['_id'])
         staff['create_time'] = staff['create_time'].strftime('%Y-%m-%d %H:%M:%S')
 
     abort(status_code=JsonSuccessCode, message={"list": staff_list, "count": total_count})
+
+
+@blueprint.route(uri='/unregister', methods=['POST'])
+@response_exception
+async def unregister_staff(request: Request, token: Token):
+    """注销当前用户信息"""
+    params = request.json
+
+    staff_code = params.get('staff_code', '')
+    if not staff_code:
+        abort(status_code=ParamsErrorCode)
+
+    staff = Staff.init_staff_info(**params)
+    remove_result = await staff.remove_account()
+
+    if remove_result.deleted_count:
+        abort(status_code=JsonSuccessCode, message='账号已移除')
+    else:
+        abort(status_code=JsonSuccessCode, message='找不到该账号')
+
+
+@blueprint.route(uri='/remove/inner/info', methods=['POST'])
+@response_exception
+async def remove_inner_staff(request: Request, token: Token):
+    """移除内部员工"""
+
+    params = request.json
+
+    org_code = params.get('org_code', '')
+
+    staff = Staff.init_staff_info(**params)
+
+    if not all([org_code, staff.staff_code]):
+        abort(status_code=ParamsErrorCode)
+
+    staff_info = await staff.get_staff_info_by_staff_code()
+    if not staff_info:
+        abort(status_code=NoExistsErrorCode, message='当前账号不存在')
+
+    role_result = staff.get_role_info_by_org_code(role_list=staff_info['roles'], org_code=org_code)
+    if not role_result:
+        abort(status_code=JsonSuccessCode, message='当前账号与机构无关联')
+
+    await staff.set_role_end_time_by_org_code(org_code=org_code)
+    abort(status_code=JsonSuccessCode, message='已移除该账号与机构的关联')
+
+
+@blueprint.route(uri='/drop/collection', methods=['POST'])
+@response_exception
+async def drop_collection(request: Request, token: Token):
+    """删除员工collection"""
+
+    staff = Staff()
+    await staff.drop_collection()
+    abort(status_code=JsonSuccessCode, message='员工表已清除')

@@ -6,6 +6,8 @@
 # @Function:
 import datetime
 
+from bson import ObjectId
+
 from system.base_model import IBaseModel
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
@@ -87,3 +89,26 @@ class Product(IBaseModel):
     def delete_info_by_product_code(self, product_code_list):
         """根据产品ID删除产品"""
         return self.delete_many_by_condition(condition={'product_code': {'$in': product_code_list}})
+
+    @try_except
+    def find_product_list_by_org_code(self, category_type=[], last_id=None, limit=10):
+        """获取商户下的产品列表"""
+
+        condition = {'$and': [{'org_code': self.org_code}]}
+
+        if category_type:
+            condition['$and'].append({'category_code': {'$in': category_type}})
+
+        if last_id:
+            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+
+        return self.find_many(condition=condition, limit=limit)
+
+    @try_except
+    def get_all_product_count_by_org_code(self, category_type=[]):
+        """获取产品的数量"""
+        condition = {'$and': [{'org_code': self.org_code}]}
+
+        if category_type:
+            condition['$and'].append({'category_code': {'$in': category_type}})
+        return self.get_info_count_by_filter(condition=condition)
