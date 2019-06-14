@@ -118,7 +118,7 @@ class Staff(IBaseModel):
     @try_except
     def set_org_roles_by_staff_code(self, org_code='', role_name=''):
         """
-        更新角色列表
+        添加角色信息
         :return:
         """
 
@@ -141,7 +141,7 @@ class Staff(IBaseModel):
         if last_id:
             condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
 
-        return self.get_info_list_by_last_limit(condition=condition, projection={'password': 0}, limit=limit)
+        return self.find_many(condition=condition, projection={'password': 0}, limit=limit)
 
     @try_except
     def get_all_staff_count_by_org_code(self, org_code, role_type=[]):
@@ -158,3 +158,22 @@ class Staff(IBaseModel):
         """删除账号信息"""
         condition = {'staff_code': self.staff_code}
         return self.delete_one_by_condition(condition=condition)
+
+    @try_except
+    def get_role_info_by_org_code(self, role_list, org_code):
+        """根据商户编码获取当前用户的角色信息"""
+        if not role_list or not org_code:
+            return False
+
+        for role in role_list:
+            if role['org_code'] == org_code and not role['end_time']:
+                return role
+
+        return False
+
+    @try_except
+    def set_role_end_time_by_org_code(self, org_code):
+        """根据商户编码设置角色的结束时间(移除该角色)"""
+        return self.update_one_by_custom(condition={'$and': [{'staff_code': self.staff_code},
+                                                             {'roles.org_code': org_code}]}, update={
+            '$set': {'roles.$.end_time': datetime.datetime.now()}})

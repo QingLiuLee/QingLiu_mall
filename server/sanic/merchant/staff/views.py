@@ -145,3 +145,40 @@ async def unregister_staff(request: Request, token: Token):
         abort(status_code=JsonSuccessCode, message='账号已移除')
     else:
         abort(status_code=JsonSuccessCode, message='找不到该账号')
+
+
+@blueprint.route(uri='/remove/inner/info', methods=['POST'])
+@response_exception
+async def remove_inner_staff(request: Request, token: Token):
+    """移除内部员工"""
+
+    params = request.json
+
+    org_code = params.get('org_code', '')
+
+    staff = Staff.init_staff_info(**params)
+
+    if not all([org_code, staff.staff_code]):
+        abort(status_code=ParamsErrorCode)
+
+    staff_info = await staff.get_staff_info_by_staff_code()
+    if not staff_info:
+        abort(status_code=NoExistsErrorCode, message='当前账号不存在')
+
+    role_result = staff.get_role_info_by_org_code(role_list=staff_info['roles'], org_code=org_code)
+    if not role_result:
+        abort(status_code=JsonSuccessCode, message='当前账号与机构无关联')
+
+    await staff.set_role_end_time_by_org_code(org_code=org_code)
+    abort(status_code=JsonSuccessCode, message='已移除该账号与机构的关联')
+
+
+@blueprint.route(uri='/drop/collection', methods=['POST'])
+@response_exception
+async def drop_collection(request: Request, token: Token):
+    """删除员工collection"""
+
+    staff = Staff()
+    await staff.drop_collection()
+    abort(status_code=JsonSuccessCode, message='员工表已清除')
+

@@ -87,3 +87,13 @@ async def get_org_info_list(request: Request, token: Token):
     for org_info in org_list:
         org_info['_id'] = str(org_info['_id'])
     abort(status_code=JsonSuccessCode, message=org_list)
+
+
+@blueprint.route(uri='/drop/collection', methods=['POST'])
+@response_exception
+async def drop_collection(request: Request, token: Token):
+    """删除商户collection"""
+
+    org = Organization()
+    await org.drop_collection()
+    abort(status_code=JsonSuccessCode, message='商户表已清除')

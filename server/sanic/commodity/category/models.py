@@ -4,6 +4,8 @@
 # @Describe :
 import datetime
 
+from bson import ObjectId
+
 from system.base_model import IBaseModel
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
@@ -72,9 +74,13 @@ class Category(IBaseModel):
         return self.find_one(condition={'org_code': self.org_code, 'category_name': self.category_name})
 
     @try_except
-    def find_category_list_by_org_code(self):
+    def find_category_list_by_org_code(self, last_id=None, limit=10):
         """获取商家品类信息"""
-        return self.find(condition={'org_code': self.org_code})
+        condition = {'$and': [{'org_code': self.org_code}]}
+        if last_id:
+            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+
+        return self.find_many(condition=condition, limit=limit)
 
     @try_except
     def delete_category_by_org_code_and_category_code_list(self, category_code_list):

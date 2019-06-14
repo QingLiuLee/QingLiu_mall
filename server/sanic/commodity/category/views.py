@@ -104,3 +104,13 @@ async def delete_category_info(request: Request, token: Token):
     category_list = await category.delete_category_by_org_code_and_category_code_list(
         category_code_list=params['category_code_list'])
     abort(status_code=JsonSuccessCode, message=category_list)
+
+
+@blueprint.route(uri='/drop/collection', methods=['POST'])
+@response_exception
+async def drop_collection(request: Request, token: Token):
+    """删除品类collection"""
+
+    category = Category()
+    await category.drop_collection()
+    abort(status_code=JsonSuccessCode, message='品类表已清除')

@@ -101,3 +101,13 @@ async def get_product_info_list(request: Request, token: Token):
         category['_id'] = str(category['_id'])
 
     abort(status_code=JsonSuccessCode, message=category_list)
+
+
+@blueprint.route(uri='/drop/collection', methods=['POST'])
+@response_exception
+async def drop_collection(request: Request, token: Token):
+    """删除商品collection"""
+
+    product = Product()
+    await product.drop_collection()
+    abort(status_code=JsonSuccessCode, message='商品表已清除')

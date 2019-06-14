@@ -6,6 +6,8 @@
 # @Function:
 import datetime
 
+from bson import ObjectId
+
 from system.base_model import IBaseModel
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
@@ -89,11 +91,15 @@ class Product(IBaseModel):
         return self.delete_many_by_condition(condition={'product_code': {'$in': product_code_list}})
 
     @try_except
-    def find_product_list_by_org_code(self, category_type=[]):
+    def find_product_list_by_org_code(self, category_type=[], last_id=None, limit=10):
         """获取商户下的产品列表"""
 
-        condition = {'org_code': self.org_code}
+        condition = {'$and': [{'org_code': self.org_code}]}
 
         if category_type:
-            condition['category_code'] = {'$in': category_type}
-        return self.find(condition=condition)
+            condition['$and'].append({'category_code': {'$in': category_type}})
+
+        if last_id:
+            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+
+        return self.find_many(condition=condition, limit=limit)
