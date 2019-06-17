@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {
     Form,
     Input,
@@ -11,7 +11,7 @@ const { Option } = Select;
  * @date 2019/6/12
  * @Description: 商铺管理 - 品类模块 -> 创建|修改
 */
-class CategoryModal extends Component{
+class CategoryModal extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -82,8 +82,8 @@ class CategoryModal extends Component{
         )
     }
 }
-Form.create({
-    name: 'addShop',
+export default Form.create({
+    name: 'categoryModal',
     onFieldsChange(props, changedFields) {   //监听修改是否可保存
         props.onChange(changedFields);    //onChange对应监听值改变就执行父组件方法
     }

@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { Input, Button } from 'antd';
 
 class SearchForm extends React.Component {
@@ -6,7 +6,7 @@ class SearchForm extends React.Component {
         super(props);
 
         this.state = {
-            userName:'hui'
+            org_code:'M2019061406340968'
         }
     }
 
@@ -16,23 +16,22 @@ class SearchForm extends React.Component {
 
     onReset = ()=>{
         this.setState({
-            userName:''
+            org_code:''
         })
     }
 
     render() {
-        const { userName } = this.state;
+        const { org_code } = this.state;
 
         return (
             <div className="ql-search-div">
                 <div>
-                    {/*<label><em className="red">*</em>学年学期</label>*/}
-                    <label>用户名</label>
+                    <label className="label-red">商铺编码</label>
                     <Input
                         style={{width:150}}
-                        placeholder="Username"
-                        value={userName}
-                        onClick={(e)=>this.setState({userName:e.target.value})}
+                        placeholder="请输入商铺编码"
+                        value={org_code}
+                        onChange={(e)=>this.setState({org_code:e.target.value})}
                     />
                 </div>
                 <Button type="primary" onClick={this.onSearch}>查询</Button>

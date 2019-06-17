@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import { Route,Link,withRouter } from 'react-router-dom'
+import React from 'react';
+import { Link, withRouter } from 'react-router-dom'
 import { Icon } from 'antd';
 
 @withRouter
-export default class LeftBar extends Component {
+export default class LeftBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             active:0,
             links:[
-                { path:'/home', icon:'home', title:'首页'},
+                // { path:'/home', icon:'home', title:'首页'},
                 {
                     icon:'coffee', title:'商铺管理',
                     children:[
-                        { path:'/shops_mange/user', icon:'copy', title:'用户管理',},
-                        { path:'/shops_mange/shops', icon:'copy', title:'商铺管理',}
+                        { path:'/shops_mange/user', icon:'copy', title:'用户模块',},
+                        { path:'/shops_mange/shops', icon:'copy', title:'商铺模块',}
                     ]
                 },
                 {
                     icon:'coffee', title:'商品管理',
                     children:[
-                        { path:'/goods_mange/category', icon:'copy', title:'品类管理',},
-                        { path:'/goods_mange/goods', icon:'copy', title:'商品关联',}
+                        { path:'/goods_mange/category', icon:'copy', title:'品类模块',},
+                        { path:'/goods_mange/goods', icon:'copy', title:'商品模块',}
                     ]
                 }
             ],

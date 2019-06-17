@@ -1,8 +1,8 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { Button,message } from 'antd';
 import ComTable from '../../common/ComTable';
 import ComModal from '../../common/ComModal';
-import SearchForm from '../../search';
+import SearchForm from './search';
 import ShopModal from './addShopModal';
 import { post } from '../../../utils/axiosUtil'
 import { getLocalStorage } from '../../../utils/localStorage'
@@ -12,7 +12,7 @@ import { getLocalStorage } from '../../../utils/localStorage'
  * @date 2019/4/28
  * @Description: 商铺管理 - 商铺模块
 */
-export default class Shops extends Component{
+export default class Shops extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -41,7 +41,7 @@ export default class Shops extends Component{
     }
 
     handleFormChange = () => {
-        this.setState({disabled:false});
+        this.setState({disabled: false});
     }
 
     // 查询
@@ -59,7 +59,11 @@ export default class Shops extends Component{
     addModal = () =>{
         this.setState({
             visible:true,
-            isAdd: true
+            isAdd: true,
+            disabled: false,
+            shopDatas: {
+                staff_code: getLocalStorage('staff_code')
+            }
         })
     }
 
@@ -68,8 +72,10 @@ export default class Shops extends Component{
         this.setState({
             visible:true,
             isAdd: false,
+            disabled: true,
             shopDatas:val
         })
+        console.log(val);
     }
 
     // 创建 | 保存
@@ -99,9 +105,6 @@ export default class Shops extends Component{
                     })
                 }).catch(err =>{
                     message.warning(err.data)
-                    this.setState({
-                        visible: false
-                    })
                 })
             }
         });
@@ -154,16 +157,11 @@ export default class Shops extends Component{
             <div className="ql-main home">
                 {/* 创建|修改 商铺*/}
                 <ComModal
-                    visible={visible}
-                    title={isAdd ? '创建商铺':'修改商铺'}
-                    footer={[
-                        <Button key={1}
-                                type="primary"
-                                onClick={this.onSubmit}
-                                disabled={disabled}
-                        >确定</Button>,
-                        <Button key={2} onClick={()=>this.setState({visible:false})}>取消</Button>
-                    ]}
+                    visible = {visible}
+                    title = {isAdd ? '创建商铺':'修改商铺'}
+                    disabled = {disabled}
+                    onCancel = {()=>this.setState({visible:false})}
+                    onSubmit = {this.onSubmit}
                 >
                     <ShopModal
                         ref="shopform"

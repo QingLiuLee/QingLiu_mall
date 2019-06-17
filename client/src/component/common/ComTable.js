@@ -202,8 +202,11 @@ class MyTable extends Component {
     };
 
     render() {
-        const { visible, newColumns, border, size, loading, data, refresh, plainOptions, total, pagination } = this.state;
-        const { showBtn, tops, url, rowKeys, pageSizeOpt, newDatas } = this.props;
+        const { visible, newColumns,
+            border, size,loading, data,
+            refresh, plainOptions, total, pagination
+        } = this.state;
+        const { showBtn, tops, url, rowKey, pageSizeOpt, newDatas } = this.props;
 
         const content = (
             <div className="table-checkbox">
@@ -250,7 +253,7 @@ class MyTable extends Component {
                     refresh = {refresh}
                     onChange={this.handleTableChange}
                     url = {url}
-                    rowKey={rowKeys != null ? rowKeys : record => record._id}
+                    rowKey={rowKey ? rowKey : record => record._id}
                     columns={newColumns}
                     plainOptions = {plainOptions}
                 />
