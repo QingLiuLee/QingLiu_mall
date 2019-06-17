@@ -88,7 +88,8 @@ class Product(IBaseModel):
     @try_except
     def delete_info_by_product_code(self, product_code_list):
         """根据产品ID删除产品"""
-        return self.delete_many_by_condition(condition={'product_code': {'$in': product_code_list}})
+        return self.delete_many_by_condition(condition={'$and': [{'product_code': {'$in': product_code_list}},
+                                                                 {'org_code': self.org_code}]})
 
     @try_except
     def find_product_list_by_org_code(self, category_type=[], last_id=None, limit=10):

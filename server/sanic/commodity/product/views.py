@@ -78,7 +78,7 @@ async def delete_product_info(request: Request, token: Token):
     params = request.json
 
     product = Product.init_product_info(**params)
-    if not product or product.org_code:
+    if not product or not product.org_code:
         abort(status_code=ParamsErrorCode)
 
     product_list = await product.delete_info_by_product_code(product_code_list=params['product_code_list'])
