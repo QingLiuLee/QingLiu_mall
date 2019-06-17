@@ -1,12 +1,13 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { Input, Button } from 'antd';
+import {getLocalStorage} from "../../../utils/localStorage";
 
 class SearchForm extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            userName:'hui'
+            staff_code: getLocalStorage('staff_code'),
         }
     }
 
@@ -21,17 +22,17 @@ class SearchForm extends React.Component {
     }
 
     render() {
-        const { userName } = this.state;
+        const { staff_code } = this.state;
 
         return (
             <div className="ql-search-div">
                 <div>
-                    <label>用户名</label>
+                    <label className="label-red">商铺管理员编码</label>
                     <Input
                         style={{width:150}}
-                        placeholder="Username"
-                        value={userName}
-                        onChange={(e)=>this.setState({userName:e.target.value})}
+                        placeholder="请输入"
+                        value={staff_code}
+                        onChange={(e)=>this.setState({staff_code:e.target.value})}
                     />
                 </div>
                 <Button type="primary" onClick={this.onSearch}>查询</Button>

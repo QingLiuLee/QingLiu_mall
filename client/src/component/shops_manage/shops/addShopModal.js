@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {
     Form,
     Input,
@@ -11,7 +11,7 @@ const { Option } = Select;
  * @date 2019/6/12
  * @Description: 商铺管理 - 商品模块 -> 创建|修改商铺
 */
-class ShopModal extends Component{
+class ShopModal extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -123,7 +123,7 @@ class ShopModal extends Component{
                                 </Select>
                             )}
                         </Form.Item>
-                        <Form.Item label="商铺管理员编码" hasFeedback>
+                        <Form.Item label="商铺管理员编码" hasFeedback id="a">
                             {getFieldDecorator('staff_code', {
                                 initialValue: datas ? datas.staff_code : undefined,
                                 rules: [
@@ -143,7 +143,7 @@ class ShopModal extends Component{
     }
 }
 export default Form.create({
-    name: 'addShop',
+    name: 'shopModal',
     onFieldsChange(props, changedFields) {   //监听修改是否可保存
         props.onChange(changedFields);    //onChange对应监听值改变就执行父组件方法
     }
