@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { Button,message } from 'antd';
 import ComTable from '../../common/ComTable';
 import ComModal from '../../common/ComModal';
@@ -11,7 +11,7 @@ import { post } from '../../../utils/axiosUtil'
  * @date 2019/4/28
  * @Description: 商品管理 - 品类模块
 */
-export default class Category extends Component{
+export default class Category extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -22,10 +22,15 @@ export default class Category extends Component{
 
             addCategoryUrl: '/v1/commodity/category/create/info',
             editCategoryUrl: '/v1/commodity/category/update/info',
+            delCategoryUrl: '/v1/commodity/category/delete/info',
             visible: false,
             isAdd: true,
 
-            categoryDatas: {}
+            categoryDatas: {
+                org_code: "M2019061406340968",
+                staff_code: "S2019061204090878"
+            },
+            category_code_list: []
         }
     }
 
@@ -77,7 +82,6 @@ export default class Category extends Component{
     onSubmit = () =>{
         this.refs.categoryform.validateFields((err, formData) => {
             if (!err) {
-                console.info('success');
                 const { isAdd, addCategoryUrl, editCategoryUrl, categoryDatas} = this.state
                 const url = isAdd ? addCategoryUrl : editCategoryUrl
                 if(!isAdd){
@@ -89,7 +93,7 @@ export default class Category extends Component{
                     }
                     this.setState({
                         visible: false,
-                        categoryDatas: [],
+                        categoryDatas: {},
                         refresh:1
                     },()=>{
                         this.setState({
@@ -103,12 +107,46 @@ export default class Category extends Component{
         });
     }
 
+    // 批量删除
+    delBatch = (record) =>{
+        let param = {}
+        if(record == null){
+            param = {
+                org_code: 'M2019061406340968',
+                category_code_list: this.state.category_code_list
+            }
+        }else{
+            param = {
+                org_code: record.org_code,
+                category_code_list: [record.category_code]
+            }
+        }
+        post(this.state.delCategoryUrl, param).then(res => {
+            message.success(res.msg)
+            this.setState({
+                refresh: 1
+            },()=>{
+                this.setState({
+                    refresh: 0
+                })
+            })
+        })
+    }
+
     render (){
         const {
             categoryUrl, visible, isAdd,
             categoryDatas,disabled,
-            refresh, postParam, getParam
+            refresh, postParam, getParam,
+            category_code_list
         } = this.state
+
+        const rowSelection = {
+            category_code_list,
+            onChange: (selectedRowKeys, selectedRows) => {
+                this.setState({ category_code_list: selectedRowKeys });
+            }
+        }
 
         const columns = [
             {
@@ -127,7 +165,11 @@ export default class Category extends Component{
                 dataIndex: 'opera',
                 key: 'opera',
                 render: (text,record) =>{
-                    return <a onClick={()=>this.editModal(record)}>修改</a>
+                    return <div>
+                            <a onClick={()=>this.editModal(record)}>修改</a>
+                            <span style={{margin:'0 5px'}}>|</span>
+                            <a onClick={()=>this.delBatch(record)}>删除</a>
+                        </div>
                 }
             }
         ];
@@ -155,6 +197,7 @@ export default class Category extends Component{
 
                 <div className="ql-main-btns home-btn">
                     <Button type="primary" onClick={this.addModal}>创建品类</Button>
+                    <Button type="primary" onClick={this.delBatch}>批量删除</Button>
                 </div>
 
                 <div className="ql-main-table home-table">
@@ -164,6 +207,8 @@ export default class Category extends Component{
                         refresh={refresh}
                         postParam={postParam}
                         getParam={getParam}
+                        rowSelection={rowSelection}
+                        rowKey={record => record.category_code}
                     />
                 </div>
             </div>

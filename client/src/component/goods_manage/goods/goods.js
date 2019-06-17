@@ -1,8 +1,8 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { Button,message } from 'antd';
 import ComTable from '../../common/ComTable';
 import ComModal from '../../common/ComModal';
-import SearchForm from '../../search';
+import SearchForm from './search';
 import GoodModal from './goodModal';
 import { post } from '../../../utils/axiosUtil'
 import { getLocalStorage } from '../../../utils/localStorage'
@@ -12,40 +12,46 @@ import { getLocalStorage } from '../../../utils/localStorage'
  * @date 2019/6/13
  * @Description: 商品管理 - 商品模块
 */
-export default class Goods extends Component{
+export default class Goods extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             goodUrl: '/v1/commodity/product/get/info/list',
             refresh: 0,//table改变时对应刷新变化值
-            postParam: {
-                org_code: "11111111"
-            },
+            postParam: {},
             getParam: {},
 
             addGoodUrl: '/v1/commodity/product/create/info',
             editGoodUrl: '/v1/commodity/product/update/info',
+            delGoodUrl: '/v1/commodity/product/delete/info',
             visible: false,
             isAdd: true,
             imgs: 'logo2',
             goodDatas: {
-                org_name: undefined,
-                explain: undefined,
-                img_list: undefined,
-                sale_type: undefined,
-                staff_code: getLocalStorage('staff_code')
-            }
+                // category_code: "C2019061623162339",
+                // explain: "光滑柔嫩",
+                // img_list: ["img1"],
+                // org_code: "M2019061406340968",
+                // product_name: "洗面奶",
+                // sale_price: "40"
+            },
+            product_code_list: []
         }
     }
 
     componentDidMount = () => {
-        this.onSearch(null)
+        this.onSearch({
+            org_code:'M2019061403235646'
+        })
     }
 
     // 查询
     onSearch = (val)=>{
         this.setState({
-            refresh: 1
+            refresh: 1,
+            postParam: {
+                ...val
+            }
         },()=>{
             this.setState({
                 refresh: 0
@@ -53,11 +59,20 @@ export default class Goods extends Component{
         })
     }
 
+    handleFormChange = () => {
+        this.setState({disabled:false});
+    }
+
     // 创建商品
     addModal = () =>{
         this.setState({
             visible: true,
-            isAdd: true
+            isAdd: true,
+            disabled: false,
+            goodDatas: {
+                org_code: 'M2019061406340968',
+                category_code: 'C2019061623162339'
+            }
         })
     }
 
@@ -66,20 +81,19 @@ export default class Goods extends Component{
         this.setState({
             visible: true,
             isAdd: false,
-            shopDatas: val
+            disabled: true,
+            goodDatas: val
         })
     }
 
     // 创建 | 保存
     onSubmit = () =>{
-        this.refs.shopform.validateFields((err, formData) => {
+        this.goodForm.props.form.validateFields((err, formData) => {
             if (!err) {
-                console.info('success');
                 const { isAdd, addGoodUrl, editGoodUrl, goodDatas} = this.state
                 const url = isAdd ? addGoodUrl : editGoodUrl
-
                 if(!isAdd){
-                    formData.org_code = goodDatas.org_code
+                    formData.product_code = goodDatas.product_code
                 }
                 post(url,formData,null).then(res =>{
                     if(!isAdd){
@@ -88,62 +102,98 @@ export default class Goods extends Component{
                     console.log(formData);
                     this.setState({
                         visible: false,
-                        goodDatas: formData
+                        refresh: 1,
+                    },()=>{
+                        this.setState({
+                            refresh: 0
+                        })
                     })
                 }).catch(err =>{
                     message.warning(err.data)
-                    this.setState({
-                        visible: false
-                    })
                 })
             }
         });
     }
 
+    // 批量删除
+    delBatch = (record) =>{
+        let param = {}
+        if(record == null){
+            param = {
+                org_code: 'M2019061403235646',
+                product_code_list: this.state.product_code_list
+            }
+        }else{
+            param = {
+                org_code: record.org_code,
+                product_code_list: [record.product_code]
+            }
+        }
+        post(this.state.delGoodUrl, param).then(res => {
+            message.success(res.msg)
+            this.setState({
+                refresh: 1
+            },()=>{
+                this.setState({
+                    refresh: 0
+                })
+            })
+        })
+    }
+
+
     render (){
         const {
-            shopUrl, visible, isAdd, imgs,
-            goodDatas,
+            goodUrl, visible, isAdd, imgs,
+            goodDatas,product_code_list,
             refresh, postParam, getParam
         } = this.state
 
+        const rowSelection = {
+            product_code_list,
+            onChange: (selectedRowKeys, selectedRows) => {
+                this.setState({
+                    product_code_list: selectedRowKeys
+                });
+            }
+        }
+
         const columns = [
             {
-                title: '商铺名称',
-                dataIndex: 'org_name',
-                key: 'org_name',
+                title: '商品名称',
+                dataIndex: 'product_name',
+                key: 'product_name',
                 render: text => <a href="#">{text}</a>,
             },
             {
-                title: '商铺简介',
+                title: '商品简介',
                 dataIndex: 'explain',
                 key: 'explain',
             },
             {
-                title: '商铺图片',
+                title: '商品图片',
                 dataIndex: 'img_list',
                 key: 'img_list',
                 render: text => {
                     {/*<img src={imgs == undefined ? default_admin : require(`../../assert/images/${imgs}.png`)} alt=""/>*/}
-                    return <img style={{maxWidth: 100,height: 'auto'}} src={require(`assert/images/logo/${imgs}.png`)} alt=""/>
+                    return <img style={{maxWidth: 50,height: 'auto'}} src={require(`assert/images/logo/${imgs}.png`)} alt=""/>
                 }
             },
             {
-                title: '售货类型',
-                dataIndex: 'sale_type',
-                key: 'sale_type'
-            },
-            {
-                title: '商铺管理员编码',
-                dataIndex: 'owner_code',
-                key: 'owner_code',
+                title: '销售单价',
+                dataIndex: 'sale_price',
+                key: 'sale_price'
             },
             {
                 title: '操作',
                 dataIndex: 'opera',
                 key: 'opera',
                 render: (text,record) =>{
-                    return <a onClick={()=>this.editModal(record)}>修改</a>
+                    return <div>
+                            <a onClick={()=>this.editModal(record)}>修改</a>
+                            <span style={{margin:'0 5px'}}>|</span>
+                            <a onClick={()=>this.delBatch(record)}>删除</a>
+                        </div>
                 }
             }
         ];
@@ -157,7 +207,12 @@ export default class Goods extends Component{
                     onSubmit={this.onSubmit}
                     title={isAdd ? '创建商品':'修改商品'}
                 >
-                    <GoodModal ref="shopform" datas={goodDatas}/>
+                    <GoodModal
+                        wrappedComponentRef={(form) => this.goodForm = form}
+                        datas={goodDatas}
+                        isAdd={isAdd}
+                        onChange={this.handleFormChange}
+                    />
                 </ComModal>
 
                 <div className="ql-main-search home-search">
@@ -166,15 +221,18 @@ export default class Goods extends Component{
 
                 <div className="ql-main-btns home-btn">
                     <Button type="primary" onClick={this.addModal}>创建商品</Button>
+                    <Button type="primary" onClick={this.delBatch}>批量删除</Button>
                 </div>
 
                 <div className="ql-main-table home-table">
                     <ComTable
                         columns={columns}
-                        url={shopUrl}
+                        url={goodUrl}
                         refresh={refresh}
                         postParam={postParam}
                         getParam={getParam}
+                        rowSelection={rowSelection}
+                        rowKey={record => record.product_code}
                     />
                 </div>
             </div>

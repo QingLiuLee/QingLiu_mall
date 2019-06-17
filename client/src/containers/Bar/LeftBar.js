@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Route,Link,withRouter } from 'react-router-dom'
+import React from 'react';
+import { Link, withRouter } from 'react-router-dom'
 import { Icon } from 'antd';
 
 @withRouter
-export default class LeftBar extends Component {
+export default class LeftBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             active:0,
             links:[
-                { path:'/home', icon:'home', title:'首页'},
+                // { path:'/home', icon:'home', title:'首页'},
                 {
                     icon:'coffee', title:'商铺管理',
                     children:[
