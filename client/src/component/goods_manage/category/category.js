@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Button,message } from 'antd';
 import ComTable from '../../common/ComTable';
 import ComModal from '../../common/ComModal';
-import SearchForm from '../../search';
+import SearchForm from './search';
 import CategoryModal from './categoryModal';
 import { post } from '../../../utils/axiosUtil'
 
@@ -17,9 +17,7 @@ export default class Category extends Component{
         this.state = {
             categoryUrl: '/v1/commodity/category/get/info/list',
             refresh: 0,
-            postParam: {
-                org_code: "M2019061320011857"
-            },
+            postParam: {},
             getParam: {},
 
             addCategoryUrl: '/v1/commodity/category/create/info',
@@ -32,13 +30,18 @@ export default class Category extends Component{
     }
 
     componentDidMount = () => {
-        this.onSearch(null)
+        this.onSearch({
+            org_code:'M2019061406340968'
+        })
     }
 
     // 查询
     onSearch = (val)=>{
         this.setState({
-            refresh: 1
+            refresh: 1,
+            postParam: {
+                ...val
+            }
         },()=>{
             this.setState({
                 refresh: 0
@@ -50,20 +53,22 @@ export default class Category extends Component{
         this.setState({disabled:false});
     }
 
-    // 创建商铺
+    // 创建品类
     addModal = () =>{
         this.setState({
             visible: true,
-            isAdd: true
+            isAdd: true,
+            disabled:false
         })
     }
 
-    // 更新商铺
+    // 更新品类
     editModal = (val) =>{
         console.log(val);
         this.setState({
             visible: true,
             isAdd: false,
+            disabled: true,
             categoryDatas: val
         })
     }
@@ -93,9 +98,6 @@ export default class Category extends Component{
                     })
                 }).catch(err =>{
                     message.warning(err.data)
-                    this.setState({
-                        visible: false
-                    })
                 })
             }
         });
@@ -104,7 +106,7 @@ export default class Category extends Component{
     render (){
         const {
             categoryUrl, visible, isAdd,
-            categoryDatas,
+            categoryDatas,disabled,
             refresh, postParam, getParam
         } = this.state
 
@@ -135,9 +137,10 @@ export default class Category extends Component{
                 {/* 创建|修改 品类*/}
                 <ComModal
                     visible={visible}
-                    onCancel={()=>this.setState({visible:false})}
-                    onSubmit={this.onSubmit}
-                    title={isAdd ? '创建品类':'修改品类'}
+                    title = {isAdd ? '创建品类':'修改品类'}
+                    disabled = {disabled}
+                    onCancel = {()=>this.setState({visible:false})}
+                    onSubmit = {this.onSubmit}
                 >
                     <CategoryModal
                         onChange={this.handleFormChange}
@@ -151,7 +154,7 @@ export default class Category extends Component{
                 </div>
 
                 <div className="ql-main-btns home-btn">
-                    <Button onClick={this.addModal}>创建品类</Button>
+                    <Button type="primary" onClick={this.addModal}>创建品类</Button>
                 </div>
 
                 <div className="ql-main-table home-table">

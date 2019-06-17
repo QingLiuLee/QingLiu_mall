@@ -82,8 +82,8 @@ class CategoryModal extends Component{
         )
     }
 }
-Form.create({
-    name: 'addShop',
+export default Form.create({
+    name: 'categoryModal',
     onFieldsChange(props, changedFields) {   //监听修改是否可保存
         props.onChange(changedFields);    //onChange对应监听值改变就执行父组件方法
     }
