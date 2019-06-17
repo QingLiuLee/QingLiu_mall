@@ -13,15 +13,15 @@ export default class LeftBar extends Component {
                 {
                     icon:'coffee', title:'商铺管理',
                     children:[
-                        { path:'/shops_mange/user', icon:'copy', title:'用户管理',},
-                        { path:'/shops_mange/shops', icon:'copy', title:'商铺管理',}
+                        { path:'/shops_mange/user', icon:'copy', title:'用户模块',},
+                        { path:'/shops_mange/shops', icon:'copy', title:'商铺模块',}
                     ]
                 },
                 {
                     icon:'coffee', title:'商品管理',
                     children:[
-                        { path:'/goods_mange/category', icon:'copy', title:'品类管理',},
-                        { path:'/goods_mange/goods', icon:'copy', title:'商品关联',}
+                        { path:'/goods_mange/category', icon:'copy', title:'品类模块',},
+                        { path:'/goods_mange/goods', icon:'copy', title:'商品模块',}
                     ]
                 }
             ],

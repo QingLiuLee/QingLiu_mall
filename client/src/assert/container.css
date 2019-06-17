@@ -338,6 +338,14 @@ textarea {
   position: relative;
   top: -0.5px;
 }
+.lee-admin .themsBlack .ql-search-div > div label.label-red:before {
+  color: red;
+  content: "*";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
+  font-size: 14px;
+}
 .lee-admin .themsBlack .ql-mask {
   width: 100%;
   height: 100%;
@@ -669,6 +677,14 @@ textarea {
   margin: 0 4px 0 2px;
   position: relative;
   top: -0.5px;
+}
+.lee-admin .themsSVGL .ql-search-div > div label.label-red:before {
+  color: red;
+  content: "*";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGL .ql-mask {
   width: 100%;
@@ -1002,6 +1018,14 @@ textarea {
   position: relative;
   top: -0.5px;
 }
+.lee-admin .themsSVGLFZ .ql-search-div > div label.label-red:before {
+  color: red;
+  content: "*";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
+  font-size: 14px;
+}
 .lee-admin .themsSVGLFZ .ql-mask {
   width: 100%;
   height: 100%;
@@ -1333,6 +1357,14 @@ textarea {
   margin: 0 4px 0 2px;
   position: relative;
   top: -0.5px;
+}
+.lee-admin .themsSVGF .ql-search-div > div label.label-red:before {
+  color: red;
+  content: "*";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGF .ql-mask {
   width: 100%;
@@ -1666,6 +1698,14 @@ textarea {
   position: relative;
   top: -0.5px;
 }
+.lee-admin .themsSVGFZ .ql-search-div > div label.label-red:before {
+  color: red;
+  content: "*";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
+  font-size: 14px;
+}
 .lee-admin .themsSVGFZ .ql-mask {
   width: 100%;
   height: 100%;
@@ -1997,6 +2037,14 @@ textarea {
   margin: 0 4px 0 2px;
   position: relative;
   top: -0.5px;
+}
+.lee-admin .themsSVGGF .ql-search-div > div label.label-red:before {
+  color: red;
+  content: "*";
+  margin: 0 4px 0 2px;
+  position: relative;
+  top: -0.5px;
+  font-size: 14px;
 }
 .lee-admin .themsSVGGF .ql-mask {
   width: 100%;
