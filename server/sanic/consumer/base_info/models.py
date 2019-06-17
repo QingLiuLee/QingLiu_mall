@@ -118,15 +118,26 @@ class ConsumerBaseInfo(IBaseModel):
         return base_info
 
     @try_except
-    def find_consumer_by_mobile_or_nickname(self):
+    def find_consumer_by_mobile_or_nickname_or_email(self):
         """
         根据手机号或者昵称查找用户信息
         :return:
         """
         return self.find_one(condition={
             '$or': [{'mobile': self.mobile},
-                    {'nickname': self.nickname}]},
+                    {'nickname': self.nickname},
+                    {'email': self.email}]},
             projection={'_id': 0, 'create_time': 0, 'verify_id': 0, 'password': 0})
+
+    @try_except
+    def find_consumer_by_mobile_or_nickname_or_email_without_consumer_code(self):
+        """过滤掉消费者编码获取消费者信息"""
+        return self.find_one(condition={
+            '$and': [{'consumer_code': {'$ne': self.consumer_code}},
+                     {'$or': [{'mobile': self.mobile},
+                              {'nickname': self.nickname},
+                              {'email': self.email}]}]
+        }, projection={'_id': 0, 'create_time': 0, 'verify_id': 0, 'password': 0})
 
     @try_except
     def find_consumer_by_consumer_code(self):
@@ -159,14 +170,16 @@ class ConsumerBaseInfo(IBaseModel):
         return None
 
     @try_except
-    def update_consumer_nickname_and_email(self):
+    def update_consumer_base_info(self):
         """
         更新消费者信息
         :return:
         """
         if all([self.consumer_code, self.nickname, self.email]):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code}, update={
-                '$set': {'nickname': self.nickname, 'email': self.email}})
+                '$set': {'nickname': self.nickname, 'email': self.email, 'mobile': self.mobile,
+                         'avatar': self.avatar, 'gender': self.gender, 'birthday': self.birthday,
+                         'intro': self.intro}})
         return None
 
     @try_except
