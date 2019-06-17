@@ -91,4 +91,5 @@ class Category(IBaseModel):
     @try_except
     def delete_category_by_org_code_and_category_code_list(self, category_code_list):
         """根据品类ID删除品类信息"""
-        return self.delete_many_by_condition(condition={'category_code': {'$in': category_code_list}})
+        return self.delete_many_by_condition(condition={'$and': [{'category_code': {'$in': category_code_list}},
+                                                                 {'org_code': self.org_code}]})
