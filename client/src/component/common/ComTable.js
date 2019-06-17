@@ -116,8 +116,8 @@ class MyTable extends Component {
             let data = [];
             let total = 0;
             if (res.data){
-                data = res.data;
-                // total = res.data.total;
+                data = res.data.list;
+                total = res.data.count;
             }
             this.setState({
                 data: data,
@@ -186,6 +186,7 @@ class MyTable extends Component {
     }
 
     getData=()=>{
+        console.log(this.state.data);
         return this.state.data;
     }
 
@@ -215,9 +216,14 @@ class MyTable extends Component {
         );
 
         let top = 0;
-        if(showBtn){if(tops){top = 0;} else{top = -40;}}
+        if(showBtn){
+            if(!tops){
+                top = -40;
+            }
+        }
+
         return (
-            <div style={{position:'relative',top:top + 'px'}} className="com-table-all">
+            <div style={{position:'relative',marginTop:top + 'px'}} className="com-table-all">
                 <div style={{display:showBtn ? 'inline-block':'none',height:'30px',marginBottom: '10px'}}>
                     <div className="table-btn">
                         <Popover
@@ -244,7 +250,7 @@ class MyTable extends Component {
                     refresh = {refresh}
                     onChange={this.handleTableChange}
                     url = {url}
-                    rowKey={rowKeys != null ? rowKeys : record => record.id}
+                    rowKey={rowKeys != null ? rowKeys : record => record._id}
                     columns={newColumns}
                     plainOptions = {plainOptions}
                 />

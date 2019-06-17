@@ -11,7 +11,7 @@ const { Option } = Select;
  * @date 2019/6/12
  * @Description: 商铺管理 - 商品模块 -> 创建|修改商铺
 */
-class AddShopModal extends Component{
+class ShopModal extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -142,4 +142,9 @@ class AddShopModal extends Component{
         )
     }
 }
-export default Form.create({ name: 'addShop' })(AddShopModal)
+export default Form.create({
+    name: 'addShop',
+    onFieldsChange(props, changedFields) {   //监听修改是否可保存
+        props.onChange(changedFields);    //onChange对应监听值改变就执行父组件方法
+    }
+})(ShopModal)
