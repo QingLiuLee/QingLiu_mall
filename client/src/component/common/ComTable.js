@@ -80,14 +80,14 @@ class MyTable extends Component {
 
     //选中事件
     onChecked = (val,e)=>{  //不刷新table
-        let plainOptions = [...this.state.plainOptions];
+        let { plainOptions, columnsProps } = [...this.state.plainOptions];
         plainOptions.map((item, index) =>{
             if(item.title === val.title){
                 item.checked = e.target.checked;
-                this.props.columnsProps[index].display = e.target.checked;
+                columnsProps[index].display = e.target.checked;
             }
         });
-        let newColumns = [...this.props.columnsProps].filter(item => item.display != false)
+        let newColumns = columnsProps.filter(item => item.display !== false)
         this.setState({newColumns, plainOptions});
     }
 
@@ -95,32 +95,24 @@ class MyTable extends Component {
     fetch = (getParams,postParams)=>{
         this.setState({ loading: true });
 
-        let { pagination } = this.state;
-        if(Object.keys(postParams).length !== 0){
-            if(postParams.pageNo && postParams.pageSize){
-                pagination = {
-                    ...pagination,
-                    pageNo: postParams.pageNo,
-                    pageSize: postParams.pageSize
-                }
-            }else{
-                pagination = {
-                    ...pagination,
-                    pageNo:1
-                }
-                postParams = {...pagination, ...postParams}
+        if(this.state.data.length > 0){
+            const { data,pagination }  = this.state
+            postParams = {
+                ...postParams,
+                limit: pagination.pageSize,
+                last_id: data[data.length - 1]._id
+            }
+        }else{
+            postParams = {
+                ...postParams,
+                last_id: null
             }
         }
         post(this.props.url, postParams, getParams).then(res => {
-            let data = [];
-            let total = 0;
             if (res.data){
-                data = res.data.list;
-                total = res.data.count;
                 this.setState({
-                    data,
-                    pagination,
-                    total,
+                    data: res.data.list,
+                    total: res.data.count,
                     loading: false
                 });
             }
