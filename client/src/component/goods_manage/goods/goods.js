@@ -35,13 +35,14 @@ export default class Goods extends React.Component{
                 // product_name: "洗面奶",
                 // sale_price: "40"
             },
-            product_code_list: []
+            product_code_list: [],
+            org_code:'M2019061403235646'
         }
     }
 
     componentDidMount = () => {
         this.onSearch({
-            org_code:'M2019061403235646'
+            org_code: this.state.org_code
         })
     }
 
@@ -70,7 +71,7 @@ export default class Goods extends React.Component{
             isAdd: true,
             disabled: false,
             goodDatas: {
-                org_code: 'M2019061406340968',
+                org_code: this.state.org_code,
                 category_code: 'C2019061623162339'
             }
         })
@@ -120,7 +121,7 @@ export default class Goods extends React.Component{
         let param = {}
         if(record == null){
             param = {
-                org_code: 'M2019061403235646',
+                org_code: this.state.org_code,
                 product_code_list: this.state.product_code_list
             }
         }else{

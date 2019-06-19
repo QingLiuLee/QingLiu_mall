@@ -30,13 +30,14 @@ export default class Category extends React.Component{
                 org_code: "M2019061406340968",
                 staff_code: "S2019061204090878"
             },
+            org_code: "M2019061406340968",
             category_code_list: []
         }
     }
 
     componentDidMount = () => {
         this.onSearch({
-            org_code:'M2019061406340968'
+            org_code: this.state.org_code
         })
     }
 
@@ -112,7 +113,7 @@ export default class Category extends React.Component{
         let param = {}
         if(record == null){
             param = {
-                org_code: 'M2019061406340968',
+                org_code: this.state.org_code,
                 category_code_list: this.state.category_code_list
             }
         }else{
