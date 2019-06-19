@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom'
 
 import Login from '../../containers/login/login'
+import Users from '../../component/shops_manage/users/users'
 import Shops from '../../component/shops_manage/shops/shops'
 import Category from '../../component/goods_manage/category/category'
 import Goods from '../../component/goods_manage/goods/goods'
@@ -12,7 +13,7 @@ export default class RightBar extends React.Component {
         this.state = {
             route:[
                 {exact:true, path:'/login', component:Login},
-                {path:'/shops_mange/user', component:Shops},
+                {path:'/shops_mange/user', component: Users},
                 {path:'/shops_mange/shops', component:Shops},
                 {path:'/goods_mange/category', component:Category},
                 {path:'/goods_mange/goods', component:Goods},
