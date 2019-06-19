@@ -1,8 +1,7 @@
 import React,{ Component } from "react"
 import {Table,Pagination,Button,Checkbox,Popover} from 'antd'
 import { post } from "../../utils/axiosUtil";
-const ButtonGroup = Button.Group;
-
+import { offset,getSize } from '../../utils/document'
 /**
  * @author hui
  * @date 2018
@@ -13,118 +12,118 @@ class MyTable extends Component {
         super(props);
 
         this.state = {
-            data: this.props.data ? this.props.data : [],
+            data: [],
             pagination: {
                 pageNo:1,
                 pageSize:10
             },
             total: 0,
             size:'middle',
-            border:this.props.border == false ? false : true,
+            border: true,
             loading: false,
 
             newColumns:this.props.columnsProps ? this.props.columnsProps : this.props.columns,  //保存原始数组
             plainOptions:[], //checkbox数组
             visible:false,  //显示checkbox
+
             fieldOrder:null,
             orderField:null,
+
+            tableHeight: 0
         };
     }
 
+    // 设置高
+    setHeight = height => {
+        let tableHeight = 0;
+        // 获取table头部的高度
+        let tableTopHeight = 0;
+        if (this.tableRef) {
+            tableTopHeight = this.tableRef.querySelector(".ant-table-thead")
+                .clientHeight;
+        }
+        if (height > 0) {
+            tableHeight = height;
+        } else {
+            const offsetTop = offset(this.tableRef).top;
+            tableHeight = getSize().windowH - offsetTop - tableTopHeight - 55
+        }
+        this.setState({
+            tableHeight
+        });
+    };
+
     //渲染后初始化
     componentDidMount(){
-        if(this.props.columnsProps) {
+        let { columnsProps } = this.props;
+        if(columnsProps) {
             let plainOptions = [];
-            let columnsProps = [...this.props.columnsProps];
-            if (this.props.showBtn) {//默认有隐藏字段
-                columnsProps.map(item => {
-                    if (item.display == false) {
-                        plainOptions.push({
-                            title: item.title,
-                            checked: false
-                        });
-                    } else {
-                        plainOptions.push({
-                            title: item.title,
-                            checked: true
-                        });
-                    }
+            columnsProps.map(item => {
+                plainOptions.push({
+                    title: item.title,
+                    checked: item.display ? false : true
                 });
-                columnsProps = columnsProps.filter(item => item.display != false)
-            } else {
-                columnsProps.map(item => {
-                    plainOptions.push({
-                        title: item.title,
-                        checked: true
-                    });
-                });
-            }
+            });
+            // 过滤默认有隐藏字段
+            columnsProps = columnsProps.filter(item => item.display !== false)
             this.setState({
                 plainOptions: plainOptions,
                 newColumns: columnsProps
             })
+        }
+
+        // 设置scroolY
+        if(this.props.scroll && this.props.scroll.y === 0){
+            this.setHeight(0)
         }
     }
 
     //选中事件
     onChecked = (val,e)=>{  //不刷新table
         let plainOptions = [...this.state.plainOptions];
-        plainOptions.map((item) =>{
-            if(item.title == val.title){
+        plainOptions.map((item, index) =>{
+            if(item.title === val.title){
                 item.checked = e.target.checked;
+                this.props.columnsProps[index].display = e.target.checked;
             }
         });
-
-        this.props.columnsProps.map(item =>{  //每次操作都会有记录
-            if(item.title == val.title){
-                item.display = e.target.checked;
-            }
-        })
-
         let newColumns = [...this.props.columnsProps].filter(item => item.display != false)
-        this.setState({newColumns:newColumns,plainOptions:plainOptions});
+        this.setState({newColumns, plainOptions});
     }
 
     //获取数据
     fetch = (getParams,postParams)=>{
         this.setState({ loading: true });
-        /*let postParam = {...this.state.pagination};
 
-        if(Object.keys(postParams).length == 0){
-            // console.log(postParams)
-        }else{
+        let { pagination } = this.state;
+        if(Object.keys(postParams).length !== 0){
             if(postParams.pageNo && postParams.pageSize){
-                this.setState({
-                    pagination:{
-                        pageNo:postParams.pageNo,
-                        pageSize:postParams.pageSize
-                    }
-                });
-                postParam = {...postParams};
+                pagination = {
+                    ...pagination,
+                    pageNo: postParams.pageNo,
+                    pageSize: postParams.pageSize
+                }
             }else{
-                let size = this.state.pagination.pageSize;
-                postParam = {pageNo:1,pageSize:size, ...postParams}
-                this.setState({
-                    pagination:{
-                        pageNo:1,
-                        pageSize:size
-                    }
-                });
+                pagination = {
+                    ...pagination,
+                    pageNo:1
+                }
+                postParams = {...pagination, ...postParams}
             }
-        }*/
-        post(this.props.url, postParams, this.props.getParam).then(res => {
+        }
+        post(this.props.url, postParams, getParams).then(res => {
             let data = [];
             let total = 0;
             if (res.data){
                 data = res.data.list;
                 total = res.data.count;
+                this.setState({
+                    data,
+                    pagination,
+                    total,
+                    loading: false
+                });
             }
-            this.setState({
-                data: data,
-                pagination:{...this.state.pagination},
-                total:total,
-                loading: false
-            });
         }).catch(err => {
             this.setState({ loading: false });
             if(!err.code){
@@ -142,28 +141,18 @@ class MyTable extends Component {
             });
             this.fetch({getParam: this.props.getParam}, {
                 ...this.props.postParam,
-                pageNo: this.state.pagination.pageNo,
-                pageSize: this.state.pagination.pageSize,
+                ...this.state.pagination,
                 total:this.state.total,
                 attributeNamesForOrderBy :{[pagination.field]:pagination.order}
             });
         }
         else{
-            if(!this.state.orderField || !this.state.fieldOrder){
-                this.fetch({getParam: this.props.getParam}, {
-                    ...this.props.postParam,
-                    pageNo: pageNo,
-                    pageSize: pageSize,
-                });
-            }
-            else{
-                this.fetch({getParam: this.props.getParam}, {
-                    ...this.props.postParam,
-                    pageNo: pageNo,
-                    pageSize: pageSize,
-                    attributeNamesForOrderBy :{[this.state.orderField]:this.state.fieldOrder},
-                });
-            }
+            this.fetch({getParam: this.props.getParam}, {
+                ...this.props.postParam,
+                pageNo: pageNo,
+                pageSize: pageSize,
+                attributeNamesForOrderBy : !this.state.orderField || !this.state.fieldOrder ? {} : {[this.state.orderField]:this.state.fieldOrder}
+            });
         }
     }
 
@@ -182,6 +171,10 @@ class MyTable extends Component {
     componentWillReceiveProps(){
         if(this.props.refresh != 0 && this.props.refresh!=undefined){
             this.fetch(this.props.getParam,this.props.postParam);
+            // 设置scroolY
+            /*if(this.props.scroll && this.props.scroll.y){
+                this.setHeight(0)
+            }*/
         }
     }
 
@@ -190,44 +183,38 @@ class MyTable extends Component {
         return this.state.data;
     }
 
-    handleResize = index => (e, { size }) => {
-        this.setState(({ newColumns }) => {
-            const nextColumns = [...newColumns];
-            nextColumns[index] = {
-                ...nextColumns[index],
-                width: size.width,
-            };
-            return { newColumns: nextColumns };
-        });
-    };
-
     render() {
-        const { visible, newColumns,
-            border, size,loading, data,
-            refresh, plainOptions, total, pagination
+        const {
+            newColumns, plainOptions, visible,
+            border, size, loading, data, refresh,
+            total, pagination,
+            tableHeight
         } = this.state;
-        const { showBtn, tops, url, rowKey, pageSizeOpt, newDatas } = this.props;
+        const {
+            columnsProps, hasOpearBtn,
+            url, rowKey,pageSizeOpt, newDatas,
+            scroll
+        } = this.props;
 
         const content = (
             <div className="table-checkbox">
                 {
                     [...plainOptions].map((item, index)=>{
-                        return <Checkbox checked={item.checked} onChange={this.onChecked.bind(this,item)} key={index} style={{display: 'block'}}>{item.title}</Checkbox>
+                        return <Checkbox
+                            checked={item.checked}
+                            onChange={this.onChecked.bind(this,item)}
+                            key={index}
+                            style={{display: 'block'}}
+                        >{item.title}</Checkbox>
                     })
                 }
             </div>
         );
 
-        let top = 0;
-        if(showBtn){
-            if(!tops){
-                top = -40;
-            }
-        }
-
+        const top = columnsProps && hasOpearBtn ? -40 : 0;
         return (
-            <div style={{position:'relative',marginTop:top + 'px'}} className="com-table-all">
-                <div style={{display:showBtn ? 'inline-block':'none',height:'30px',marginBottom: '10px'}}>
+            <div style={{position:'relative',marginTop:top + 'px'}} className="com-table-all" ref={ref => {this.tableRef = ref;}}>
+                <div style={{display:columnsProps ? 'inline-block':'none',height:'30px',marginBottom: '10px'}}>
                     <div className="table-btn">
                         <Popover
                             title="隐藏/显示列"
@@ -243,6 +230,7 @@ class MyTable extends Component {
                         </Popover>
                     </div>
                 </div>
+
                 <Table
                     {...this.props}
                     bordered = {border}
@@ -256,6 +244,11 @@ class MyTable extends Component {
                     rowKey={rowKey ? rowKey : record => record._id}
                     columns={newColumns}
                     plainOptions = {plainOptions}
+
+                    scroll={{
+                        ...scroll,
+                        y: data && data[0] && scroll && scroll.y === 0 ? tableHeight : 0
+                    }}
                 />
 
                 {this.props.display ? null :

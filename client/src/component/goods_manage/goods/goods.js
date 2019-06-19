@@ -227,13 +227,15 @@ export default class Goods extends React.Component{
 
                 <div className="ql-main-table home-table">
                     <ComTable
-                        columns={columns}
+                        columnsProps={columns}
+                        hasOpearBtn={true}
                         url={goodUrl}
                         refresh={refresh}
                         postParam={postParam}
                         getParam={getParam}
                         rowSelection={rowSelection}
                         rowKey={record => record.product_code}
+                        // scroll={{y:0}}
                     />
                 </div>
             </div>
