@@ -10,8 +10,8 @@
     "start": "yarn webpack-dev-server",
     "dev": "set NODE_ENV=development&& yarn webpack --progress --hide-modules --config webpack.config.js",
     "dev:dll": "yarn webpack --config webpack.dll.config.js",
-    "build": "set NODE_ENV=production&& yarn run build:dll && yarn webpack --progress --hide-modules --config webpack.config.js",
-    "build:dll": "set NODE_ENV=production&& yarn webpack --config webpack.dll.config.js"
+    "pro": "set NODE_ENV=production&& yarn run pro:dll && yarn webpack --progress --hide-modules --config webpack.config.js",
+    "pro:dll": "set NODE_ENV=production&& yarn webpack --config webpack.dll.config.js"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
