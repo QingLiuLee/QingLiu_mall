@@ -29,7 +29,7 @@ async def create_consumer_info(request):
                                                       'third_party_info']):
         abort(status_code=ParamsErrorCode)
 
-    old_info = await consumer.find_consumer_by_mobile_or_nickname()
+    old_info = await consumer.find_consumer_by_mobile_or_nickname_or_email()
     if old_info:
         abort(status_code=ExistsErrorCode, message='账号已存在')
 
@@ -39,6 +39,26 @@ async def create_consumer_info(request):
         abort(status_code=JsonSuccessCode, message=consumer_code)
     else:
         abort(status_code=ServerErrorCode, message='账号创建失败')
+
+
+@blueprint.route(uri='/update/info', methods=['POST'])
+@response_exception
+async def update_info(request: Request, token: Token):
+    """更新消费者信息"""
+    """参数(consumer_code, nickname, email, mobile, avatar,gender,birthday,intro)"""
+    params = request.json
+    consumer = ConsumerBaseInfo.init_base_info(**params)
+
+    if not consumer.check_params_is_none(['password', 'verify_id', 'receiving_address',
+                                      'third_party_info', 'create_time']):
+        abort(status_code=ParamsErrorCode)
+
+    is_exist = await consumer.find_consumer_by_mobile_or_nickname_or_email_without_consumer_code()
+    if is_exist:
+        abort(status_code=ExistsErrorCode, message='昵称、手机号或邮箱已被注册')
+
+    update_result = await consumer.update_consumer_base_info()
+    abort(status_code=JsonSuccessCode, message=update_result)
 
 
 @blueprint.route(uri='/sign/in', methods=['POST'])
@@ -83,7 +103,7 @@ async def get_consumer_base_info(request: Request, token: Token):
     if consumer_code:
         consumer_info = await consumer.find_consumer_by_consumer_code()
     else:
-        consumer_info = await consumer.find_consumer_by_mobile_or_nickname()
+        consumer_info = await consumer.find_consumer_by_mobile_or_nickname_or_email()
 
     if not consumer_info:
         abort(status_code=NoExistsErrorCode, message='当前账号不存在')

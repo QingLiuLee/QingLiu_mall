@@ -6,10 +6,16 @@ from system.base_model import IEmbedded
 from utils.decorator.exception import try_except
 
 
-class Coupon(IEmbedded):
+class CouponDetail(IEmbedded):
     """
     优惠券
     """
+
+    __slots__ = {
+        'consumer_code', 'coupon_title', 'coupon_content',
+        '',
+        ''
+    }
 
     @try_except
     def update_consumer_coupon(self, coupon):

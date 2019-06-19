@@ -3,7 +3,6 @@
 # @Author   : Lee才晓
 # @Describe :
 from sanic import Blueprint
-from bson import json_util
 from sanic.exceptions import abort
 from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
