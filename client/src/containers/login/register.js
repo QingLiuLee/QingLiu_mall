@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import { Input,Icon,Button,Radio } from 'antd';
+import { post } from '../../utils/axiosUtil'
 import logo from 'assert/images/logo/logo2.png';
 const RadioGroup = Radio.Group;
 
@@ -12,19 +13,29 @@ export default class Register extends Component{
     constructor(props){
         super(props);
         this.state={
-            account:null,
-            password:null,
-            gender:1
+            registUrl: '/v1/merchant/staff/create/administrators/info',
+            nickname: null,
+            password: null,
+            mobile: null,
+            // gender:1
         }
     }
 
     //注册
     register = ()=>{
-        this.props.toggleRegister(false,false)
+        const { nickname, password, mobile } = this.state;
+        let param = {
+            nickname,
+            password,
+            mobile
+        }
+        post(this.state.registUrl, param).then(res => {
+            this.props.toggleRegister(false,false)
+        })
     }
 
     render (){
-        const { account, password, gender } = this.state;
+        const { nickname, password, mobile } = this.state;
         const style = {
             lineHeight: '30px',
             marginTop: '15px',
@@ -47,10 +58,10 @@ export default class Register extends Component{
                             <h2>注册</h2>
                             <h1>QING LIU</h1>
                             <Input
-                                placeholder="Enter your username"
+                                placeholder="Enter your nickname"
                                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                value={account}
-                                onChange={(e) => this.setState({ account: e.target.value })}
+                                value={nickname}
+                                onChange={(e) => this.setState({ nickname: e.target.value })}
                             />
                             <Input
                                 placeholder="Enter your password"
@@ -58,20 +69,20 @@ export default class Register extends Component{
                                 value={password}
                                 onChange={(e) => this.setState({ password: e.target.value })}
                             />
-                            {/*<Input
+                            <Input
                                 placeholder="Enter your mobile"
                                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                value={account}
-                                onChange={(e) => this.setState({ account: e.target.value })}
-                            />*/}
-                            <RadioGroup
+                                value={mobile}
+                                onChange={(e) => this.setState({ mobile: e.target.value })}
+                            />
+                            {/*<RadioGroup
                                 style={style}
                                 value={gender}
                                 onChange={(e) => this.setState({ gender: e.target.value })}
                             >
                                 <Radio value={1} style={{width:'42%'}}>男</Radio>
                                 <Radio value={2}>女</Radio>
-                            </RadioGroup>
+                            </RadioGroup>*/}
                             <Button type="primary" onClick={this.register} style={{marginTop:15}}>注册</Button>
                             <p>已有帐号 ？<span onClick={()=>this.props.toggleRegister(true,false)}>立即登录</span></p>
                         </div>
