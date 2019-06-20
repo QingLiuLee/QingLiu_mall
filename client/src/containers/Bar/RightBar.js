@@ -12,11 +12,11 @@ export default class RightBar extends React.Component {
         super(props);
         this.state = {
             route:[
-                {exact:true, path:'/login', component:Login},
-                {path:'/shops_mange/user', component: Users},
-                {path:'/shops_mange/shops', component:Shops},
-                {path:'/goods_mange/category', component:Category},
-                {path:'/goods_mange/goods', component:Goods},
+                {path:'/login', component:Login},
+                {path:'/user', component: Users},
+                {path:'/shops', component:Shops},
+                {path:'/category', component:Category},
+                {path:'/goods', component:Goods},
             ]
         }
     }
@@ -27,7 +27,7 @@ export default class RightBar extends React.Component {
                 <div className="lee-rightBar-bot-bot" >
                     {
                         this.state.route.map( item =>{
-                            return <Route key={item.path} exact={item.exact ? true:false} path={item.path} component={item.component}/>
+                            return <Route key={item.path} path={item.path} component={item.component}/>
                         })
                     }
                 </div>
