@@ -102,8 +102,8 @@ class IBaseModel(object):
         return self.__collection.find_one(filter=condition, projection=projection)
 
     @try_except
-    def find_many(self, condition=None, projection=None, limit=10):
-        return self.__collection.find(filter=condition, projection=projection).to_list(length=limit)
+    def find_many(self, condition=None, projection=None, limit=10, skip=0):
+        return self.__collection.find(filter=condition, projection=projection).skip(skip).to_list(length=limit)
 
     @try_except
     def get_info_count_by_filter(self, condition):

@@ -117,12 +117,14 @@ async def get_inner_list(request: Request, token: Token):
     limit = params.get('limit', 10)
     last_id = params.get('last_id', None)
     role_type = params.get('role_type', [])
+    skip = params.get('skip', 0)
+
     if not all([org_code]):
         abort(status_code=ParamsErrorCode)
 
     staff = Staff()
     staff_list = await staff.get_staff_list_by_org_code(org_code=org_code, role_type=role_type, limit=limit,
-                                                        last_id=last_id)
+                                                        last_id=last_id, skip=skip)
     total_count = await staff.get_all_staff_count_by_org_code(org_code=org_code, role_type=role_type)
 
     for staff in staff_list:
