@@ -33,7 +33,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _axios = __webpack_require__(26);
+var _axios = __webpack_require__(27);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -193,14 +193,7 @@ function getLocalStorage(key) {
 module.exports = (__webpack_require__(3))(565);
 
 /***/ }),
-/* 7 */,
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "assert/images/logo2.png";
-
-/***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -222,6 +215,8 @@ var _antd = __webpack_require__(1);
 
 var _axiosUtil = __webpack_require__(4);
 
+var _document = __webpack_require__(51);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -234,14 +229,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ButtonGroup = _antd.Button.Group;
-
 /**
  * @author hui
  * @date 2018
  * @Description: table(显示|分页|隐藏显示列|鼠标移上显示|列可拖曳)
  */
-
 var MyTable = function (_Component) {
     _inherits(MyTable, _Component);
 
@@ -250,66 +242,67 @@ var MyTable = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (MyTable.__proto__ || Object.getPrototypeOf(MyTable)).call(this, props));
 
+        _this.setHeight = function (height) {
+            var tableHeight = 0;
+            // 获取table头部的高度
+            var tableTopHeight = 0;
+            if (_this.tableRef) {
+                tableTopHeight = _this.tableRef.querySelector(".ant-table-thead").clientHeight;
+            }
+            if (height > 0) {
+                tableHeight = height;
+            } else {
+                var offsetTop = (0, _document.offset)(_this.tableRef).top;
+                tableHeight = (0, _document.getSize)().windowH - offsetTop - tableTopHeight - 55;
+            }
+            _this.setState({
+                tableHeight: tableHeight
+            });
+        };
+
         _this.onChecked = function (val, e) {
             //不刷新table
-            var plainOptions = [].concat(_toConsumableArray(_this.state.plainOptions));
-            plainOptions.map(function (item) {
-                if (item.title == val.title) {
+            var _ref = [].concat(_toConsumableArray(_this.state.plainOptions)),
+                plainOptions = _ref.plainOptions,
+                columnsProps = _ref.columnsProps;
+
+            plainOptions.map(function (item, index) {
+                if (item.title === val.title) {
                     item.checked = e.target.checked;
+                    columnsProps[index].display = e.target.checked;
                 }
             });
-
-            _this.props.columnsProps.map(function (item) {
-                //每次操作都会有记录
-                if (item.title == val.title) {
-                    item.display = e.target.checked;
-                }
-            });
-
-            var newColumns = [].concat(_toConsumableArray(_this.props.columnsProps)).filter(function (item) {
-                return item.display != false;
+            var newColumns = columnsProps.filter(function (item) {
+                return item.display !== false;
             });
             _this.setState({ newColumns: newColumns, plainOptions: plainOptions });
         };
 
         _this.fetch = function (getParams, postParams) {
             _this.setState({ loading: true });
-            /*let postParam = {...this.state.pagination};
-              if(Object.keys(postParams).length == 0){
-                // console.log(postParams)
-            }else{
-                if(postParams.pageNo && postParams.pageSize){
-                    this.setState({
-                        pagination:{
-                            pageNo:postParams.pageNo,
-                            pageSize:postParams.pageSize
-                        }
-                    });
-                    postParam = {...postParams};
-                }else{
-                    let size = this.state.pagination.pageSize;
-                    postParam = {pageNo:1,pageSize:size, ...postParams}
-                    this.setState({
-                        pagination:{
-                            pageNo:1,
-                            pageSize:size
-                        }
-                    });
-                }
-            }*/
-            (0, _axiosUtil.post)(_this.props.url, postParams, _this.props.getParam).then(function (res) {
-                var data = [];
-                var total = 0;
-                if (res.data) {
-                    data = res.data.list;
-                    total = res.data.count;
-                }
-                _this.setState({
-                    data: data,
-                    pagination: _extends({}, _this.state.pagination),
-                    total: total,
-                    loading: false
+
+            if (_this.state.data.length > 0) {
+                var _this$state = _this.state,
+                    data = _this$state.data,
+                    pagination = _this$state.pagination;
+
+                postParams = _extends({}, postParams, {
+                    limit: pagination.pageSize,
+                    last_id: data[data.length - 1]._id
                 });
+            } else {
+                postParams = _extends({}, postParams, {
+                    last_id: null
+                });
+            }
+            (0, _axiosUtil.post)(_this.props.url, postParams, getParams).then(function (res) {
+                if (res.data) {
+                    _this.setState({
+                        data: res.data.list,
+                        total: res.data.count,
+                        loading: false
+                    });
+                }
             }).catch(function (err) {
                 _this.setState({ loading: false });
                 if (!err.code) {
@@ -324,25 +317,16 @@ var MyTable = function (_Component) {
                     orderField: pagination.field,
                     fieldOrder: pagination.order
                 });
-                _this.fetch({ getParam: _this.props.getParam }, _extends({}, _this.props.postParam, {
-                    pageNo: _this.state.pagination.pageNo,
-                    pageSize: _this.state.pagination.pageSize,
+                _this.fetch({ getParam: _this.props.getParam }, _extends({}, _this.props.postParam, _this.state.pagination, {
                     total: _this.state.total,
                     attributeNamesForOrderBy: _defineProperty({}, pagination.field, pagination.order)
                 }));
             } else {
-                if (!_this.state.orderField || !_this.state.fieldOrder) {
-                    _this.fetch({ getParam: _this.props.getParam }, _extends({}, _this.props.postParam, {
-                        pageNo: pageNo,
-                        pageSize: pageSize
-                    }));
-                } else {
-                    _this.fetch({ getParam: _this.props.getParam }, _extends({}, _this.props.postParam, {
-                        pageNo: pageNo,
-                        pageSize: pageSize,
-                        attributeNamesForOrderBy: _defineProperty({}, _this.state.orderField, _this.state.fieldOrder)
-                    }));
-                }
+                _this.fetch({ getParam: _this.props.getParam }, _extends({}, _this.props.postParam, {
+                    pageNo: pageNo,
+                    pageSize: pageSize,
+                    attributeNamesForOrderBy: !_this.state.orderField || !_this.state.fieldOrder ? {} : _defineProperty({}, _this.state.orderField, _this.state.fieldOrder)
+                }));
             }
         };
 
@@ -361,81 +345,61 @@ var MyTable = function (_Component) {
             return _this.state.data;
         };
 
-        _this.handleResize = function (index) {
-            return function (e, _ref) {
-                var size = _ref.size;
-
-                _this.setState(function (_ref2) {
-                    var newColumns = _ref2.newColumns;
-
-                    var nextColumns = [].concat(_toConsumableArray(newColumns));
-                    nextColumns[index] = _extends({}, nextColumns[index], {
-                        width: size.width
-                    });
-                    return { newColumns: nextColumns };
-                });
-            };
-        };
-
         _this.state = {
-            data: _this.props.data ? _this.props.data : [],
+            data: [],
             pagination: {
                 pageNo: 1,
                 pageSize: 10
             },
             total: 0,
             size: 'middle',
-            border: _this.props.border == false ? false : true,
+            border: true,
             loading: false,
 
             newColumns: _this.props.columnsProps ? _this.props.columnsProps : _this.props.columns, //保存原始数组
             plainOptions: [], //checkbox数组
             visible: false, //显示checkbox
+
             fieldOrder: null,
-            orderField: null
+            orderField: null,
+
+            tableHeight: 0
         };
         return _this;
     }
 
-    //渲染后初始化
+    // 设置高
 
 
     _createClass(MyTable, [{
         key: "componentDidMount",
+
+
+        //渲染后初始化
         value: function componentDidMount() {
-            if (this.props.columnsProps) {
+            var columnsProps = this.props.columnsProps;
+
+            if (columnsProps) {
                 var plainOptions = [];
-                var columnsProps = [].concat(_toConsumableArray(this.props.columnsProps));
-                if (this.props.showBtn) {
-                    //默认有隐藏字段
-                    columnsProps.map(function (item) {
-                        if (item.display == false) {
-                            plainOptions.push({
-                                title: item.title,
-                                checked: false
-                            });
-                        } else {
-                            plainOptions.push({
-                                title: item.title,
-                                checked: true
-                            });
-                        }
+                columnsProps.map(function (item) {
+                    plainOptions.push({
+                        title: item.title,
+                        checked: item.display ? false : true
                     });
-                    columnsProps = columnsProps.filter(function (item) {
-                        return item.display != false;
-                    });
-                } else {
-                    columnsProps.map(function (item) {
-                        plainOptions.push({
-                            title: item.title,
-                            checked: true
-                        });
-                    });
-                }
+                });
+                // 过滤默认有隐藏字段
+                columnsProps = columnsProps.filter(function (item) {
+                    return item.display !== false;
+                });
                 this.setState({
                     plainOptions: plainOptions,
                     newColumns: columnsProps
                 });
+            }
+
+            // 设置scroolY
+            if (this.props.scroll && this.props.scroll.y === 0) {
+                this.setHeight(0);
             }
         }
 
@@ -458,6 +422,10 @@ var MyTable = function (_Component) {
         value: function componentWillReceiveProps() {
             if (this.props.refresh != 0 && this.props.refresh != undefined) {
                 this.fetch(this.props.getParam, this.props.postParam);
+                // 设置scroolY
+                /*if(this.props.scroll && this.props.scroll.y){
+                    this.setHeight(0)
+                }*/
             }
         }
     }, {
@@ -466,23 +434,25 @@ var MyTable = function (_Component) {
             var _this2 = this;
 
             var _state = this.state,
-                visible = _state.visible,
                 newColumns = _state.newColumns,
+                plainOptions = _state.plainOptions,
+                visible = _state.visible,
                 border = _state.border,
                 size = _state.size,
                 loading = _state.loading,
                 data = _state.data,
                 refresh = _state.refresh,
-                plainOptions = _state.plainOptions,
                 total = _state.total,
-                pagination = _state.pagination;
+                pagination = _state.pagination,
+                tableHeight = _state.tableHeight;
             var _props = this.props,
-                showBtn = _props.showBtn,
-                tops = _props.tops,
+                columnsProps = _props.columnsProps,
+                hasOpearBtn = _props.hasOpearBtn,
                 url = _props.url,
                 rowKey = _props.rowKey,
                 pageSizeOpt = _props.pageSizeOpt,
-                newDatas = _props.newDatas;
+                newDatas = _props.newDatas,
+                scroll = _props.scroll;
 
 
             var content = _react2.default.createElement(
@@ -491,25 +461,26 @@ var MyTable = function (_Component) {
                 [].concat(_toConsumableArray(plainOptions)).map(function (item, index) {
                     return _react2.default.createElement(
                         _antd.Checkbox,
-                        { checked: item.checked, onChange: _this2.onChecked.bind(_this2, item), key: index, style: { display: 'block' } },
+                        {
+                            checked: item.checked,
+                            onChange: _this2.onChecked.bind(_this2, item),
+                            key: index,
+                            style: { display: 'block' }
+                        },
                         item.title
                     );
                 })
             );
 
-            var top = 0;
-            if (showBtn) {
-                if (!tops) {
-                    top = -40;
-                }
-            }
-
+            var top = columnsProps && hasOpearBtn ? -40 : 0;
             return _react2.default.createElement(
                 "div",
-                { style: { position: 'relative', marginTop: top + 'px' }, className: "com-table-all" },
+                { style: { position: 'relative', marginTop: top + 'px' }, className: "com-table-all", ref: function ref(_ref3) {
+                        _this2.tableRef = _ref3;
+                    } },
                 _react2.default.createElement(
                     "div",
-                    { style: { display: showBtn ? 'inline-block' : 'none', height: '30px', marginBottom: '10px' } },
+                    { style: { display: columnsProps ? 'inline-block' : 'none', height: '30px', marginBottom: '10px' } },
                     _react2.default.createElement(
                         "div",
                         { className: "table-btn" },
@@ -550,7 +521,11 @@ var MyTable = function (_Component) {
                         return record._id;
                     },
                     columns: newColumns,
-                    plainOptions: plainOptions
+                    plainOptions: plainOptions,
+
+                    scroll: _extends({}, scroll, {
+                        y: data && data[0] && scroll && scroll.y === 0 ? tableHeight : 0
+                    })
                 })),
                 this.props.display ? null : _react2.default.createElement(_antd.Pagination, {
                     style: { marginTop: 10 },
@@ -582,7 +557,7 @@ var MyTable = function (_Component) {
 exports.default = MyTable;
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -673,6 +648,13 @@ var MyModal = function (_Modal) {
 exports.default = MyModal;
 
 /***/ }),
+/* 9 */,
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "assert/images/logo2.png";
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -709,7 +691,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _antd = __webpack_require__(1);
 
-var _logo = __webpack_require__(8);
+var _logo = __webpack_require__(10);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -863,12 +845,18 @@ exports.default = Login;
 
 /***/ }),
 /* 19 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/jpeg;base64,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"
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./bg.png": 52,
-	"./logo2.png": 8,
-	"./logo3.png": 53
+	"./bg.png": 58,
+	"./logo2.png": 10,
+	"./logo3.png": 59
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -884,10 +872,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 19;
+webpackContext.id = 20;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -897,27 +885,27 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(21);
+var _reactDom = __webpack_require__(22);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(6);
 
-var _reactRedux = __webpack_require__(22);
+var _reactRedux = __webpack_require__(23);
 
-var _store = __webpack_require__(23);
+var _store = __webpack_require__(24);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _App = __webpack_require__(46);
+var _App = __webpack_require__(47);
 
 var _App2 = _interopRequireDefault(_App);
 
-__webpack_require__(62);
+__webpack_require__(67);
 
-__webpack_require__(63);
+__webpack_require__(68);
 
-__webpack_require__(64);
+__webpack_require__(69);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -936,19 +924,19 @@ _reactDom2.default.render(_react2.default.createElement(
 ), document.getElementById('root'));
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(3))(10);
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(3))(580);
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -960,11 +948,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(11);
 
-var _combineReducers = __webpack_require__(24);
+var _combineReducers = __webpack_require__(25);
 
 var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-var _reduxThunk = __webpack_require__(45);
+var _reduxThunk = __webpack_require__(46);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -976,7 +964,7 @@ var store = (0, _redux.createStore)(_combineReducers2.default, (0, _redux.compos
 exports.default = store;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -988,13 +976,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(11);
 
-var _login = __webpack_require__(25);
+var _login = __webpack_require__(26);
 
 //合并所有reducers,并且返回
 exports.default = (0, _redux.combineReducers)({ login: _login.login });
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1120,7 +1108,6 @@ function userListData(data) {
 }
 
 /***/ }),
-/* 26 */,
 /* 27 */,
 /* 28 */,
 /* 29 */,
@@ -1139,13 +1126,14 @@ function userListData(data) {
 /* 42 */,
 /* 43 */,
 /* 44 */,
-/* 45 */
+/* 45 */,
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(3))(592);
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1165,15 +1153,15 @@ var _antd = __webpack_require__(1);
 
 var _reactRouterDom = __webpack_require__(6);
 
-var _LeftBar = __webpack_require__(47);
+var _LeftBar = __webpack_require__(48);
 
 var _LeftBar2 = _interopRequireDefault(_LeftBar);
 
-var _RightBar = __webpack_require__(48);
+var _RightBar = __webpack_require__(49);
 
 var _RightBar2 = _interopRequireDefault(_RightBar);
 
-var _admin = __webpack_require__(60);
+var _admin = __webpack_require__(19);
 
 var _admin2 = _interopRequireDefault(_admin);
 
@@ -1181,7 +1169,7 @@ var _login = __webpack_require__(18);
 
 var _login2 = _interopRequireDefault(_login);
 
-var _register = __webpack_require__(61);
+var _register = __webpack_require__(66);
 
 var _register2 = _interopRequireDefault(_register);
 
@@ -1408,7 +1396,7 @@ var App = function (_Component) {
 exports.default = App;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1453,10 +1441,10 @@ var LeftBar = (0, _reactRouterDom.withRouter)(_class = function (_React$Componen
             // { path:'/home', icon:'home', title:'首页'},
             {
                 icon: 'coffee', title: '商铺管理',
-                children: [{ path: '/shops_mange/user', icon: 'copy', title: '用户模块' }, { path: '/shops_mange/shops', icon: 'copy', title: '商铺模块' }]
+                children: [{ path: '/user', icon: 'copy', title: '用户模块' }, { path: '/shops', icon: 'copy', title: '商铺模块' }]
             }, {
                 icon: 'coffee', title: '商品管理',
-                children: [{ path: '/goods_mange/category', icon: 'copy', title: '品类模块' }, { path: '/goods_mange/goods', icon: 'copy', title: '商品模块' }]
+                children: [{ path: '/category', icon: 'copy', title: '品类模块' }, { path: '/goods', icon: 'copy', title: '商品模块' }]
             }]
         };
         return _this;
@@ -1583,7 +1571,7 @@ var LeftBar = (0, _reactRouterDom.withRouter)(_class = function (_React$Componen
 exports.default = LeftBar;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1606,15 +1594,19 @@ var _login = __webpack_require__(18);
 
 var _login2 = _interopRequireDefault(_login);
 
-var _shops = __webpack_require__(49);
+var _users = __webpack_require__(50);
+
+var _users2 = _interopRequireDefault(_users);
+
+var _shops = __webpack_require__(55);
 
 var _shops2 = _interopRequireDefault(_shops);
 
-var _category = __webpack_require__(54);
+var _category = __webpack_require__(60);
 
 var _category2 = _interopRequireDefault(_category);
 
-var _goods = __webpack_require__(57);
+var _goods = __webpack_require__(63);
 
 var _goods2 = _interopRequireDefault(_goods);
 
@@ -1635,7 +1627,7 @@ var RightBar = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (RightBar.__proto__ || Object.getPrototypeOf(RightBar)).call(this, props));
 
         _this.state = {
-            route: [{ exact: true, path: '/login', component: _login2.default }, { path: '/shops_mange/user', component: _shops2.default }, { path: '/shops_mange/shops', component: _shops2.default }, { path: '/goods_mange/category', component: _category2.default }, { path: '/goods_mange/goods', component: _goods2.default }]
+            route: [{ path: '/login', component: _login2.default }, { path: '/user', component: _users2.default }, { path: '/shops', component: _shops2.default }, { path: '/category', component: _category2.default }, { path: '/goods', component: _goods2.default }]
         };
         return _this;
     }
@@ -1650,7 +1642,7 @@ var RightBar = function (_React$Component) {
                     'div',
                     { className: 'lee-rightBar-bot-bot' },
                     this.state.route.map(function (item) {
-                        return _react2.default.createElement(_reactRouterDom.Route, { key: item.path, exact: item.exact ? true : false, path: item.path, component: item.component });
+                        return _react2.default.createElement(_reactRouterDom.Route, { key: item.path, path: item.path, component: item.component });
                     })
                 )
             );
@@ -1663,7 +1655,7 @@ var RightBar = function (_React$Component) {
 exports.default = RightBar;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1682,19 +1674,640 @@ var _react2 = _interopRequireDefault(_react);
 
 var _antd = __webpack_require__(1);
 
-var _ComTable = __webpack_require__(9);
+var _ComTable = __webpack_require__(7);
 
 var _ComTable2 = _interopRequireDefault(_ComTable);
 
-var _ComModal = __webpack_require__(10);
+var _ComModal = __webpack_require__(8);
 
 var _ComModal2 = _interopRequireDefault(_ComModal);
 
-var _search = __webpack_require__(50);
+var _search = __webpack_require__(52);
 
 var _search2 = _interopRequireDefault(_search);
 
-var _addShopModal = __webpack_require__(51);
+var _usersModal = __webpack_require__(53);
+
+var _usersModal2 = _interopRequireDefault(_usersModal);
+
+var _axiosUtil = __webpack_require__(4);
+
+var _localStorage = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @author hui
+ * @date 2019/4/28
+ * @Description: 商铺管理 - 用户模块
+*/
+var User = function (_React$Component) {
+    _inherits(User, _React$Component);
+
+    function User(props) {
+        _classCallCheck(this, User);
+
+        var _this = _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
+
+        _this.componentDidMount = function () {
+            _this.onSearch(null);
+        };
+
+        _this.handleFormChange = function () {
+            _this.setState({ disabled: false });
+        };
+
+        _this.onSearch = function (val) {
+            _this.setState({
+                refresh: 1
+            }, function () {
+                _this.setState({
+                    refresh: 0
+                });
+            });
+        };
+
+        _this.addModal = function () {
+            _this.setState({
+                visible: true,
+                isAdd: true,
+                disabled: false,
+                shopDatas: {
+                    org_code: "M2019061403235646"
+                }
+            });
+        };
+
+        _this.editModal = function (val) {
+            _this.setState({
+                visible: true,
+                isAdd: false,
+                disabled: true,
+                shopDatas: val
+            });
+            console.log(val);
+        };
+
+        _this.onSubmit = function () {
+            _this.refs.userform.validateFields(function (err, formData) {
+                if (!err) {
+                    var _this$state = _this.state,
+                        isAdd = _this$state.isAdd,
+                        addStaffUrl = _this$state.addStaffUrl,
+                        editStaffUrl = _this$state.editStaffUrl;
+
+                    var url = isAdd ? addStaffUrl : editStaffUrl;
+                    (0, _axiosUtil.post)(url, formData, null).then(function (res) {
+                        if (!isAdd) {
+                            _antd.message.success(res.data);
+                        }
+                        _this.setState({
+                            visible: false,
+                            refresh: 1
+                        }, function () {
+                            _this.setState({
+                                refresh: 0
+                            });
+                        });
+                    }).catch(function (err) {
+                        _antd.message.warning(err.data);
+                    });
+                }
+            });
+        };
+
+        _this.state = {
+            userUrl: '/v1/merchant/staff/get/inner/list',
+            addStaffUrl: '/v1/merchant/staff/create/inner/info',
+            editStaffUrl: '/v1/merchant/organization/update/info',
+            refresh: 0,
+            postParam: {
+                org_code: "M2019061403235646"
+            },
+            getParam: {},
+            dataSource: [],
+            visible: false,
+            isAdd: true,
+            imgs: 'admin',
+            shopDatas: {
+                org_code: "M2019061403235646"
+            },
+            disabled: false
+        };
+        return _this;
+    }
+
+    // 查询
+
+
+    // 创建商铺员工
+
+
+    // 更新商铺员工
+
+
+    // 创建 | 保存
+
+
+    _createClass(User, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _state = this.state,
+                userUrl = _state.userUrl,
+                visible = _state.visible,
+                isAdd = _state.isAdd,
+                imgs = _state.imgs,
+                shopDatas = _state.shopDatas,
+                disabled = _state.disabled,
+                refresh = _state.refresh,
+                postParam = _state.postParam,
+                getParam = _state.getParam;
+
+
+            var columns = [{
+                title: '用户名',
+                dataIndex: 'nickname',
+                key: 'nickname',
+                render: function render(text) {
+                    return _react2.default.createElement(
+                        'a',
+                        { href: '#' },
+                        text
+                    );
+                }
+            }, {
+                title: '头像',
+                dataIndex: 'avatar',
+                key: 'avatar',
+                render: function render(text, record) {
+                    return _react2.default.createElement(
+                        'div',
+                        { style: { padding: '5px' } },
+                        _react2.default.createElement('img', {
+                            style: { width: 35, height: 35, borderRadius: '50%', border: '1px solid #ddd' },
+                            src: __webpack_require__(54)("./" + imgs + '.jpg'),
+                            alt: ''
+                        })
+                    );
+                }
+            }, {
+                title: '创建时间',
+                dataIndex: 'create_time',
+                key: 'create_time'
+            }, {
+                title: '手机号',
+                dataIndex: 'mobile',
+                key: 'mobile'
+            }, {
+                title: '操作',
+                dataIndex: 'opera',
+                key: 'opera'
+                /*render: (text,record) =>{
+                    return <div>
+                        <a onClick={()=>this.editModal(record)}>修改</a>
+                        {/!*<span style={{margin:'0 5px'}}>|</span>*!/}
+                        {/!*<a onClick={()=>this.delBatch(record)}>删除</a>*!/}
+                    </div>
+                }*/
+            }];
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'ql-main home' },
+                _react2.default.createElement(
+                    _ComModal2.default,
+                    {
+                        visible: visible,
+                        title: isAdd ? '创建商铺员工' : '修改商铺员工',
+                        disabled: disabled,
+                        onCancel: function onCancel() {
+                            return _this2.setState({ visible: false });
+                        },
+                        onSubmit: this.onSubmit
+                    },
+                    _react2.default.createElement(_usersModal2.default, {
+                        ref: 'userform',
+                        datas: shopDatas,
+                        onChange: this.handleFormChange
+                    })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'ql-main-search home-search' },
+                    _react2.default.createElement(_search2.default, { onSearch: this.onSearch })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'ql-main-btns home-btn' },
+                    _react2.default.createElement(
+                        _antd.Button,
+                        { type: 'primary', onClick: this.addModal },
+                        '\u521B\u5EFA\u5546\u94FA\u5458\u5DE5'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'ql-main-table home-table' },
+                    _react2.default.createElement(_ComTable2.default, {
+                        columns: columns,
+                        url: userUrl,
+                        refresh: refresh,
+                        postParam: postParam,
+                        getParam: getParam
+                    })
+                )
+            );
+        }
+    }]);
+
+    return User;
+}(_react2.default.Component);
+
+exports.default = User;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * @author hui
+ * @date 2019/6/19
+ * @Description: 获取元素距离可视区域:顶部,左部的距离
+*/
+var offset = exports.offset = function offset(ele) {
+    var top = ele.offsetTop;
+    var left = ele.offsetLeft;
+    while (ele.offsetParent) {
+        ele = ele.offsetParent;
+        if (window.navigator.userAgent.indexOf('MSTE 8') > -1) {
+            top += ele.offsetTop;
+            left += ele.offsetLeft;
+        } else {
+            top += ele.offsetTop + ele.clientTop;
+            left += ele.offsetLeft + ele.clientLeft;
+        }
+    }
+    return {
+        left: left,
+        top: top
+    };
+};
+
+/**
+ * @author hui
+ * @date 2019/6/19
+ * @Description: 获取窗口：宽，高，内容宽，内容高，距离顶部高
+*/
+var getSize = exports.getSize = function getSize() {
+    var windowW = void 0,
+        windowH = void 0,
+        contentH = void 0,
+        contentW = void 0,
+        scrollT = void 0;
+    windowH = window.innerHeight;
+    windowW = window.innerWidth;
+    scrollT = document.documentElement.scrollTop || document.body.scrollTop;
+    contentH = document.documentElement.scrollHeight > document.body.scrollHeight ? document.documentElement.scrollHeight : document.body.scrollHeight;
+    contentW = document.documentElement.scrollWidth > document.body.scrollWidth ? document.documentElement.scrollWidth : document.body.scrollWidth;
+    return { windowW: windowW, windowH: windowH, contentH: contentH, contentW: contentW, scrollT: scrollT };
+};
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _antd = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SearchForm = function (_React$Component) {
+    _inherits(SearchForm, _React$Component);
+
+    function SearchForm(props) {
+        _classCallCheck(this, SearchForm);
+
+        var _this = _possibleConstructorReturn(this, (SearchForm.__proto__ || Object.getPrototypeOf(SearchForm)).call(this, props));
+
+        _this.onSearch = function () {
+            _this.props.onSearch(_this.state);
+        };
+
+        _this.onReset = function () {
+            _this.setState({
+                org_code: ''
+            });
+        };
+
+        _this.state = {
+            org_code: '',
+            role_type: ['管理员', '普通员工']
+        };
+        return _this;
+    }
+
+    _createClass(SearchForm, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _state = this.state,
+                org_code = _state.org_code,
+                role_type = _state.role_type;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'ql-search-div' },
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        { className: 'label-red' },
+                        '\u5546\u94FA\u7F16\u7801'
+                    ),
+                    _react2.default.createElement(_antd.Input, {
+                        style: { width: 150 },
+                        placeholder: '\u8BF7\u8F93\u5165',
+                        value: org_code,
+                        onChange: function onChange(e) {
+                            return _this2.setState({ org_code: e.target.value });
+                        }
+                    })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        { className: 'label-red' },
+                        '\u89D2\u8272\u7C7B\u578B'
+                    ),
+                    _react2.default.createElement(
+                        _antd.Select,
+                        null,
+                        role_type.map(function (item) {
+                            return _react2.default.createElement(
+                                Option,
+                                { key: item },
+                                item
+                            );
+                        })
+                    )
+                ),
+                _react2.default.createElement(
+                    _antd.Button,
+                    { type: 'primary', onClick: this.onSearch },
+                    '\u67E5\u8BE2'
+                ),
+                _react2.default.createElement(
+                    _antd.Button,
+                    { type: 'primary', ghost: true, onClick: this.onReset },
+                    '\u91CD\u7F6E'
+                )
+            );
+        }
+    }]);
+
+    return SearchForm;
+}(_react2.default.Component);
+
+exports.default = SearchForm;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _antd = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Option = _antd.Select.Option;
+
+/**
+ * @author hui
+ * @date 2019/6/12
+ * @Description: 商铺管理 - 用户模块 -> 创建|修改商铺员工
+*/
+
+var UserModal = function (_React$Component) {
+    _inherits(UserModal, _React$Component);
+
+    function UserModal(props) {
+        _classCallCheck(this, UserModal);
+
+        var _this = _possibleConstructorReturn(this, (UserModal.__proto__ || Object.getPrototypeOf(UserModal)).call(this, props));
+
+        _this.state = {};
+        return _this;
+    }
+
+    _createClass(UserModal, [{
+        key: 'render',
+        value: function render() {
+            var datas = this.props.datas;
+            var getFieldDecorator = this.props.form.getFieldDecorator;
+
+
+            var formItemLayout = {
+                labelCol: {
+                    xs: { span: 18 },
+                    sm: { span: 6 }
+                },
+                wrapperCol: {
+                    xs: { span: 30 },
+                    sm: { span: 18 }
+                }
+            };
+            return _react2.default.createElement(
+                'div',
+                { className: 'ql-modal' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'ql-search' },
+                    _react2.default.createElement(
+                        _antd.Form,
+                        formItemLayout,
+                        _react2.default.createElement(
+                            _antd.Form.Item,
+                            { label: '\u6635\u79F0', hasFeedback: true },
+                            getFieldDecorator('nickname', {
+                                initialValue: datas ? datas.nickname : undefined,
+                                rules: [{
+                                    required: true,
+                                    message: '请输入昵称'
+                                }]
+                            })(_react2.default.createElement(_antd.Input, null))
+                        ),
+                        _react2.default.createElement(
+                            _antd.Form.Item,
+                            { label: '\u624B\u673A\u53F7', hasFeedback: true },
+                            getFieldDecorator('mobile', {
+                                initialValue: datas ? datas.mobile : undefined,
+                                rules: [{
+                                    required: true,
+                                    message: '请输入手机号'
+                                }]
+                            })(_react2.default.createElement(_antd.Input, null))
+                        ),
+                        _react2.default.createElement(
+                            _antd.Form.Item,
+                            { label: '\u89D2\u8272\u540D\u79F0', hasFeedback: true },
+                            getFieldDecorator('role_name', {
+                                initialValue: datas ? datas.role_name : undefined,
+                                rules: [{
+                                    required: true,
+                                    message: '请输入角色编码'
+                                }]
+                            })(_react2.default.createElement(_antd.Input, null))
+                        ),
+                        _react2.default.createElement(
+                            _antd.Form.Item,
+                            { label: '\u5546\u94FA\u7F16\u7801', hasFeedback: true },
+                            getFieldDecorator('org_code', {
+                                initialValue: datas ? datas.org_code : undefined,
+                                rules: [{
+                                    required: true,
+                                    message: '请输入商铺编码'
+                                }]
+                            })(_react2.default.createElement(_antd.Input, null))
+                        ),
+                        _react2.default.createElement(
+                            _antd.Form.Item,
+                            { label: '\u5BC6\u7801', hasFeedback: true },
+                            getFieldDecorator('password', {
+                                initialValue: datas ? datas.password : undefined,
+                                rules: [{
+                                    required: true,
+                                    message: '请输入商铺员工密码'
+                                }]
+                            })(_react2.default.createElement(_antd.Input, null))
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return UserModal;
+}(_react2.default.Component);
+
+exports.default = _antd.Form.create({
+    name: 'userModal',
+    onFieldsChange: function onFieldsChange(props, changedFields) {
+        //监听修改是否可保存
+        props.onChange(changedFields); //onChange对应监听值改变就执行父组件方法
+    }
+})(UserModal);
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./admin.jpg": 19
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 54;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _antd = __webpack_require__(1);
+
+var _ComTable = __webpack_require__(7);
+
+var _ComTable2 = _interopRequireDefault(_ComTable);
+
+var _ComModal = __webpack_require__(8);
+
+var _ComModal2 = _interopRequireDefault(_ComModal);
+
+var _search = __webpack_require__(56);
+
+var _search2 = _interopRequireDefault(_search);
+
+var _addShopModal = __webpack_require__(57);
 
 var _addShopModal2 = _interopRequireDefault(_addShopModal);
 
@@ -1870,7 +2483,7 @@ var Shops = function (_React$Component) {
                 key: 'img_list',
                 render: function render(text) {
                     {/*<img src={imgs == undefined ? default_admin : require(`../../assert/images/${imgs}.png`)} alt=""/>*/}
-                    return _react2.default.createElement('img', { style: { maxHeight: 50 }, src: __webpack_require__(19)("./" + imgs + '.png'), alt: '' });
+                    return _react2.default.createElement('img', { style: { maxHeight: 50 }, src: __webpack_require__(20)("./" + imgs + '.png'), alt: '' });
                 }
             }, {
                 title: '售货类型',
@@ -1946,7 +2559,7 @@ var Shops = function (_React$Component) {
 exports.default = Shops;
 
 /***/ }),
-/* 50 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2046,7 +2659,7 @@ var SearchForm = function (_React$Component) {
 exports.default = SearchForm;
 
 /***/ }),
-/* 51 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2237,19 +2850,19 @@ exports.default = _antd.Form.create({
 })(ShopModal);
 
 /***/ }),
-/* 52 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "assert/images/bg.png";
 
 /***/ }),
-/* 53 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASEAAAD0CAYAAADUmZAzAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MkI0MzZBNjFENjlEMTFFOEEzOENBNzJGNjM0QjY0MzIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MkI0MzZBNjJENjlEMTFFOEEzOENBNzJGNjM0QjY0MzIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoyQjQzNkE1RkQ2OUQxMUU4QTM4Q0E3MkY2MzRCNjQzMiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoyQjQzNkE2MEQ2OUQxMUU4QTM4Q0E3MkY2MzRCNjQzMiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PrbJU5MAABpgSURBVHja7J15cBvX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"
 
 /***/ }),
-/* 54 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2270,19 +2883,19 @@ var _react2 = _interopRequireDefault(_react);
 
 var _antd = __webpack_require__(1);
 
-var _ComTable = __webpack_require__(9);
+var _ComTable = __webpack_require__(7);
 
 var _ComTable2 = _interopRequireDefault(_ComTable);
 
-var _ComModal = __webpack_require__(10);
+var _ComModal = __webpack_require__(8);
 
 var _ComModal2 = _interopRequireDefault(_ComModal);
 
-var _search = __webpack_require__(55);
+var _search = __webpack_require__(61);
 
 var _search2 = _interopRequireDefault(_search);
 
-var _categoryModal = __webpack_require__(56);
+var _categoryModal = __webpack_require__(62);
 
 var _categoryModal2 = _interopRequireDefault(_categoryModal);
 
@@ -2577,7 +3190,7 @@ var Category = function (_React$Component) {
 exports.default = Category;
 
 /***/ }),
-/* 55 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2675,7 +3288,7 @@ var SearchForm = function (_React$Component) {
 exports.default = SearchForm;
 
 /***/ }),
-/* 56 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2799,7 +3412,7 @@ exports.default = _antd.Form.create({
 })(CategoryModal);
 
 /***/ }),
-/* 57 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2820,19 +3433,19 @@ var _react2 = _interopRequireDefault(_react);
 
 var _antd = __webpack_require__(1);
 
-var _ComTable = __webpack_require__(9);
+var _ComTable = __webpack_require__(7);
 
 var _ComTable2 = _interopRequireDefault(_ComTable);
 
-var _ComModal = __webpack_require__(10);
+var _ComModal = __webpack_require__(8);
 
 var _ComModal2 = _interopRequireDefault(_ComModal);
 
-var _search = __webpack_require__(58);
+var _search = __webpack_require__(64);
 
 var _search2 = _interopRequireDefault(_search);
 
-var _goodModal = __webpack_require__(59);
+var _goodModal = __webpack_require__(65);
 
 var _goodModal2 = _interopRequireDefault(_goodModal);
 
@@ -3049,7 +3662,7 @@ var Goods = function (_React$Component) {
                 key: 'img_list',
                 render: function render(text) {
                     {/*<img src={imgs == undefined ? default_admin : require(`../../assert/images/${imgs}.png`)} alt=""/>*/}
-                    return _react2.default.createElement('img', { style: { maxWidth: 50, height: 'auto' }, src: __webpack_require__(19)("./" + imgs + '.png'), alt: '' });
+                    return _react2.default.createElement('img', { style: { maxWidth: 50, height: 'auto' }, src: __webpack_require__(20)("./" + imgs + '.png'), alt: '' });
                 }
             }, {
                 title: '销售单价',
@@ -3131,7 +3744,8 @@ var Goods = function (_React$Component) {
                     'div',
                     { className: 'ql-main-table home-table' },
                     _react2.default.createElement(_ComTable2.default, {
-                        columns: columns,
+                        columnsProps: columns,
+                        hasOpearBtn: true,
                         url: goodUrl,
                         refresh: refresh,
                         postParam: postParam,
@@ -3140,6 +3754,7 @@ var Goods = function (_React$Component) {
                         rowKey: function rowKey(record) {
                             return record.product_code;
                         }
+                        // scroll={{y:0}}
                     })
                 )
             );
@@ -3152,7 +3767,7 @@ var Goods = function (_React$Component) {
 exports.default = Goods;
 
 /***/ }),
-/* 58 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3250,7 +3865,7 @@ var SearchForm = function (_React$Component) {
 exports.default = SearchForm;
 
 /***/ }),
-/* 59 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3428,13 +4043,7 @@ exports.default = _antd.Form.create({
 })(GoodModal);
 
 /***/ }),
-/* 60 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/jpeg;base64,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"
-
-/***/ }),
-/* 61 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3453,7 +4062,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _antd = __webpack_require__(1);
 
-var _logo = __webpack_require__(8);
+var _axiosUtil = __webpack_require__(4);
+
+var _logo = __webpack_require__(10);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -3482,13 +4093,27 @@ var Register = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
 
         _this.register = function () {
-            _this.props.toggleRegister(false, false);
+            var _this$state = _this.state,
+                nickname = _this$state.nickname,
+                password = _this$state.password,
+                mobile = _this$state.mobile;
+
+            var param = {
+                nickname: nickname,
+                password: password,
+                mobile: mobile
+            };
+            (0, _axiosUtil.post)(_this.state.registUrl, param).then(function (res) {
+                _this.props.toggleRegister(false, false);
+            });
         };
 
         _this.state = {
-            account: null,
+            registUrl: '/v1/merchant/staff/create/administrators/info',
+            nickname: null,
             password: null,
-            gender: 1
+            mobile: null
+            // gender:1
         };
         return _this;
     }
@@ -3502,9 +4127,9 @@ var Register = function (_Component) {
             var _this2 = this;
 
             var _state = this.state,
-                account = _state.account,
+                nickname = _state.nickname,
                 password = _state.password,
-                gender = _state.gender;
+                mobile = _state.mobile;
 
             var style = {
                 lineHeight: '30px',
@@ -3557,11 +4182,11 @@ var Register = function (_Component) {
                                 'QING LIU'
                             ),
                             _react2.default.createElement(_antd.Input, {
-                                placeholder: 'Enter your username',
+                                placeholder: 'Enter your nickname',
                                 prefix: _react2.default.createElement(_antd.Icon, { type: 'user', style: { color: 'rgba(0,0,0,.25)' } }),
-                                value: account,
+                                value: nickname,
                                 onChange: function onChange(e) {
-                                    return _this2.setState({ account: e.target.value });
+                                    return _this2.setState({ nickname: e.target.value });
                                 }
                             }),
                             _react2.default.createElement(_antd.Input, {
@@ -3572,26 +4197,14 @@ var Register = function (_Component) {
                                     return _this2.setState({ password: e.target.value });
                                 }
                             }),
-                            _react2.default.createElement(
-                                RadioGroup,
-                                {
-                                    style: style,
-                                    value: gender,
-                                    onChange: function onChange(e) {
-                                        return _this2.setState({ gender: e.target.value });
-                                    }
-                                },
-                                _react2.default.createElement(
-                                    _antd.Radio,
-                                    { value: 1, style: { width: '42%' } },
-                                    '\u7537'
-                                ),
-                                _react2.default.createElement(
-                                    _antd.Radio,
-                                    { value: 2 },
-                                    '\u5973'
-                                )
-                            ),
+                            _react2.default.createElement(_antd.Input, {
+                                placeholder: 'Enter your mobile',
+                                prefix: _react2.default.createElement(_antd.Icon, { type: 'user', style: { color: 'rgba(0,0,0,.25)' } }),
+                                value: mobile,
+                                onChange: function onChange(e) {
+                                    return _this2.setState({ mobile: e.target.value });
+                                }
+                            }),
                             _react2.default.createElement(
                                 _antd.Button,
                                 { type: 'primary', onClick: this.register, style: { marginTop: 15 } },
@@ -3622,17 +4235,17 @@ var Register = function (_Component) {
 exports.default = Register;
 
 /***/ }),
-/* 62 */,
-/* 63 */
+/* 67 */,
+/* 68 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 64 */
+/* 69 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ })
-],[20]);
+],[21]);
