@@ -94,13 +94,14 @@ async def get_product_info_list(request: Request, token: Token):
     limit = params.get('limit', 10)
     last_id = params.get('last_id', None)
     category_type = params.get('category_type', [])
+    skip = params.get('skip', 0)
 
     product = Product.init_product_info(**params)
     if not product or not product.org_code:
         abort(status_code=ParamsErrorCode)
 
     product_list = await product.find_product_list_by_org_code(category_type=category_type, limit=limit,
-                                                               last_id=last_id)
+                                                               last_id=last_id, skip=skip)
 
     total_count = await product.get_all_product_count_by_org_code(category_type=category_type)
 

@@ -80,12 +80,13 @@ async def get_org_info_list(request: Request, token: Token):
 
     limit = params.get('limit', 10)
     last_id = params.get('last_id', None)
+    skip = params.get('skip', 0)
 
     org_obj = Organization.init_org_info(**params)
     if not org_obj.staff_code:
         abort(status_code=ParamsErrorCode)
 
-    org_list = await org_obj.find_all_org_list_by_staff_code(limit=limit, last_id=last_id)
+    org_list = await org_obj.find_all_org_list_by_staff_code(limit=limit, last_id=last_id, skip=skip)
     total_count = await org_obj.get_all_org_count_by_staff_code()
 
     for org_info in org_list:
