@@ -147,8 +147,6 @@ module.exports = {
             modules: false,
             chunks: false
         },
-        // publicPath: "/",
-        // host: '0.0.0.0',
         proxy: {
             '/api': {
                 target: 'https://mall-api.qingliu.tk',
