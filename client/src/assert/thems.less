@@ -44,6 +44,37 @@
     background: rgba(@logo, .1);
   }
 
+  /*water animation*/
+  .water{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 400px;
+    height: 400px;
+    &:before, &:after {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      top: 0;
+      right: 10px;
+      background-color: @thems;
+      opacity: .3;
+      border-radius: 45%;
+      transform: translate(-70%, -70%) rotate(0);
+      animation: rotate 6s linear infinite;
+      z-index: 10;
+    }
+    &:after {
+      border-radius: 47%;
+      background-color: @thems;
+      opacity: .5;
+      transform: translate(-50%, -60%) rotate(0);
+      animation: rotate 10s linear -5s infinite;
+      z-index: 20;
+    }
+  }
+
   .lee-leftBar {
     width: @leftBarW;
     .lee-leftBar-top {
@@ -181,6 +212,7 @@
       }
     }
     .lee-rightBar-bot {
+      position: relative;
       width: 100%;
       height: calc(100% - 50px);
       .lee-rightBar-bot-BG();
