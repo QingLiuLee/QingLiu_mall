@@ -74,11 +74,17 @@ class Category(IBaseModel):
         return self.find_one(condition={'org_code': self.org_code, 'category_name': self.category_name})
 
     @try_except
-    def find_category_list_by_org_code(self, last_id=None, limit=10, skip=0):
+    def find_category_list_by_org_code(self, last_id=None, limit=10, skip=0, turned=1):
         """获取商家品类信息"""
         condition = {'$and': [{'org_code': self.org_code}]}
         if last_id:
-            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+
+            if turned > 0:
+                _id = {'$gt': ObjectId(last_id)}
+            else:
+                _id = {'$lt': ObjectId(last_id)}
+
+            condition['$and'].append({'_id': _id})
 
         return self.find_many(condition=condition, limit=limit, skip=skip)
 

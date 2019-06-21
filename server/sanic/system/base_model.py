@@ -3,6 +3,9 @@
 # @Author   : Lee才晓
 # @Describe :
 from abc import ABCMeta
+
+import pymongo
+
 from system.database import MotorBase
 from utils.decorator.exception import try_except
 
@@ -103,7 +106,8 @@ class IBaseModel(object):
 
     @try_except
     def find_many(self, condition=None, projection=None, limit=10, skip=0):
-        return self.__collection.find(filter=condition, projection=projection).skip(skip).to_list(length=limit)
+        return self.__collection.find(filter=condition, projection=projection, sort=[('_id', pymongo.ASCENDING)]).skip(
+            skip).to_list(length=limit)
 
     @try_except
     def get_info_count_by_filter(self, condition):
