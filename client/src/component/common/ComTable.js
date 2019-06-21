@@ -94,23 +94,22 @@ class MyTable extends Component {
     //获取数据
     fetch = (getParams,postParams)=>{
         this.setState({ loading: true });
-
-        if(this.state.data.length > 0){
-            const { data,pagination }  = this.state
+        let { data, pagination }  = this.state
+        if(data.length > 0){
             postParams = {
                 ...postParams,
-                limit: pagination.pageSize,
+                limit: postParams.pageSize,
                 last_id: data[data.length - 1]._id
             }
-        }else{
-            postParams = {
-                ...postParams,
-                last_id: null
+            pagination = {
+                pageNo: postParams.pageNo,
+                    pageSize: postParams.pageSize,
             }
         }
         post(this.props.url, postParams, getParams).then(res => {
             if (res.data){
                 this.setState({
+                    pagination,
                     data: res.data.list,
                     total: res.data.count,
                     loading: false
@@ -126,7 +125,7 @@ class MyTable extends Component {
 
     //查询|排序
     handleTableChange = (pageNo,pageSize,pagination)=>{
-        if(pagination != null){
+        /*if(pagination != null){
             this.setState({
                 orderField:pagination.field,
                 fieldOrder:pagination.order,
@@ -138,25 +137,28 @@ class MyTable extends Component {
                 attributeNamesForOrderBy :{[pagination.field]:pagination.order}
             });
         }
-        else{
+        else{*/
             this.fetch({getParam: this.props.getParam}, {
                 ...this.props.postParam,
-                pageNo: pageNo,
-                pageSize: pageSize,
-                attributeNamesForOrderBy : !this.state.orderField || !this.state.fieldOrder ? {} : {[this.state.orderField]:this.state.fieldOrder}
+                ...pagination
+                // attributeNamesForOrderBy : !this.state.orderField || !this.state.fieldOrder ? {} : {[this.state.orderField]:this.state.fieldOrder}
             });
-        }
+        // }
     }
 
     //分页
     changeSize = (pageNo, pageSize)=>{
-        this.setState({
-            pagination:{
-                pageNo: pageNo,
-                pageSize: pageSize
-            }
-        });
-        this.handleTableChange(pageNo,pageSize)
+        let self = this;
+        const oldPageNo = self.state.pagination.pageNo
+        const curNum = pageNo > oldPageNo ?  pageNo - oldPageNo : oldPageNo - pageNo
+        const turned = pageNo > oldPageNo ? 1 : -1
+        const pagination = {
+            pageNo: pageNo,
+            pageSize: pageSize,
+            skip: (curNum - 1) * pageSize,
+            turned
+        }
+        this.handleTableChange(pageNo, pageSize, pagination)
     }
 
     //table变化后刷新
