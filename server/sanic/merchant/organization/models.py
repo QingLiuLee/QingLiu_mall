@@ -89,12 +89,16 @@ class Organization(IBaseModel):
         }})
 
     @try_except
-    def find_all_org_list_by_staff_code(self, last_id=None, limit=10, skip=0):
+    def find_all_org_list_by_staff_code(self, last_id=None, limit=10, skip=0, turned=1):
         """根据管理员编码获取商家列表"""
 
         condition = {'$and': [{'staff_code': self.staff_code}]}
         if last_id:
-            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+            if turned > 0:
+                _id = {'$gt': ObjectId(last_id)}
+            else:
+                _id = {'$lt': ObjectId(last_id)}
+            condition['$and'].append({'_id': _id})
 
         return self.find_many(condition=condition, limit=limit, skip=skip)
 

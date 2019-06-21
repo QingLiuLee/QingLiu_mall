@@ -92,7 +92,7 @@ class Product(IBaseModel):
                                                                  {'org_code': self.org_code}]})
 
     @try_except
-    def find_product_list_by_org_code(self, category_type=[], last_id=None, limit=10,skip=0):
+    def find_product_list_by_org_code(self, category_type=[], last_id=None, limit=10, skip=0, turned=1):
         """获取商户下的产品列表"""
 
         condition = {'$and': [{'org_code': self.org_code}]}
@@ -101,7 +101,11 @@ class Product(IBaseModel):
             condition['$and'].append({'category_code': {'$in': category_type}})
 
         if last_id:
-            condition['$and'].append({'_id': {'$gt': ObjectId(last_id)}})
+            if turned > 0:
+                _id = {'$gt': ObjectId(last_id)}
+            else:
+                _id = {'$lt': ObjectId(last_id)}
+            condition['$and'].append({'_id': _id})
 
         return self.find_many(condition=condition, limit=limit, skip=skip)
 

@@ -81,12 +81,14 @@ async def get_category_info_list(request: Request, token: Token):
     limit = params.get('limit', 10)
     last_id = params.get('last_id', None)
     skip = params.get('skip', 0)
+    turned = params.get('turned', 1)
 
     category = Category.init_category_info(**params)
     if not category or not category.org_code:
         abort(status_code=ParamsErrorCode)
 
-    category_list = await category.find_category_list_by_org_code(limit=limit, last_id=last_id, skip=skip)
+    category_list = await category.find_category_list_by_org_code(limit=limit, last_id=last_id, skip=skip,
+                                                                  turned=turned)
     total_count = await category.get_all_category_count_by_org_code()
 
     for category in category_list:
