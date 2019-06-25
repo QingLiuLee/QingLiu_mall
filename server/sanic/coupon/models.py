@@ -81,3 +81,11 @@ class Coupon(IBaseModel):
         self.create_time = datetime.datetime.now()
         self.create_info()
         return self.coupon_code
+
+    @try_except
+    def find_coupon_by_title(self):
+        return self.find_one(condition={'title': self.title})
+
+    @try_except
+    def find_coupon_by_coupon_code(self):
+        return self.find_one(condition={'coupon_code': self.coupon_code})
