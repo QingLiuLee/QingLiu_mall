@@ -25,6 +25,8 @@ class Coupon(IBaseModel):
         'use_threshold',  # 使用门槛 1、不限制　２、满ＸＸＸ可使用
         'available_product_type',  # 可用商品 1、全场　２、指定商品
         'available_product_list',  # 可用商品列表
+        'available_org_type',  # 可用门店 1、不限制  2、限制
+        'available_org_list',  # 可用门店列表
         'limit_num',  # 每人限制数量
         'consumer_type',  # 消费者类型　1、不限　２、普通用户　３、VIP用户
         'consumer_value',  # 消费者列表
@@ -50,6 +52,8 @@ class Coupon(IBaseModel):
         self.limit_num = kwargs.get('limit_num', 0)
         self.consumer_type = kwargs.get('consumer_type', 1)
         self.consumer_value = kwargs.get('consumer_value', [])
+        self.available_org_type = kwargs.get('available_org_type', 1)
+        self.available_org_list = kwargs.get('available_org_list', [])
 
     @classmethod
     @try_except
@@ -72,6 +76,8 @@ class Coupon(IBaseModel):
         coupon.limit_num = kwargs.get('limit_num', 0)
         coupon.consumer_type = kwargs.get('consumer_type', 1)
         coupon.consumer_value = kwargs.get('consumer_value', [])
+        coupon.available_org_type = kwargs.get('available_org_type', 1)
+        coupon.available_org_list = kwargs.get('available_org_list', [])
         return coupon
 
     @try_except

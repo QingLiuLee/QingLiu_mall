@@ -17,22 +17,13 @@ blueprint = Blueprint(name="coupon", version=1)
 @blueprint.route(uri='/create/info', methods=['POST'])
 @response_exception
 async def create_coupon_info(request: Request, token: Token):
-    """create coupon info"""
+    """
+    :name create_coupon_info
+    :param (title/start_time/end_time/explain/total_num/distribution_form_type/distribution_form_value
+            use_threshold/available_product_type/available_product_list/limit_num/consumer_type
+            consumer_value/available_org_type/available_org_list)
+    """
     params = request.json
-
-    title = params.get('title', '')
-    start_time = params.get('start_time', None)
-    end_time = params.get('end_time', None)
-    explain = params.get('explain', '')
-    total_num = params.get('total_num', '')
-    distribution_form_type = params.get('distribution_form_type', '')
-    distribution_form_value = params.get('distribution_form_value', '')
-    use_threshold = params.get('use_threshold', '')
-    available_product_type = params.get('available_product_type', [])
-    available_product_list = params.get('available_product_list', [])
-    limit_num = params.get('limit_num', 0)
-    consumer_type = params.get('consumer_type', '')
-    consumer_value = params.get('consumer_value', [])
 
     coupon = Coupon.init_coupon_info(**params)
 
