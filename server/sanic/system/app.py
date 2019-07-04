@@ -10,6 +10,7 @@ from sanic_jwt_extended import JWTManager
 import commodity
 import consumer
 import coupon
+import integral
 import merchant
 from system import base_config
 from system.response import *
@@ -36,6 +37,7 @@ def register_blueprints(app):
     app.blueprint(merchant.product_blueprint_group)
     app.blueprint(consumer.product_blueprint_group)
     app.blueprint(coupon.product_blueprint_group)
+    app.blueprint(integral.product_blueprint_group)
     return app
 
 

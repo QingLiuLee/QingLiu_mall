@@ -6,4 +6,4 @@ from sanic import Blueprint
 
 from . import views
 
-product_blueprint_group = Blueprint.group(views.blueprint, url_prefix='/coupon')
+product_blueprint_group = Blueprint.group(views.blueprint, url_prefix='/integral')

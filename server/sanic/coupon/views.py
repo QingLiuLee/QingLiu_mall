@@ -32,7 +32,7 @@ async def create_coupon_info(request: Request, token: Token):
         abort(status_code=ParamsErrorCode)
 
     is_exists = await coupon.find_coupon_by_title()
-    if is_exists:
+    if is_exists and is_exists['coupon_code'] != coupon.coupon_code:
         abort(status_code=ExistsErrorCode, message='优惠券标题已存在')
 
     coupon_code = coupon.create_coupon_info()

@@ -9,10 +9,12 @@ from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
 from consumer.base_info.models import ConsumerBaseInfo, ReceivingAddress
+from consumer.login_detail.models import LoginDetail
 from system.response import *
 from sanic_jwt_extended import create_access_token
 
 from utils.decorator.exception import response_exception
+from utils.util import get_current_zero_and_last_time
 
 blueprint = Blueprint(name="base_info", url_prefix='/base_info', version=1)
 
@@ -50,7 +52,7 @@ async def update_info(request: Request, token: Token):
     consumer = ConsumerBaseInfo.init_base_info(**params)
 
     if not consumer.check_params_is_none(['password', 'verify_id', 'receiving_address',
-                                      'third_party_info', 'create_time']):
+                                          'third_party_info', 'create_time']):
         abort(status_code=ParamsErrorCode)
 
     is_exist = await consumer.find_consumer_by_mobile_or_nickname_or_email_without_consumer_code()
@@ -76,11 +78,24 @@ async def consumer_sign_in(request):
 
     consumer = ConsumerBaseInfo.init_base_info(**params)
 
-    consumer_info = await consumer.get_consumer_pwd()
+    consumer_info = await consumer.find_consumer_by_account(account=account)
+
     if not consumer_info:
         abort(status_code=NoExistsErrorCode, message='当前账号不存在')
 
+    consumer.consumer_code = consumer_info['consumer_code']
+    consumer_info = await consumer.get_consumer_pwd()
+
     if consumer.check_consumer_password(old_pwd=consumer_info['password'], new_pwd=password):
+
+        login_detail = LoginDetail.init_detail_info(consumer_code=consumer.consumer_code)
+
+        start_time, end_time = get_current_zero_and_last_time()
+        is_exist = await login_detail.check_login_detail_by_consumer_code_and_datetime(start_time=start_time,
+                                                                                       end_time=end_time)
+        if not is_exist:
+            login_detail.create_login_detail_info()
+
         token = await create_access_token(app=request.app, identity='nickname',
                                           user_claims=json_util.dumps(consumer_info))
 

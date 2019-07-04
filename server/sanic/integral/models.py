@@ -42,5 +42,19 @@ class Integral(IBaseModel):
         return self.integral_code
 
     @try_except
+    def update_integral_info(self):
+        return self.update_one_by_custom(condition={'integral_code': self.integral_code},
+                                         update={'$set': {'integral_value': self.integral_value,
+                                                          'explain': self.explain}})
+
+    @try_except
     def find_integral_by_code(self):
         return self.find_one(condition={'integral_code': self.integral_code})
+
+    @try_except
+    def find_integral_by_value(self):
+        return self.find_one(condition={'integral_value': self.integral_value})
+
+    @try_except
+    def delete_integral_info(self):
+        return self.delete_one_by_condition(condition={'integral_code': self.integral_code})
