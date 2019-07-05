@@ -17,3 +17,8 @@ SALE_TYPE = {
 }
 
 DEFAULT_CATEGORY = ['家电', '美妆', '美食', '办公', '珠宝', '运动']
+
+INTEGRAL_TYPE = 'integral'
+COUPON_TYPE = 'coupon'
+INCOME_TYPE_ADD = 1
+INCOME_TYPE_REDUCE = -1

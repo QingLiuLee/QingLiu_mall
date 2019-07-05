@@ -5,6 +5,7 @@
 import datetime
 
 from system.base_model import IBaseModel
+from utils.constant import *
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
 
@@ -59,3 +60,43 @@ class Tasks(IBaseModel):
     @try_except
     def get_task_by_explain(self):
         return self.find_one(condition={'explain': self.explain})
+
+    @try_except
+    def get_task_by_code(self):
+        return self.find_one(condition={'task_code': self.task_code})
+
+    @try_except
+    def get_reward_info_by_reward_type(self):
+        pipeline = [{'$match': {'task_code': self.task_code}}]
+        if self.reward_type == INTEGRAL_TYPE:
+            pipeline.append(
+                {'$lookup': {
+                    'from': INTEGRAL_TYPE,
+                    'localField': 'reward_code',
+                    'foreignField': 'integral_code',
+                    'as': 'reward_info'
+                }})
+        elif self.reward_code == COUPON_TYPE:
+            pipeline.append(
+                {'$lookup': {
+                    'from': COUPON_TYPE,
+                    'localField': 'reward_code',
+                    'foreignField': 'coupon_code',
+                    'as': 'reward_info'
+                }})
+
+        return self.aggregate_by_pipeline(pipeline=[
+
+            {'$project': {
+                '_id': {"$toString": "$_id"},
+                'task_code': 1,
+                'explain': 1,
+                'create_time': 1,
+                'start_time': 1,
+                'end_time': 1,
+                'available_type': 1,  # 1: no limit  2:vip  3:ordinary users
+                'reward_type': 1,  # 1:integral  2:coupon 3:cash 4:product
+                'reward_num': 1,
+                'reward_info': '$reward_info',
+            }}
+        ])

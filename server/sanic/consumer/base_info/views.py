@@ -9,6 +9,7 @@ from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
 from consumer.base_info.models import ConsumerBaseInfo, ReceivingAddress
+from consumer.integral_detail.models import IntegralDetail
 from consumer.login_detail.models import LoginDetail
 from system.response import *
 from sanic_jwt_extended import create_access_token
@@ -38,6 +39,9 @@ async def create_consumer_info(request):
     consumer_code = consumer.create_consumer_info()
 
     if consumer_code:
+        # create integral detail info
+        IntegralDetail.init_integral(consumer_code=consumer_code).create_integral_detail_info()
+
         abort(status_code=JsonSuccessCode, message=consumer_code)
     else:
         abort(status_code=ServerErrorCode, message='账号创建失败')

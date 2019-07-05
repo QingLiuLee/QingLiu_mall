@@ -13,7 +13,7 @@ class TasksDetail(IBaseModel):
     __slots__ = {
         'detail_code',
         'consumer_code',
-        'action_code',
+        'action_code',  # login_detail/order_detail
         'create_time',
         'task_code',
         'is_finished',  # True/False
@@ -32,7 +32,7 @@ class TasksDetail(IBaseModel):
 
     @classmethod
     @try_except
-    def init_task_info(cls, **kwargs):
+    def init_task_detail_info(cls, **kwargs):
         task_detail = cls()
         task_detail.detail_code = kwargs.get('detail_code', '')
         task_detail.consumer_code = kwargs.get('consumer_code', '')
@@ -49,3 +49,51 @@ class TasksDetail(IBaseModel):
         self.detail_code = make_code_or_id('task_detail_')
         self.create_info()
         return self.detail_code
+
+    @try_except
+    def get_task_detail_by_consumer_code_and_action_code_and_task_code(self):
+        return self.find_one(condition={'$and': [{'consumer_code': self.consumer_code},
+                                                 {'action_code': self.action_code},
+                                                 {'task_code': self.task_code}]})
+
+    @try_except
+    def get_task_detail_by_code(self):
+        return self.find_one(condition={'detail_code': self.detail_code})
+
+    @try_except
+    def set_task_detail_finish_status(self, is_finished=False):
+        return self.update_one_by_custom(condition={'detail_code': self.detail_code},
+                                         update={'$set': {'is_finished': is_finished}})
+
+    @try_except
+    def set_task_detail_reward_status(self, is_reward=False):
+        return self.update_one_by_custom(condition={'detail_code': self.detail_code},
+                                         update={'$set': {'is_reward': is_reward}})
+
+    @try_except
+    def get_task_detail_and_task_info(self):
+        return self.aggregate_by_pipeline(pipeline=[
+            {'$match': {'detail_code': self.detail_code}},
+            {'$lookup': {
+                'from': 'tasks',
+                'localField': 'task_code',
+                'foreignField': 'task_code',
+                'as': 'tasks'
+            }},
+            {'$lookup': {
+                'from': self.action_code,
+                'localField': 'action_code',
+                'foreignField': 'detail_code',
+                'as': 'action_detail'
+            }},
+            {'$project': {
+                '_id': {"$toString": "$_id"},
+                'detail_code': 1,
+                'consumer_code': 1,
+                'action_code': 1,
+                'is_finished': 1,
+                'is_reward': 1,
+                'task_info': '$tasks',
+                'action_detail': '$action_detail',
+            }}
+        ])

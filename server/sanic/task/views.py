@@ -7,7 +7,7 @@ from sanic.exceptions import abort
 from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
-from system.response import ParamsErrorCode, ExistsErrorCode, JsonSuccessCode, ServerErrorCode
+from system.response import ParamsErrorCode, ExistsErrorCode, JsonSuccessCode, ServerErrorCode, NoExistsErrorCode
 from task.models import Tasks
 from utils.decorator.exception import response_exception
 
@@ -38,3 +38,24 @@ async def create_integral_info(request: Request, token: Token):
         abort(status_code=JsonSuccessCode, message={'task_code': task_code})
 
     abort(status_code=ServerErrorCode, message='create the task failed.')
+
+
+@blueprint.route(uri='/get/info/by/code', methods=['POST'])
+@response_exception
+async def get_task_info_by_code(request: Request, token: Token):
+    """
+    :name  get_task_info_by_code
+    :param (task_code)
+    """
+
+    params = request.json
+    task = Tasks.init_task_info(**params)
+
+    if not task.task_code:
+        abort(status_code=ParamsErrorCode)
+
+    task_info = await task.get_task_by_code()
+    if not task_info:
+        abort(status_code=NoExistsErrorCode, message='the task no exists.')
+
+    abort(status_code=JsonSuccessCode, message={'task_info': task_info})

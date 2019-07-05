@@ -38,7 +38,7 @@ class IEmbedded(object):
         """
         for name in dir(self):
             value = getattr(self, name)
-            if not name.startswith('__') and not callable(value) and (value not in except_list) and (not value):
+            if not name.startswith('__') and not callable(value) and (name not in except_list) and (not value):
                 return False
         return True
 
@@ -126,3 +126,7 @@ class IBaseModel(object):
     def drop_collection(self):
         """清空collection"""
         return self.__collection.drop()
+
+    @try_except
+    def aggregate_by_pipeline(self, pipeline):
+        return self.__collection.aggregate(pipeline=pipeline)
