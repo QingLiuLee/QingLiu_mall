@@ -25,6 +25,7 @@ class VIPPrivilege(IEmbedded):
                 update={'$push': {'vip_privilege.honorary_title': honorary_title}}
             )
         return None
+
     def __init__(self):
         super(VIPPrivilege, self).__init__()
         self.level = None
@@ -60,5 +61,3 @@ class VIPPrivilege(IEmbedded):
                 condition={'consumer_code': self.consumer_code, 'vip_privilege.level': old_level},
                 update={'$set': {'vip_privilege.level': new_level}})
         return None
-
-
