@@ -79,7 +79,7 @@ async def delete_integral_info(request: Request, token: Token):
         abort(status_code=ParamsErrorCode)
 
     result = await integral.delete_integral_info()
-    if result.raw_result or result.raw_result.ok:
+    if result.raw_result and result.raw_result.ok:
         abort(status_code=JsonSuccessCode, message='the integral delete success')
 
     abort(status_code=ServerErrorCode, message='the integral delete failed')

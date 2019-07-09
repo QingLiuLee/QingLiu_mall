@@ -21,6 +21,7 @@ class Tasks(IBaseModel):
         'reward_type',  # 1:integral  2:coupon 3:cash 4:product
         'reward_code',
         'reward_num',
+        'is_daily_tasks',  # true:daily task  false:special task
     }
 
     def __init__(self, **kwargs):
@@ -34,6 +35,7 @@ class Tasks(IBaseModel):
         self.reward_type = kwargs.get('reward_type', 0)
         self.reward_code = kwargs.get('reward_code', '')
         self.reward_num = kwargs.get('reward_num', 0)
+        self.is_daily_tasks = kwargs.get('is_daily_tasks', False)
 
     @classmethod
     @try_except
@@ -48,6 +50,7 @@ class Tasks(IBaseModel):
         task.reward_type = kwargs.get('reward_type', 0)
         task.reward_code = kwargs.get('reward_code', '')
         task.reward_num = kwargs.get('reward_num', 0)
+        task.is_daily_tasks = kwargs.get('is_daily_tasks', False)
         return task
 
     @try_except
@@ -58,12 +61,32 @@ class Tasks(IBaseModel):
         return self.task_code
 
     @try_except
+    def update_task_info(self):
+        return self.update_one_by_custom(condition={'task_code': self.task_code},
+                                         update={'$set': {'explain': self.explain,
+                                                          'start_time': self.start_time,
+                                                          'end_time': self.end_time,
+                                                          'available_type': self.available_type,
+                                                          'reward_type': self.reward_type,
+                                                          'reward_code': self.reward_code,
+                                                          'reward_num': self.reward_num,
+                                                          'is_daily_tasks': self.is_daily_tasks}})
+
+    @try_except
+    def delete_task_info(self):
+        return self.delete_one_by_condition(condition={'task_code': self.task_code})
+
+    @try_except
     def get_task_by_explain(self):
         return self.find_one(condition={'explain': self.explain})
 
     @try_except
     def get_task_by_code(self):
         return self.find_one(condition={'task_code': self.task_code})
+
+    @try_except
+    def get_daily_tasks(self):
+        return self.find_many(condition={'is_daily_tasks': True})
 
     @try_except
     def get_reward_info_by_reward_type(self):

@@ -84,7 +84,7 @@ async def delete_coupon_info(request: Request, token: Token):
         abort(status_code=ParamsErrorCode)
 
     result = await coupon.delete_coupon_by_coupon_code()
-    if result.raw_result or result.raw_result.ok:
+    if result.raw_result and result.raw_result.ok:
         abort(status_code=JsonSuccessCode, message='the coupon delete success')
 
     abort(status_code=ServerErrorCode, message='the coupon delete failed')
