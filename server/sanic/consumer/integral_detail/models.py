@@ -36,7 +36,7 @@ class IntegralHistoryInfo(IEmbedded):
         return history_info
 
 
-class IntegralDetail(IBaseModel):
+class ConsumerIntegralDetail(IBaseModel):
     """
     积分
     """
@@ -44,14 +44,14 @@ class IntegralDetail(IBaseModel):
         'consumer_code',
         'total_integral',  # 总积分
         'create_time',
-        'history_list',  # 积分的历史列表 {'type':'收入', 'integral':'5', time:'2019/05/10', 'detail':{}}
+        'integral_history',  # 积分的历史列表 {'type':'收入', 'integral':'5', time:'2019/05/10', 'detail':{}}
     }
 
     def __init__(self, **kwargs):
-        super(IntegralDetail, self).__init__('integral_detail')
+        super(ConsumerIntegralDetail, self).__init__('consumer_integral_detail')
         self.consumer_code = kwargs.get('consumer_code', '')
         self.total_integral = kwargs.get('total_integral', 0)
-        self.history_list = kwargs.get('history_list', [])
+        self.integral_history = kwargs.get('integral_history', [])
         self.create_time = kwargs.get('create_time', None)
 
     @classmethod
@@ -60,7 +60,7 @@ class IntegralDetail(IBaseModel):
         integral = cls()
         integral.consumer_code = kwargs.get('consumer_code', '')
         integral.total_integral = kwargs.get('total_integral', 0)
-        integral.history_list = kwargs.get('history_list', [])
+        integral.integral_history = kwargs.get('integral_history', [])
         integral.create_time = kwargs.get('create_time', None)
         return integral
 
@@ -78,7 +78,7 @@ class IntegralDetail(IBaseModel):
         return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                          update={
                                              '$inc': {'total_integral': integral_value},
-                                             '$push': {'history_list': history_info.get_json_by_obj()},
+                                             '$push': {'integral_history': history_info.get_json_by_obj()},
                                          })
 
     @try_except

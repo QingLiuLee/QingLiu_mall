@@ -2,7 +2,7 @@
 # @Time     : 2019/7/5
 # @Author   : Lee才晓
 # @Describe :
-from consumer.integral_detail.models import IntegralDetail, IntegralHistoryInfo
+from consumer.integral_detail.models import ConsumerIntegralDetail, IntegralHistoryInfo
 from system.response import *
 from utils.decorator.exception import try_except
 
@@ -12,7 +12,7 @@ def update_consumer_integral_detail(consumer_code, income_type, integral_value, 
     """
     :return:
     """
-    integral_detail = IntegralDetail.init_integral_detail(consumer_code=consumer_code)
+    integral_detail = ConsumerIntegralDetail.init_integral_detail(consumer_code=consumer_code)
     history_info = IntegralHistoryInfo.init_history_info(income_type=income_type,
                                                          integral_value=integral_value,
                                                          detail=detail)

@@ -7,7 +7,7 @@ from sanic.exceptions import abort
 from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
-from consumer.integral_detail.models import IntegralDetail
+from consumer.integral_detail.models import ConsumerIntegralDetail
 from system.response import *
 from utils.decorator.exception import response_exception
 
@@ -23,7 +23,7 @@ async def get_integral_detail_info(request: Request, token: Token):
     """
 
     params = request.json
-    integral_detail = IntegralDetail.init_integral_detail(**params)
+    integral_detail = ConsumerIntegralDetail.init_integral_detail(**params)
     if not integral_detail.consumer_code:
         abort(status_code=ParamsErrorCode)
 

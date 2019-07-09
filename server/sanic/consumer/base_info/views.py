@@ -9,8 +9,12 @@ from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
 from consumer.base_info.models import ConsumerBaseInfo, ReceivingAddress
-from consumer.integral_detail.models import IntegralDetail
-from consumer.login_detail.models import LoginDetail
+from consumer.coupon_detail.models import ConsumerCouponDetail
+from consumer.integral_detail.models import ConsumerIntegralDetail
+from consumer.login_detail.models import ConsumerLoginDetail, LoginHistory
+from consumer.order_detail.models import ConsumerOrderDetail
+from consumer.task_detail.models import ConsumerTasksDetail
+from consumer.vip_detail.models import ConsumerVIPDetail
 from system.response import *
 from sanic_jwt_extended import create_access_token
 
@@ -40,7 +44,17 @@ async def create_consumer_info(request):
 
     if consumer_code:
         # create integral detail info
-        IntegralDetail.init_integral(consumer_code=consumer_code).create_integral_detail_info()
+        ConsumerIntegralDetail.init_integral_detail(consumer_code=consumer_code).create_integral_detail_info()
+        # create login detail info
+        ConsumerLoginDetail.init_login_detail(consumer_code=consumer_code).create_login_detail_info()
+        # create coupon detail info
+        ConsumerCouponDetail.init_coupon_detail(consumer_code=consumer_code).create_coupon_detail_info()
+        # create tasks detail info
+        ConsumerTasksDetail.init_task_detail(consumer_code=consumer_code).create_task_detail_info()
+        # create order detail info
+        ConsumerOrderDetail.init_order_detail(consumer_code=consumer_code).create_order_detail_info()
+        # create vip detail info
+        ConsumerVIPDetail.init_vip_detail(consumer_code=consumer_code).create_vip_detail_info()
 
         abort(status_code=JsonSuccessCode, message=consumer_code)
     else:
@@ -92,13 +106,14 @@ async def consumer_sign_in(request):
 
     if consumer.check_consumer_password(old_pwd=consumer_info['password'], new_pwd=password):
 
-        login_detail = LoginDetail.init_detail_info(consumer_code=consumer.consumer_code)
+        login_detail = ConsumerLoginDetail.init_login_detail(consumer_code=consumer.consumer_code)
 
         start_time, end_time = get_current_zero_and_last_time()
         is_exist = await login_detail.check_login_detail_by_consumer_code_and_datetime(start_time=start_time,
                                                                                        end_time=end_time)
         if not is_exist:
-            login_detail.create_login_detail_info()
+            login_history = LoginHistory.init_login_history()
+            login_detail.add_login_history(login_history=login_history)
 
         token = await create_access_token(app=request.app, identity='nickname',
                                           user_claims=json_util.dumps(consumer_info))
@@ -127,7 +142,7 @@ async def get_consumer_base_info(request: Request, token: Token):
     if not consumer_info:
         abort(status_code=NoExistsErrorCode, message='当前账号不存在')
 
-    abort(status_code=JsonSuccessCode, message=consumer_info)
+    abort(status_code=JsonSuccessCode, message={'base_info': consumer_info})
 
 
 @blueprint.route(uri='/add/receive/address', methods=['POST'])
@@ -188,4 +203,4 @@ async def get_consumer_receiver_address(request: Request, token: Token):
     consumer = ConsumerBaseInfo.init_base_info(consumer_code=consumer_code)
     address_list = await consumer.get_consumer_receiver_address()
 
-    abort(status_code=JsonSuccessCode, message=address_list)
+    abort(status_code=JsonSuccessCode, message={'address_list': address_list})
