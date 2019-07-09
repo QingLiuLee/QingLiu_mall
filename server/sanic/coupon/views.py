@@ -8,7 +8,7 @@ from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
 from coupon.models import Coupon
-from system.response import ParamsErrorCode, ExistsErrorCode, JsonSuccessCode, ServerErrorCode
+from system.response import ParamsErrorCode, ExistsErrorCode, JsonSuccessCode, ServerErrorCode, NoExistsErrorCode
 from utils.decorator.exception import response_exception
 
 blueprint = Blueprint(name="coupon", version=1)
@@ -27,8 +27,9 @@ async def create_coupon_info(request: Request, token: Token):
 
     coupon = Coupon.init_coupon_info(**params)
 
-    if not all(coupon.check_params_is_none(['coupon_code', 'create_time', 'used_num', 'received_num'
-                                                                                      'vail_status'])):
+    if not all([coupon.check_params_is_none(
+            ['coupon_code', 'available_product_list', 'available_org_list', 'consumer_value',
+             'create_time', 'used_num', 'received_num', 'vail_status'])]):
         abort(status_code=ParamsErrorCode)
 
     is_exists = await coupon.find_coupon_by_title()
@@ -40,3 +41,30 @@ async def create_coupon_info(request: Request, token: Token):
         abort(status_code=JsonSuccessCode, message={'coupon_code': coupon_code})
 
     abort(status_code=ServerErrorCode, message='优惠券创建失败')
+
+
+@blueprint.route(uri='/update/info', methods=['POST'])
+@response_exception
+async def update_coupon_info(request: Request, token: Token):
+    """
+    :name update_coupon_info
+    :param (coupon_code/title/start_time/end_time/explain/total_num/distribution_form_type/distribution_form_value
+            use_threshold/available_product_type/available_product_list/limit_num/consumer_type
+            consumer_value/available_org_type/available_org_list)
+    """
+    params = request.json
+
+    coupon = Coupon.init_coupon_info(**params)
+
+    if not coupon.check_params_is_none(['available_product_list', 'available_org_list', 'consumer_value',
+                                        'create_time', 'used_num', 'received_num', 'vail_status']):
+        abort(status_code=ParamsErrorCode)
+
+    coupon_info = await coupon.find_coupon_by_coupon_code()
+    if not coupon_info:
+        abort(status_code=NoExistsErrorCode, message='优惠券标题不存在')
+
+    result = coupon.update_coupon_info()
+    if result.modified_count or result.matched_count:
+        abort(status_code=JsonSuccessCode, message='优惠券更新成功')
+    abort(status_code=ServerErrorCode, message='优惠券更新失败')

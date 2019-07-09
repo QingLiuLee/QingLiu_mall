@@ -34,18 +34,18 @@ async def get_vip_detail_info(request: Request, token: Token):
     abort(status_code=JsonSuccessCode, message={'vip_detail': detail_info})
 
 
-@blueprint.route(uri='/update/vip/info', methods=['POST'])
-@response_exception
-async def update_vip_info(request: Request, token: Token):
-    """更新消费者ＶＩＰ信息中的等级信息"""
-    params = request.json
-
-    consumer_code = params.get('consumer_code', '')
-    old_vip_level = params.get('old_vip_level', '')
-    new_vip_level = params.get('new_vip_level', '')
-
-    if not all([consumer_code, old_vip_level, new_vip_level]):
-        abort(status_code=ParamsErrorCode)
-
-    # consumer = Consumer.init_consumer_info(consumer_code=consumer_code)
-    pass
+# @blueprint.route(uri='/update/vip/info', methods=['POST'])
+# @response_exception
+# async def update_vip_info(request: Request, token: Token):
+#     """更新消费者ＶＩＰ信息中的等级信息"""
+#     params = request.json
+#
+#     consumer_code = params.get('consumer_code', '')
+#     old_vip_level = params.get('old_vip_level', '')
+#     new_vip_level = params.get('new_vip_level', '')
+#
+#     if not all([consumer_code, old_vip_level, new_vip_level]):
+#         abort(status_code=ParamsErrorCode)
+#
+#     # consumer = Consumer.init_consumer_info(consumer_code=consumer_code)
+#     pass

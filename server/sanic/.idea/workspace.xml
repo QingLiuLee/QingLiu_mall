@@ -2,20 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07c20aae-6fd3-4490-803b-c2befb88d364" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/consumer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/coupon_detail/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/coupon_detail/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/coupon_detail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/coupon_detail/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/integral_detail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/integral_detail/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/integral_detail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/integral_detail/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/order_detail/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/order_detail/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/order_detail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/order_detail/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/order_detail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/order_detail/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/task_detail/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/task_detail/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/task_detail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/task_detail/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/task_detail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/task_detail/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/vip_detail/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/vip_detail/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/vip_detail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/vip_detail/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consumer/integral_detail/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/integral_detail/tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consumer/vip_detail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/vip_detail/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/coupon/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coupon/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/coupon/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integral/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/integral/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,52 +17,49 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/consumer/task_detail/views.py">
+        <entry file="file://$PROJECT_DIR$/coupon/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="121" selection-start-line="121" selection-end-line="141" selection-end-column="76" />
-              <folding>
-                <element signature="e#81#108#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="221">
+              <caret line="101" column="26" selection-start-line="101" selection-start-column="26" selection-end-line="101" selection-end-column="26" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/consumer/vip_detail/views.py">
+        <entry file="file://$PROJECT_DIR$/coupon/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="42" column="51" lean-forward="true" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
+            <state relative-caret-position="595">
+              <caret line="70" selection-start-line="70" selection-end-line="70" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/consumer/vip_detail/models.py">
+        <entry file="file://$PROJECT_DIR$/system/base_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="48" column="39" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="39" />
+            <state relative-caret-position="221">
+              <caret line="89" column="16" selection-start-line="89" selection-start-column="16" selection-end-line="89" selection-end-column="16" />
               <folding>
-                <element signature="e#88#103#0" expanded="true" />
+                <element signature="e#89#112#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/consumer/task_detail/models.py">
+        <entry file="file://$PROJECT_DIR$/commodity/category/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="50" column="40" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="40" />
+            <state relative-caret-position="145">
+              <caret line="59" column="17" lean-forward="true" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/consumer/order_detail/views.py">
+        <entry file="file://$PROJECT_DIR$/commodity/category/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="13" selection-start-line="13" selection-end-line="34" />
+            <state relative-caret-position="502">
+              <caret line="78" column="25" lean-forward="true" selection-start-line="78" selection-start-column="25" selection-end-line="78" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -87,9 +75,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Request</find>
-      <find>verify_id</find>
-      <find>gender</find>
       <find>consumer_info</find>
       <find>consumer_code</find>
       <find>find_consumer_by_mobile_or_nickname</find>
@@ -117,6 +102,9 @@
       <find>$push</find>
       <find>login_detail</find>
       <find>login_code</find>
+      <find>distribution_form_type</find>
+      <find>available_org_list</find>
+      <find>vail_status</find>
     </findStrings>
     <replaceStrings>
       <replace>db</replace>
@@ -144,10 +132,7 @@
         <option value="$PROJECT_DIR$/merchant/organization/models.py" />
         <option value="$PROJECT_DIR$/start.py" />
         <option value="$PROJECT_DIR$/coupon/__init__.py" />
-        <option value="$PROJECT_DIR$/coupon/models.py" />
-        <option value="$PROJECT_DIR$/coupon/views.py" />
         <option value="$PROJECT_DIR$/integral/models.py" />
-        <option value="$PROJECT_DIR$/integral/views.py" />
         <option value="$PROJECT_DIR$/system/app.py" />
         <option value="$PROJECT_DIR$/integral/__init__.py" />
         <option value="$PROJECT_DIR$/test/test_merchant/test_staff.py" />
@@ -162,7 +147,6 @@
         <option value="$PROJECT_DIR$/utils/constant.py" />
         <option value="$PROJECT_DIR$/task/models.py" />
         <option value="$PROJECT_DIR$/audit/models.py" />
-        <option value="$PROJECT_DIR$/consumer/integral_detail/tools.py" />
         <option value="$PROJECT_DIR$/consumer/login_detail/__init__.py" />
         <option value="$PROJECT_DIR$/consumer/login_detail/views.py" />
         <option value="$PROJECT_DIR$/consumer/login_detail/models.py" />
@@ -182,6 +166,10 @@
         <option value="$PROJECT_DIR$/consumer/task_detail/views.py" />
         <option value="$PROJECT_DIR$/consumer/vip_detail/models.py" />
         <option value="$PROJECT_DIR$/consumer/vip_detail/views.py" />
+        <option value="$PROJECT_DIR$/consumer/integral_detail/tools.py" />
+        <option value="$PROJECT_DIR$/integral/views.py" />
+        <option value="$PROJECT_DIR$/coupon/models.py" />
+        <option value="$PROJECT_DIR$/coupon/views.py" />
       </list>
     </option>
   </component>
@@ -219,19 +207,7 @@
             <path>
               <item name="sanic" type="b2602c69:ProjectViewProjectNode" />
               <item name="sanic" type="462c0819:PsiDirectoryNode" />
-              <item name="consumer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sanic" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sanic" type="462c0819:PsiDirectoryNode" />
-              <item name="consumer" type="462c0819:PsiDirectoryNode" />
-              <item name="task_detail" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sanic" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sanic" type="462c0819:PsiDirectoryNode" />
-              <item name="consumer" type="462c0819:PsiDirectoryNode" />
-              <item name="vip_detail" type="462c0819:PsiDirectoryNode" />
+              <item name="coupon" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -358,7 +334,7 @@
       <workItem from="1562316817767" duration="55000" />
       <workItem from="1562550940258" duration="2699000" />
       <workItem from="1562579802136" duration="1392000" />
-      <workItem from="1562652116833" duration="9204000" />
+      <workItem from="1562652116833" duration="12559000" />
     </task>
     <servers />
   </component>
@@ -371,7 +347,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="144545000" />
+    <option name="totallyTimeSpent" value="147900000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -392,7 +368,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32729468" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.20804438" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.37170595" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.28432733" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32871014" />
@@ -430,44 +406,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/sanic$Unittests_for_test_staff_Test.coverage" NAME="Unittests for test_staff.Test Coverage Results" MODIFIED="1562226426527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/test_merchant" />
-    <SUITE FILE_PATH="coverage/sanic$start.coverage" NAME="start Coverage Results" MODIFIED="1562661325440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/sanic$start.coverage" NAME="start Coverage Results" MODIFIED="1562664717489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/system/base_config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/task/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.local/share/virtualenvs/sanic-M6l9KQKU/lib/python3.7/site-packages/motor/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="489" column="4" selection-start-line="489" selection-start-column="4" selection-end-line="489" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.local/share/virtualenvs/sanic-M6l9KQKU/lib/python3.7/site-packages/pymongo/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="18" column="10" selection-start-line="18" selection-end-line="18" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.local/share/virtualenvs/sanic-M6l9KQKU/lib/python3.7/site-packages/sanic_jwt_extended/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="30" lean-forward="true" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/merchant/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -537,16 +478,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/integral/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1309">
-          <caret line="84" column="76" lean-forward="true" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="76" />
-          <folding>
-            <element signature="e#81#108#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -595,20 +526,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/decorator/exception.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/integral/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/system/response.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
@@ -640,30 +557,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/coupon/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commodity/category/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="64" column="20" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/system/base_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="103" column="8" selection-start-line="103" selection-start-column="8" selection-end-line="103" selection-end-column="8" />
-          <folding>
-            <element signature="e#89#112#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/consumer/integral_detail/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -688,16 +581,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/login_detail/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
-          <folding>
-            <element signature="e#81#108#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/consumer/base_info/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -714,16 +597,6 @@
           <caret line="67" column="45" lean-forward="true" selection-start-line="67" selection-start-column="45" selection-end-line="67" selection-end-column="45" />
           <folding>
             <element signature="e#88#103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/integral_detail/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#88#115#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -752,16 +625,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/coupon_detail/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="51" lean-forward="true" selection-start-line="16" selection-start-column="51" selection-end-line="16" selection-end-column="51" />
-          <folding>
-            <element signature="e#82#109#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -796,34 +659,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/integral_detail/tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/order_detail/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="13" selection-start-line="13" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/consumer/task_detail/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="50" column="40" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/task_detail/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="121" selection-start-line="121" selection-end-line="141" selection-end-column="76" />
-          <folding>
-            <element signature="e#81#108#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -837,10 +676,136 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/consumer/coupon_detail/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="16" column="51" lean-forward="true" selection-start-line="16" selection-start-column="51" selection-end-line="16" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/consumer/integral_detail/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#88#115#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/consumer/integral_detail/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/consumer/login_detail/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+          <folding>
+            <element signature="e#81#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/consumer/order_detail/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="13" selection-start-line="13" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/consumer/task_detail/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="121" selection-start-line="121" selection-end-line="141" selection-end-column="76" />
+          <folding>
+            <element signature="e#81#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/consumer/vip_detail/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="42" column="51" lean-forward="true" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
+        <state relative-caret-position="493">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/order/views.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/integral/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="80" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/decorator/exception.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/integral/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="428">
+          <caret line="59" column="31" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/integral/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
+          <folding>
+            <element signature="e#81#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/system/base_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="89" column="16" selection-start-line="89" selection-start-column="16" selection-end-line="89" selection-end-column="16" />
+          <folding>
+            <element signature="e#89#112#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commodity/category/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="59" column="17" lean-forward="true" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commodity/category/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="78" column="25" lean-forward="true" selection-start-line="78" selection-start-column="25" selection-end-line="78" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coupon/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="101" column="26" selection-start-line="101" selection-start-column="26" selection-end-line="101" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/coupon/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
         </state>
       </provider>
     </entry>
