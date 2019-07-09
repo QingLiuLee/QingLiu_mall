@@ -119,3 +119,7 @@ class Coupon(IBaseModel):
                                                           'available_org_type': self.available_org_type,
                                                           'available_org_list': self.available_org_list,
                                                           }})
+
+    @try_except
+    def delete_coupon_by_coupon_code(self):
+        return self.delete_one_by_condition(condition={'coupon_code': self.coupon_code})

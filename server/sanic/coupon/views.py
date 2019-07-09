@@ -68,3 +68,23 @@ async def update_coupon_info(request: Request, token: Token):
     if result.modified_count or result.matched_count:
         abort(status_code=JsonSuccessCode, message='优惠券更新成功')
     abort(status_code=ServerErrorCode, message='优惠券更新失败')
+
+
+@blueprint.route(uri='/delete/info', methods=['POST'])
+@response_exception
+async def delete_coupon_info(request: Request, token: Token):
+    """
+    :name delete_coupon_info
+    :param (coupon_code)
+    """
+    params = request.json
+
+    coupon = Coupon.init_coupon_info(**params)
+    if not coupon.coupon_code:
+        abort(status_code=ParamsErrorCode)
+
+    result = await coupon.delete_coupon_by_coupon_code()
+    if result.raw_result or result.raw_result.ok:
+        abort(status_code=JsonSuccessCode, message='the coupon delete success')
+
+    abort(status_code=ServerErrorCode, message='the coupon delete failed')
