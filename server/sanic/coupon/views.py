@@ -64,7 +64,7 @@ async def update_coupon_info(request: Request, token: Token):
     if not coupon_info:
         abort(status_code=NoExistsErrorCode, message='优惠券标题不存在')
 
-    result = coupon.update_coupon_info()
+    result = await coupon.update_coupon_info()
     if result.modified_count or result.matched_count:
         abort(status_code=JsonSuccessCode, message='优惠券更新成功')
     abort(status_code=ServerErrorCode, message='优惠券更新失败')
