@@ -47,6 +47,11 @@ class ConsumerTasksDetail(IBaseModel):
         self.create_info()
         return self
 
+    @try_except
+    def get_task_detail_by_consumer_code(self):
+        return self.find_one(condition={'consumer_code': self.consumer_code},
+                             projection={'_id': 0})
+
     # @try_except
     # def get_task_detail_by_consumer_code_and_action_code_and_task_code(self):
     #     return self.find_one(condition={'$and': [{'consumer_code': self.consumer_code},

@@ -83,4 +83,4 @@ class ConsumerIntegralDetail(IBaseModel):
 
     @try_except
     def get_integral_detail_by_consumer_code(self):
-        return self.find_one(condition={'consumer_code': self.consumer_code})
+        return self.find_one(condition={'consumer_code': self.consumer_code}, projection={'_id': 0})

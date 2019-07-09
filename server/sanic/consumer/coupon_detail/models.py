@@ -75,3 +75,7 @@ class ConsumerCouponDetail(IBaseModel):
             return self.update_one_by_custom(condition={'consumer_code': self.consumer_code},
                                              update={'$set': {'integral': coupon.get_json_by_obj()}})
         return None
+
+    @try_except
+    def get_coupon_detail_by_consumer_code(self):
+        return self.find_one(condition={'consumer_code': self.consumer_code}, projection={'_id': 0})

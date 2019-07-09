@@ -31,6 +31,4 @@ async def get_integral_detail_info(request: Request, token: Token):
     if not detail_info:
         abort(status_code=NoExistsErrorCode, message='the task no exists.')
 
-    detail_info['_id'] = str(detail_info['_id'])
-
     abort(status_code=JsonSuccessCode, message={'detail_info': detail_info})

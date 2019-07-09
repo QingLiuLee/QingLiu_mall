@@ -7,15 +7,12 @@ from sanic.exceptions import abort
 from sanic.request import Request
 from sanic_jwt_extended.tokens import Token
 
-from consumer.integral_detail.tools import update_consumer_integral_detail
+# from consumer.integral_detail.tools import update_consumer_integral_detail
 from consumer.task_detail.models import ConsumerTasksDetail
 from system.response import *
 from task.models import Tasks
 from utils.constant import INTEGRAL_TYPE, COUPON_TYPE, INCOME_TYPE_ADD
 from utils.decorator.exception import response_exception
-
-blueprint = Blueprint(name="task_detail", version=1)
-
 
 # @blueprint.route(uri='/create/info', methods=['POST'])
 # @response_exception
@@ -120,3 +117,26 @@ blueprint = Blueprint(name="task_detail", version=1)
 #     if result.modified_count or result.matched_count:
 #         abort(status_code=JsonSuccessCode, message={'result': result})
 #     abort(status_code=ServerErrorCode, message='the task_detail reward failed')
+
+
+blueprint = Blueprint(name="task_detail", url_prefix='/task_detail', version=1)
+
+
+@blueprint.route(uri='/get/info', methods=['POST'])
+@response_exception
+async def get_task_detail_info(request: Request, token: Token):
+    """
+    :name get_task_detail_info
+    :param (consumer_code)
+    """
+
+    params = request.json
+    order_detail = ConsumerTasksDetail.init_task_detail(**params)
+    if not order_detail.consumer_code:
+        abort(status_code=ParamsErrorCode)
+
+    detail_info = await order_detail.get_task_detail_by_consumer_code()
+    if not detail_info:
+        abort(status_code=NoExistsErrorCode, message='the task detail no exists.')
+
+    abort(status_code=JsonSuccessCode, message={'task_detail': detail_info})

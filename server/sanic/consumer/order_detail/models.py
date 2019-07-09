@@ -53,3 +53,7 @@ class ConsumerOrderDetail(IBaseModel):
         self.create_time = datetime.datetime.now()
         self.create_info()
         return self
+
+    @try_except
+    def get_order_detail_by_consumer_code(self):
+        return self.find_one(condition={'consumer_code': self.consumer_code}, projection={'_id': 0})
