@@ -5,7 +5,7 @@
 from sanic import Blueprint
 from . import base_info, integral_detail, login_detail, coupon_detail, order_detail, task_detail, vip_detail
 
-product_blueprint_group = Blueprint.group(base_info.views.blueprint, login_detail.views.blueprint,
+blueprint_group = Blueprint.group(base_info.views.blueprint, login_detail.views.blueprint,
                                           integral_detail.views.blueprint, coupon_detail.views.blueprint,
                                           order_detail.views.blueprint, task_detail.views.blueprint,
                                           vip_detail.views.blueprint,

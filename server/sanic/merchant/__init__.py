@@ -6,4 +6,4 @@ from sanic import Blueprint
 
 from . import organization, staff
 
-product_blueprint_group = Blueprint.group(organization.views.blueprint, staff.views.blueprint, url_prefix='/merchant')
+blueprint_group = Blueprint.group(organization.views.blueprint, staff.views.blueprint, url_prefix='/merchant')

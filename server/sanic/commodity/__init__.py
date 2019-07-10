@@ -7,4 +7,4 @@ from sanic import Blueprint
 from . import category
 from . import product
 
-product_blueprint_group = Blueprint.group(category.views.blueprint, product.views.blueprint, url_prefix='/commodity')
+blueprint_group = Blueprint.group(category.views.blueprint, product.views.blueprint, url_prefix='/commodity')

@@ -6,6 +6,7 @@
 # @Function:
 from sanic.exceptions import SanicException, add_status_code
 from sanic.response import json, html
+import os
 
 NormalCode = 200
 JsonSuccessCode = 207
@@ -32,7 +33,12 @@ class BaseResponse(SanicException):
         return json(status=self.status_code, body={'msg': message, 'data': data})
 
     def response_html(self):
-        with open(self.message) as f:
+        file_path = os.getcwd() + os.sep + 'template' + os.sep + self.message
+
+        if not os.path.exists(file_path):
+            return self.response_404_html()
+
+        with open(file_path) as f:
             return html(status=self.status_code, body=f.read())
 
     def get_dict(self):
@@ -42,6 +48,11 @@ class BaseResponse(SanicException):
                 data[name] = getattr(self, name)
 
         return data
+
+    def response_404_html(self):
+        file_path = os.getcwd() + os.sep + 'template' + os.sep + 'error' + os.sep + '404.html'
+        with open(file_path) as f:
+            return html(status=self.status_code, body=f.read())
 
 
 @add_status_code(JsonSuccessCode)
