@@ -171,3 +171,21 @@ async def staff_leave_chat_room(request: Request, token: Token):
         abort(status_code=JsonSuccessCode, message='leave chat room success')
 
     abort(status_code=ServerErrorCode, message='leave chat room failed')
+
+
+@blueprint.route(uri='/org/create/room', methods=['POST'])
+@response_exception
+async def org_create_chat_room(request: Request, token: Token):
+    """
+    :name org_create_chat_room
+    :param (org_code/staff_code_list/is_group)
+    """
+    params = request.json
+
+    chat_room = ChatRoom.init_chat_room(**params)
+    if not chat_room.check_params_is_none(['room_id', 'consumer_code_list', 'create_time',
+                                           'chat_record', 'room_event', 'is_org_room']):
+        abort(status_code=ParamsErrorCode)
+
+    result = chat_room.org_create_chat_room()
+    abort(status_code=JsonSuccessCode, message='org create chat room')

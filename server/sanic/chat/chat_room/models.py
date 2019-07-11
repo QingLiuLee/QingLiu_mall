@@ -1,37 +1,12 @@
 # -*- coding: utf-8 -*-
-# @Time     : 2019/7/10
+# @Time     : 2019/7/11
 # @Author   : Lee才晓
 # @Describe :
 import datetime
 
-from system.base_model import IBaseModel, IEmbedded
+from system.base_model import IBaseModel
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
-
-
-class ChatRecordInfo(IEmbedded):
-    __slots__ = (
-        'chat_record_code',
-        'sender_code',
-        'content',
-        'send_time',
-    )
-
-    def __init__(self, **kwargs):
-        super(ChatRecordInfo, self).__init__()
-        self.chat_record_code = kwargs.get('chat_record_code', '')
-        self.sender_code = kwargs.get('sender_code', '')
-        self.content = kwargs.get('content', '')
-        self.send_time = kwargs.get('send_time', None)
-
-    @classmethod
-    def init_chat_record(cls, **kwargs):
-        chat_record = cls()
-        chat_record.chat_record_code = kwargs.get('chat_record_code', '')
-        chat_record.sender_code = kwargs.get('sender_code', '')
-        chat_record.content = kwargs.get('content', '')
-        chat_record.send_time = kwargs.get('send_time', None)
-        return chat_record
 
 
 class ChatRoom(IBaseModel):
@@ -43,7 +18,6 @@ class ChatRoom(IBaseModel):
         'consumer_code_list',
         'is_group',
         'create_time',
-        'chat_record',
         'room_event',
     )
 
@@ -56,7 +30,6 @@ class ChatRoom(IBaseModel):
         self.consumer_code_list = kwargs.get('consumer_code_list', [])
         self.create_time = kwargs.get('create_time', None)
         self.org_code = kwargs.get('org_code', '')
-        self.chat_record = kwargs.get('chat_record', [])
         self.room_event = kwargs.get('room_event', '')
 
     @classmethod
@@ -69,7 +42,6 @@ class ChatRoom(IBaseModel):
         chat_room.consumer_code_list = kwargs.get('consumer_code_list', [])
         chat_room.create_time = kwargs.get('create_time', None)
         chat_room.org_code = kwargs.get('org_code', '')
-        chat_room.chat_record = kwargs.get('chat_record', [])
         chat_room.room_event = kwargs.get('room_event', '')
         return chat_room
 
