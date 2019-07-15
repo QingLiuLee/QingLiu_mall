@@ -43,6 +43,14 @@
     -webkit-transform: rotate(360deg);
   }
 }
+@keyframes rotate {
+  50% {
+    transform: translate(-90%, -100%) rotate(180deg);
+  }
+  100% {
+    transform: translate(-60%, -90%) rotate(360deg);
+  }
+}
 /*start*/
 /* antd */
 /* form */
@@ -163,8 +171,39 @@ textarea {
   /*lee-leftBar-bot li active*/
   /*lee-leftBar-bot BG*/
   /*lee-rightBar-bot-BG*/
+  /*water animation*/
   /*login|register*/
   /*home*/
+}
+.lee-admin .themsBlack .water {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}
+.lee-admin .themsBlack .water:before,
+.lee-admin .themsBlack .water:after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 0;
+  right: 10px;
+  background-color: rgba(42, 50, 89, 0.7);
+  opacity: 0.3;
+  border-radius: 45%;
+  transform: translate(-70%, -70%) rotate(0);
+  animation: rotate 6s linear infinite;
+  z-index: 10;
+}
+.lee-admin .themsBlack .water:after {
+  border-radius: 47%;
+  background-color: rgba(42, 50, 89, 0.7);
+  opacity: 0.5;
+  transform: translate(-50%, -60%) rotate(0);
+  animation: rotate 10s linear -5s infinite;
+  z-index: 20;
 }
 .lee-admin .themsBlack .lee-leftBar {
   width: 150px;
@@ -299,6 +338,7 @@ textarea {
   font-size: 18px;
 }
 .lee-admin .themsBlack .lee-rightBar .lee-rightBar-bot {
+  position: relative;
   width: 100%;
   height: calc(100% - 50px);
 }
@@ -483,6 +523,7 @@ textarea {
   /*lee-leftBar-bot li active*/
   /*lee-leftBar-bot BG*/
   /*lee-rightBar-bot-BG*/
+  /*water animation*/
   /*login|register*/
   /*home*/
 }
@@ -498,6 +539,36 @@ textarea {
 }
 .lee-admin .themsSVGL .lee-rightBar-bot-BG {
   background: rgba(95, 137, 189, 0.1);
+}
+.lee-admin .themsSVGL .water {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}
+.lee-admin .themsSVGL .water:before,
+.lee-admin .themsSVGL .water:after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 0;
+  right: 10px;
+  background-color: #5f89bd;
+  opacity: 0.3;
+  border-radius: 45%;
+  transform: translate(-70%, -70%) rotate(0);
+  animation: rotate 6s linear infinite;
+  z-index: 10;
+}
+.lee-admin .themsSVGL .water:after {
+  border-radius: 47%;
+  background-color: #5f89bd;
+  opacity: 0.5;
+  transform: translate(-50%, -60%) rotate(0);
+  animation: rotate 10s linear -5s infinite;
+  z-index: 20;
 }
 .lee-admin .themsSVGL .lee-leftBar {
   width: 150px;
@@ -638,6 +709,7 @@ textarea {
   font-size: 18px;
 }
 .lee-admin .themsSVGL .lee-rightBar .lee-rightBar-bot {
+  position: relative;
   width: 100%;
   height: calc(100% - 50px);
   background: rgba(95, 137, 189, 0.1);
@@ -823,6 +895,7 @@ textarea {
   /*lee-leftBar-bot li active*/
   /*lee-leftBar-bot BG*/
   /*lee-rightBar-bot-BG*/
+  /*water animation*/
   /*login|register*/
   /*home*/
 }
@@ -838,6 +911,36 @@ textarea {
 }
 .lee-admin .themsSVGLFZ .lee-rightBar-bot-BG {
   background: rgba(153, 146, 197, 0.1);
+}
+.lee-admin .themsSVGLFZ .water {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}
+.lee-admin .themsSVGLFZ .water:before,
+.lee-admin .themsSVGLFZ .water:after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 0;
+  right: 10px;
+  background-color: #9992c5;
+  opacity: 0.3;
+  border-radius: 45%;
+  transform: translate(-70%, -70%) rotate(0);
+  animation: rotate 6s linear infinite;
+  z-index: 10;
+}
+.lee-admin .themsSVGLFZ .water:after {
+  border-radius: 47%;
+  background-color: #9992c5;
+  opacity: 0.5;
+  transform: translate(-50%, -60%) rotate(0);
+  animation: rotate 10s linear -5s infinite;
+  z-index: 20;
 }
 .lee-admin .themsSVGLFZ .lee-leftBar {
   width: 150px;
@@ -978,6 +1081,7 @@ textarea {
   font-size: 18px;
 }
 .lee-admin .themsSVGLFZ .lee-rightBar .lee-rightBar-bot {
+  position: relative;
   width: 100%;
   height: calc(100% - 50px);
   background: rgba(153, 146, 197, 0.1);
@@ -1163,6 +1267,7 @@ textarea {
   /*lee-leftBar-bot li active*/
   /*lee-leftBar-bot BG*/
   /*lee-rightBar-bot-BG*/
+  /*water animation*/
   /*login|register*/
   /*home*/
 }
@@ -1178,6 +1283,36 @@ textarea {
 }
 .lee-admin .themsSVGF .lee-rightBar-bot-BG {
   background: rgba(204, 148, 199, 0.1);
+}
+.lee-admin .themsSVGF .water {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}
+.lee-admin .themsSVGF .water:before,
+.lee-admin .themsSVGF .water:after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 0;
+  right: 10px;
+  background-color: #cc94c7;
+  opacity: 0.3;
+  border-radius: 45%;
+  transform: translate(-70%, -70%) rotate(0);
+  animation: rotate 6s linear infinite;
+  z-index: 10;
+}
+.lee-admin .themsSVGF .water:after {
+  border-radius: 47%;
+  background-color: #cc94c7;
+  opacity: 0.5;
+  transform: translate(-50%, -60%) rotate(0);
+  animation: rotate 10s linear -5s infinite;
+  z-index: 20;
 }
 .lee-admin .themsSVGF .lee-leftBar {
   width: 150px;
@@ -1318,6 +1453,7 @@ textarea {
   font-size: 18px;
 }
 .lee-admin .themsSVGF .lee-rightBar .lee-rightBar-bot {
+  position: relative;
   width: 100%;
   height: calc(100% - 50px);
   background: rgba(204, 148, 199, 0.1);
@@ -1503,6 +1639,7 @@ textarea {
   /*lee-leftBar-bot li active*/
   /*lee-leftBar-bot BG*/
   /*lee-rightBar-bot-BG*/
+  /*water animation*/
   /*login|register*/
   /*home*/
 }
@@ -1518,6 +1655,36 @@ textarea {
 }
 .lee-admin .themsSVGFZ .lee-rightBar-bot-BG {
   background: rgba(166, 137, 196, 0.1);
+}
+.lee-admin .themsSVGFZ .water {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}
+.lee-admin .themsSVGFZ .water:before,
+.lee-admin .themsSVGFZ .water:after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 0;
+  right: 10px;
+  background-color: #a689c4;
+  opacity: 0.3;
+  border-radius: 45%;
+  transform: translate(-70%, -70%) rotate(0);
+  animation: rotate 6s linear infinite;
+  z-index: 10;
+}
+.lee-admin .themsSVGFZ .water:after {
+  border-radius: 47%;
+  background-color: #a689c4;
+  opacity: 0.5;
+  transform: translate(-50%, -60%) rotate(0);
+  animation: rotate 10s linear -5s infinite;
+  z-index: 20;
 }
 .lee-admin .themsSVGFZ .lee-leftBar {
   width: 150px;
@@ -1658,6 +1825,7 @@ textarea {
   font-size: 18px;
 }
 .lee-admin .themsSVGFZ .lee-rightBar .lee-rightBar-bot {
+  position: relative;
   width: 100%;
   height: calc(100% - 50px);
   background: rgba(166, 137, 196, 0.1);
@@ -1843,6 +2011,7 @@ textarea {
   /*lee-leftBar-bot li active*/
   /*lee-leftBar-bot BG*/
   /*lee-rightBar-bot-BG*/
+  /*water animation*/
   /*login|register*/
   /*home*/
 }
@@ -1858,6 +2027,36 @@ textarea {
 }
 .lee-admin .themsSVGGF .lee-rightBar-bot-BG {
   background: rgba(250, 160, 180, 0.1);
+}
+.lee-admin .themsSVGGF .water {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}
+.lee-admin .themsSVGGF .water:before,
+.lee-admin .themsSVGGF .water:after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 0;
+  right: 10px;
+  background-color: #fdd9d5;
+  opacity: 0.3;
+  border-radius: 45%;
+  transform: translate(-70%, -70%) rotate(0);
+  animation: rotate 6s linear infinite;
+  z-index: 10;
+}
+.lee-admin .themsSVGGF .water:after {
+  border-radius: 47%;
+  background-color: #fdd9d5;
+  opacity: 0.5;
+  transform: translate(-50%, -60%) rotate(0);
+  animation: rotate 10s linear -5s infinite;
+  z-index: 20;
 }
 .lee-admin .themsSVGGF .lee-leftBar {
   width: 150px;
@@ -1998,6 +2197,7 @@ textarea {
   font-size: 18px;
 }
 .lee-admin .themsSVGGF .lee-rightBar .lee-rightBar-bot {
+  position: relative;
   width: 100%;
   height: calc(100% - 50px);
   background: rgba(250, 160, 180, 0.1);
