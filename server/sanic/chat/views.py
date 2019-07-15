@@ -5,9 +5,8 @@
 from sanic import Blueprint
 from sanic.exceptions import abort
 from sanic.request import Request
-from sanic_jwt_extended.tokens import Token
 
-from chat.models import ChatRoom
+from chat.chat_room.models import ChatRoom
 from system.response import *
 from utils.decorator.exception import try_except, response_exception
 from system.extensions import socket_io
@@ -26,21 +25,23 @@ async def create_coupon_info(request: Request):
 
 
 @socket_io.event
-async def join_room(socket_id, message):
-    socket_io.enter_room(socket_id, message['room'])
-    await socket_io.emit('my_response', {'data': 'Entered room: ' + message['room']},
-                         room=socket_id)
+async def join_room(sid, message):
+    rooms = socket_io.rooms(sid)
+    if message['room'] not in rooms:
+        socket_io.enter_room(sid, message['room'])
+    await socket_io.emit('join_room', {'data': 'Entered room: ' + message['room']},
+                         room=sid)
 
 
 @socket_io.event
-async def leave_room(socket_id, message):
-    socket_io.leave_room(socket_id, message['room'])
+async def leave_room(sid, message):
+    socket_io.leave_room(sid, message['room'])
     await socket_io.emit('my_response', {'data': 'Left room: ' + message['room']},
-                         room=socket_id)
+                         room=sid)
 
 
 @socket_io.event
-async def close_room(socket_id, message):
+async def close_room(sid, message):
     await socket_io.emit('my_response',
                          {'data': 'Room ' + message['room'] + ' is closing.'},
                          room=message['room'])
@@ -48,144 +49,44 @@ async def close_room(socket_id, message):
 
 
 @socket_io.event
-async def room_chat_event(socket_id, message):
-    await socket_io.emit(event=message['event'], data=message['data'], room=message['room_id'])
+async def my_event(sid, message):
+    await socket_io.emit('my_response', {'data': message['data']}, room=sid)
+
+
+# @socket_io.event
+# async def my_broadcast_event(sid, message):
+#     await socket_io.emit('my_response', {'data': message['data']})
 
 
 @socket_io.event
-async def broadcast_event(socket_id, message):
-    await socket_io.emit(event=message['event'], data=message['data'], room=message['room_id'])
+async def my_room_event(sid, message):
+    await socket_io.emit('my_response', {'data': message['data']},
+                         room=message['room'])
 
 
 @socket_io.event
-async def disconnect_request(socket_id):
-    await socket_io.disconnect(socket_id)
+async def disconnect_request(sid):
+    await socket_io.disconnect(sid)
 
 
 @socket_io.event
-async def connect(socket_id, environ):
-    await socket_io.emit('my_response', {'data': 'Connected', 'count': 0}, room=socket_id)
-
-
-@socket_io.event
-async def disconnect(socket_id):
-    pass
-
-
-@blueprint.route(uri='/get/chat/room/list', methods=['POST'])
-@response_exception
-async def get_consumer_chat_room_list(request: Request, token: Token):
+async def connect(sid, query_params):
     """
-    :name get_consumer_chat_room_list
-    :param (consumer_code)
+    get client connect
+    获取当前用户的全部房间并join
     """
-    params = request.json
+    params_dict = {}
+    query_params = query_params['QUERY_STRING'].split('&')
+    for param in query_params:
+        p = param.split('=')
+        params_dict[p[0]] = p[1] if len(p) == 2 else ''
 
-    chat_room = ChatRoom.init_chat_room(**params)
+    if 'consumer_code' in params_dict.keys():
 
-    if not params['consumer_code']:
-        abort(status_code=ParamsErrorCode)
+        chat_room = ChatRoom.init_chat_room()
 
-    chat_room_list = chat_room.get_chat_room_by_consumer_code(consumer_code=params['consumer_code'])
-    abort(status_code=JsonSuccessCode, message={'chat_room_list': chat_room_list})
+        room_id_list = await chat_room.get_rooms_id_by_consumer_code(consumer_code=params_dict['consumer_code'])
+        for room_info in room_id_list:
+            socket_io.enter_room(sid, room_info['room_id'])
 
-
-@blueprint.route(uri='/consumer/join/room', methods=['POST'])
-@response_exception
-async def consumer_join_chat_room(request: Request, token: Token):
-    """
-    :name consumer_join_chat_room
-    :param (consumer_code/room_id)
-    """
-    params = request.json
-
-    chat_room = ChatRoom.init_chat_room(**params)
-    if not params['consumer_code'] or not chat_room.room_id:
-        abort(status_code=ParamsErrorCode)
-
-    result = chat_room.consumer_join_chat_room(consumer_code=params['consumer_code'])
-    if result.modified_count:
-        abort(status_code=JsonSuccessCode, message='join chat room success')
-
-    abort(status_code=ServerErrorCode, message='join chat room failed')
-
-
-@blueprint.route(uri='/consumer/leave/room', methods=['POST'])
-@response_exception
-async def consumer_leave_chat_room(request: Request, token: Token):
-    """
-    :name consumer_leave_chat_room
-    :param (consumer_code/room_id)
-    """
-
-    params = request.json
-
-    chat_room = ChatRoom.init_chat_room(**params)
-    if not params['consumer_code'] or not chat_room.room_id:
-        abort(status_code=ParamsErrorCode)
-
-    result = chat_room.consumer_leave_chat_room(consumer_code=params['consumer_code'])
-    if result.modified_count:
-        abort(status_code=JsonSuccessCode, message='leave chat room success')
-
-    abort(status_code=ServerErrorCode, message='leave chat room failed')
-
-
-@blueprint.route(uri='/staff/join/room', methods=['POST'])
-@response_exception
-async def staff_join_chat_room(request: Request, token: Token):
-    """
-    :name staff_join_chat_room
-    :param (staff_code/room_id)
-    """
-
-    params = request.json
-
-    chat_room = ChatRoom.init_chat_room(**params)
-    if not params['staff_code'] and not chat_room.room_id:
-        abort(status_code=ParamsErrorCode)
-
-    result = chat_room.org_staff_join_chat_room(staff_code=params['staff_code'])
-    if result.modified_count:
-        abort(status_code=JsonSuccessCode, message='join chat room success')
-
-    abort(status_code=ServerErrorCode, message='join chat room failed')
-
-
-@blueprint.route(uri='/staff/leave/room', methods=['POST'])
-@response_exception
-async def staff_leave_chat_room(request: Request, token: Token):
-    """
-    :name staff_leave_chat_room
-    :param (staff_code/room_id)
-    """
-
-    params = request.json
-
-    chat_room = ChatRoom.init_chat_room(**params)
-    if not params['staff_code'] or not chat_room.room_id:
-        abort(status_code=ParamsErrorCode)
-
-    result = chat_room.org_staff_join_chat_room(staff_code=params['staff_code'])
-    if result.modified_count:
-        abort(status_code=JsonSuccessCode, message='leave chat room success')
-
-    abort(status_code=ServerErrorCode, message='leave chat room failed')
-
-
-@blueprint.route(uri='/org/create/room', methods=['POST'])
-@response_exception
-async def org_create_chat_room(request: Request, token: Token):
-    """
-    :name org_create_chat_room
-    :param (org_code/staff_code_list/is_group)
-    """
-    params = request.json
-
-    chat_room = ChatRoom.init_chat_room(**params)
-    if not chat_room.check_params_is_none(['room_id', 'consumer_code_list', 'create_time',
-                                           'chat_record', 'room_event', 'is_org_room']):
-        abort(status_code=ParamsErrorCode)
-
-    result = chat_room.org_create_chat_room()
-    abort(status_code=JsonSuccessCode, message='org create chat room')
+    await socket_io.emit('my_response', {'data': 'Connected', 'count': 0}, room=sid)

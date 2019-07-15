@@ -5,6 +5,6 @@
 
 from sanic import Blueprint
 
-from . import views
+from . import views, chat_room
 
-blueprint_group = Blueprint.group(views.blueprint, url_prefix='/chat')
+blueprint_group = Blueprint.group(views.blueprint, chat_room.views.blueprint, url_prefix='/chat')

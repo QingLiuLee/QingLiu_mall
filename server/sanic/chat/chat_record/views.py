@@ -15,9 +15,9 @@ blueprint = Blueprint(name="chat_record", url_prefix='/record', version=1)
 
 @blueprint.route(uri='/get/record', methods=['POST'])
 @response_exception
-async def get_chat_room_record(request: Request, token: Token):
+async def consumer_get_chat_room_record(request: Request, token: Token):
     """
-    :name consumer_join_chat_room
+    :name consumer_get_chat_room_record
     :param (consumer_code/room_id)
     """
     params = request.json
