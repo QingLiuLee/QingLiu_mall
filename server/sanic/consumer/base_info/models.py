@@ -130,6 +130,14 @@ class ConsumerBaseInfo(IBaseModel):
             projection={'_id': 0, 'create_time': 0, 'verify_id': 0, 'password': 0})
 
     @try_except
+    def find_consumer_by_account(self, account):
+        return self.find_one(condition={
+            '$or': [{'mobile': account},
+                    {'nickname': account},
+                    {'email': account}]},
+            projection={'_id': 0, 'create_time': 0, 'verify_id': 0, 'password': 0})
+
+    @try_except
     def find_consumer_by_mobile_or_nickname_or_email_without_consumer_code(self):
         """过滤掉消费者编码获取消费者信息"""
         return self.find_one(condition={

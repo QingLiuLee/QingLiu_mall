@@ -8,7 +8,7 @@ import requests
 
 PROTOCOL = 'http://'
 HOST = '127.0.0.1'
-PORT = ':8000/'
+PORT = ':4001/'
 VERSION = 'v1/'
 
 BASE_URL = PROTOCOL + HOST + PORT + VERSION

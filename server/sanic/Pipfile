@@ -14,6 +14,7 @@ bson = "*"
 motor = "*"
 pytest = "*"
 requests = "*"
+python-socketio = "*"
 
 [requires]
 python_version = "3.7"

@@ -38,7 +38,7 @@ class IEmbedded(object):
         """
         for name in dir(self):
             value = getattr(self, name)
-            if not name.startswith('__') and not callable(value) and (value not in except_list) and (not value):
+            if not name.startswith('__') and not callable(value) and (name not in except_list) and (not value):
                 return False
         return True
 
@@ -101,12 +101,12 @@ class IBaseModel(object):
         return False
 
     @try_except
-    def find_one(self, condition=None, projection=None):
-        return self.__collection.find_one(filter=condition, projection=projection)
+    def find_one(self, condition=None, projection=None, sort_type=pymongo.ASCENDING):
+        return self.__collection.find_one(filter=condition, projection=projection, sort=[('_id', sort_type)])
 
     @try_except
-    def find_many(self, condition=None, projection=None, limit=10, skip=0):
-        return self.__collection.find(filter=condition, projection=projection, sort=[('_id', pymongo.ASCENDING)]).skip(
+    def find_many(self, condition=None, projection=None, limit=10, skip=0, sort_type=pymongo.ASCENDING):
+        return self.__collection.find(filter=condition, projection=projection, sort=[('_id', sort_type)]).skip(
             skip).to_list(length=limit)
 
     @try_except
@@ -126,3 +126,7 @@ class IBaseModel(object):
     def drop_collection(self):
         """清空collection"""
         return self.__collection.drop()
+
+    @try_except
+    def aggregate_by_pipeline(self, pipeline):
+        return self.__collection.aggregate(pipeline=pipeline)

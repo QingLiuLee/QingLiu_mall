@@ -9,8 +9,12 @@ from sanic_jwt_extended import JWTManager
 
 import commodity
 import consumer
+import coupon
+import integral
 import merchant
+import chat
 from system import base_config
+from system.extensions import socket_io
 from system.response import *
 
 app = Sanic()
@@ -27,13 +31,18 @@ def create_app():
 def register_extensions(app):
     JWTManager(app)
     CORS(app)
+
+    socket_io.attach(app)
     return app
 
 
 def register_blueprints(app):
-    app.blueprint(commodity.product_blueprint_group)
-    app.blueprint(merchant.product_blueprint_group)
-    app.blueprint(consumer.product_blueprint_group)
+    app.blueprint(commodity.blueprint_group)
+    app.blueprint(merchant.blueprint_group)
+    app.blueprint(consumer.blueprint_group)
+    app.blueprint(coupon.blueprint_group)
+    app.blueprint(integral.blueprint_group)
+    app.blueprint(chat.blueprint_group)
     return app
 
 
