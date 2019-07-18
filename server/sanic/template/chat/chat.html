@@ -6,8 +6,8 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
-            // var socket = io.connect();
-            var socket = io('//'+window.location.host+'?consumer_code=C2019070915283736');
+            var socket = io.connect();
+            // var socket = io(window.location.protocol + '//'+window.location.host+'?consumer_code=C2019070915283736111');
 
             socket.on('connect', function () {
                 socket.emit('my_event', {data: 'I\'m connected!', sid: socket.id});
