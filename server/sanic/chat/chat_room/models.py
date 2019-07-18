@@ -7,6 +7,7 @@ import datetime
 import pymongo
 
 from system.base_model import IBaseModel
+from utils.constant import MESSAGE_TYPE
 from utils.decorator.exception import try_except
 from utils.util import make_code_or_id
 
@@ -100,6 +101,7 @@ class ChatRoom(IBaseModel):
     def org_create_chat_room(self):
         self.room_id = make_code_or_id('chat_room_')
         self.create_time = datetime.datetime.now()
+        self.room_event = MESSAGE_TYPE[0]
         self.is_org_room = True
         self.active_status = True
         self.create_info()
@@ -108,7 +110,7 @@ class ChatRoom(IBaseModel):
     @try_except
     def consumer_create_chat_room(self):
         self.room_id = make_code_or_id('chat_room_')
-        self.room_event = make_code_or_id('room_event_')
+        self.room_event = MESSAGE_TYPE[0]
         self.create_time = datetime.datetime.now()
         self.is_org_room = False
         self.active_status = True
@@ -119,3 +121,36 @@ class ChatRoom(IBaseModel):
     def consumer_get_chat_room_by_code_and_id(self, consumer_code):
         return self.find_one(condition={'consumer_code_list': consumer_code,
                                         'room_id': self.room_id})
+
+    @try_except
+    def consumer_pull_to_room(self, consumer_code):
+        return self.update_one_by_custom(condition={'room_id': self.room_id},
+                                         update={'$pull': {'consumer_code_list': consumer_code}})
+
+    @try_except
+    def consuemr_push_to_room(self, consumer_code):
+        return self.update_one_by_custom(condition={'room_id': self.room_id},
+                                         update={'$push': {'consumer_code_list': consumer_code}})
+
+    @try_except
+    def org_update_chat_room_by_id(self):
+        return self.update_one_by_custom(condition={'room_id': self.room_id},
+                                         update={'$set': {'room_name': self.room_name,
+                                                          'admin_code': self.admin_code}})
+
+    @try_except
+    def org_get_chat_room_by_id_and_admin_code(self):
+        return self.find_one(condition={'$and': [{'room_id': self.room_id},
+                                                 {'admin_code': self.admin_code}]})
+
+    @try_except
+    def org_push_staff_to_room(self, staff_code):
+        return self.update_one_by_custom(condition={'$and': [{'room_id': self.room_id},
+                                                             {'admin_code': self.admin_code}]},
+                                         update={'$push': {'org_staff_code_list': staff_code}})
+
+    @try_except
+    def org_pull_staff_to_room(self, staff_code):
+        return self.update_one_by_custom(condition={'$and': [{'room_id': self.room_id},
+                                                             {'admin_code': self.admin_code}]},
+                                         update={'$pull': {'org_staff_code_list': staff_code}})

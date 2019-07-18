@@ -53,7 +53,8 @@ async def before_server_start(app, loop):
 
 @app.listener('after_server_start')
 async def after_server_start(app, loop):
-    pass
+    # 当类似/the_best.png这样的url被请求的时候,我们可以提供/home/ubuntu/test.png这样路径下的文件
+    app.static("/favicon.ico", os.getcwd() + "/favicon.ico", name="favicon")
 
 
 @app.listener('before_server_stop')

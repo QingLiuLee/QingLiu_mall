@@ -8,6 +8,7 @@ from sanic.request import Request
 
 from chat.chat_room.models import ChatRoom
 from system.response import *
+from utils.constant import MESSAGE_TYPE
 from utils.decorator.exception import try_except, response_exception
 from system.extensions import socket_io
 
@@ -25,30 +26,6 @@ async def create_coupon_info(request: Request):
 
 
 @socket_io.event
-async def join_room(sid, message):
-    rooms = socket_io.rooms(sid)
-    if message['room'] not in rooms:
-        socket_io.enter_room(sid, message['room'])
-    await socket_io.emit('join_room', {'data': 'Entered room: ' + message['room']},
-                         room=sid)
-
-
-@socket_io.event
-async def leave_room(sid, message):
-    socket_io.leave_room(sid, message['room'])
-    await socket_io.emit('my_response', {'data': 'Left room: ' + message['room']},
-                         room=sid)
-
-
-@socket_io.event
-async def close_room(sid, message):
-    await socket_io.emit('my_response',
-                         {'data': 'Room ' + message['room'] + ' is closing.'},
-                         room=message['room'])
-    await socket_io.close_room(message['room'])
-
-
-@socket_io.event
 async def my_event(sid, message):
     await socket_io.emit('my_response', {'data': message['data']}, room=sid)
 
@@ -56,12 +33,6 @@ async def my_event(sid, message):
 # @socket_io.event
 # async def my_broadcast_event(sid, message):
 #     await socket_io.emit('my_response', {'data': message['data']})
-
-
-@socket_io.event
-async def my_room_event(sid, message):
-    await socket_io.emit('my_response', {'data': message['data']},
-                         room=message['room'])
 
 
 @socket_io.event
@@ -90,3 +61,33 @@ async def connect(sid, query_params):
             socket_io.enter_room(sid, room_info['room_id'])
 
     await socket_io.emit('my_response', {'data': 'Connected', 'count': 0}, room=sid)
+
+
+@socket_io.event
+async def join_room(sid, message):
+    rooms = socket_io.rooms(sid)
+    if message['room'] not in rooms:
+        socket_io.enter_room(sid, message['room'])
+
+
+@socket_io.event
+async def leave_room(sid, query_params):
+    """
+    :name leave room
+    :param (room_id/user_code/is_org)
+    """
+    room_id = query_params['room_id']
+    user_code = query_params['user_code']
+    is_org = query_params['is_org']
+
+    chat_room = ChatRoom.init_chat_room(**query_params)
+    if is_org:
+        chat_room.org_pull_staff_to_room(staff_code=user_code)
+    else:
+        chat_room.consumer_pull_to_room(consumer_code=user_code)
+    socket_io.leave_room(sid, room_id)
+
+
+@socket_io.event
+async def close_room(sid, message):
+    await socket_io.close_room(message['room'])

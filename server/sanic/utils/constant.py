@@ -22,3 +22,7 @@ INTEGRAL_TYPE = 'integral'
 COUPON_TYPE = 'coupon'
 INCOME_TYPE_ADD = 1
 INCOME_TYPE_REDUCE = -1
+MESSAGE_TYPE = [
+    'common_message',  # 普通消息
+    'system_message',  # 系统消息
+]

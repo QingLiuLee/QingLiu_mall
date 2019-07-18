@@ -76,7 +76,7 @@ class IBaseModel(object):
         for name in dir(self):
             value = getattr(self, name)
             if not name.startswith('__') and not callable(value) and (name not in except_list) and (
-            not value) and value is not False:
+                    not value) and value is not False:
                 return False
         return True
 
@@ -129,5 +129,9 @@ class IBaseModel(object):
         return self.__collection.drop()
 
     @try_except
-    def aggregate_by_pipeline(self, pipeline):
-        return self.__collection.aggregate(pipeline=pipeline)
+    async def aggregate_by_pipeline(self, pipeline):
+        aggregate_result = []
+
+        async for doc in self.__collection.aggregate(pipeline):
+            aggregate_result.append(doc)
+        return aggregate_result
