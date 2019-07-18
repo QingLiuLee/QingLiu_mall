@@ -8,8 +8,8 @@
         $(document).ready(function () {
             // var socket = io.connect();
             var socket = io('wss://' + window.location.host + '?consumer_code=C2019070915283736111', {
-                'reconnection delay': 2000,
-                'connect timeout': 10000
+                'reconnectionDelay': 2000,
+                'timeout': 10000
             });
 
             socket.on('connect', function () {
