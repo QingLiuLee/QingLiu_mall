@@ -7,7 +7,7 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             // var socket = io.connect();
-            var socket = io(window.location.protocol + '//'+window.location.host+'?consumer_code=C2019070915283736111');
+            var socket = io('wss//'+window.location.host+'?consumer_code=C2019070915283736111');
 
             socket.on('connect', function () {
                 socket.emit('my_event', {data: 'I\'m connected!', sid: socket.id});
