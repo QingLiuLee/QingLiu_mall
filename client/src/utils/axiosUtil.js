@@ -15,14 +15,50 @@ axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 axios.defaults.headers.put['X-Requested-With'] = 'XMLHttpRequest';//Ajax put请求标识
 axios.defaults.headers.delete['X-Requested-With'] = 'XMLHttpRequest';//Ajax delete请求标识
 
-//添加token
-let token = '';
-if(getLocalStorage('auth_token')){
-    token = getLocalStorage('auth_token');
-}else{
-    token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9';
-}
-axios.defaults.headers.common['Authorization-token'] = token;
+axios.defaults.timeout = 10000;
+axios.defaults.withCredentials = true;
+
+
+
+// axios.defaults.headers.common['Authorization-token'] = token;
+
+// http request拦截器:
+axios.interceptors.request.use(config => {
+    //添加token
+    let token = '';
+    if(getLocalStorage('auth_token') != 'null'){
+        token = getLocalStorage('auth_token');
+    }
+    console.log('token:' + token);
+
+    //发送请求操作，统一再请求里加上token
+    config.headers.common['Authorization-token'] = token;
+    return config;
+}, error => {
+    //发送请求错误操作
+    alert('请求失败')
+    return Promise.reject(error);
+})
+
+// http response拦截器 :对响应数据做操作
+axios.interceptors.response.use(response => {
+    //对响应数据做操作
+    // token 为空，且不是登录请求
+    console.log(getLocalStorage('auth_token'));
+    if(getLocalStorage('auth_token') == 'null'){
+        if(response.data.data.token != null){
+            return response;
+        }else{
+            window.location.href = '/login';
+        }
+    }else {
+        return response;
+    }
+}, error => {
+    //对响应数据错误做操作
+    console.log('请求error', error.message);
+    return Promise.reject(error);
+})
 
 function query(url, params) {
     return new Promise((resolve, reject) => {

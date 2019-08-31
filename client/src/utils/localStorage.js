@@ -7,11 +7,13 @@
 const storge = window.localStorage;
 
 // 设置
-export function setLocalStorage (key, value){
+function setLocalStorage (key, value){
     return storge.setItem(key, value)
 }
 
 // 获取
-export function getLocalStorage (key){
+function getLocalStorage (key){
     return storge.getItem(key)
 }
+
+export { setLocalStorage, getLocalStorage }

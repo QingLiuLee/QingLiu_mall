@@ -15,7 +15,7 @@ let initState = {
     userData:{
         account:"huihui"
     },
-    auth_token:'111111111111',
+    auth_token: '',
 }
 
 export function login(state = initState, action){

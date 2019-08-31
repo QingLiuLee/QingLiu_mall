@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Input,Icon,Button,Radio } from 'antd';
+import { Input,Icon,Button,Radio,message } from 'antd';
 import { post } from '../../utils/axiosUtil'
 import logo from 'assert/images/logo/logo2.png';
 const RadioGroup = Radio.Group;
@@ -30,7 +30,8 @@ export default class Register extends Component{
             mobile
         }
         post(this.state.registUrl, param).then(res => {
-            this.props.toggleRegister(false,false)
+            message.success('注册成功');
+            this.props.toggle();
         })
     }
 
@@ -44,12 +45,11 @@ export default class Register extends Component{
             paddingLeft: '30px'
         }
         return (
-            <div className="ql-mask">
-                <div className="ql-login">
+            <div className="ql-login">
                     <div className="ql-login-all">
-                        <div className="ql-login-all-close" onClick={()=>this.props.toggleRegister(false,false)}>
+                        {/* <div className="ql-login-all-close" onClick={()=>this.props.toggleRegister(false,false)}>
                             <span><i className='icon-close' /></span>
-                        </div>
+                        </div> */}
                         <div className="ql-login-all-l">
                             <img src={logo} alt=""/>
                             <h2>青榴</h2>
@@ -84,11 +84,10 @@ export default class Register extends Component{
                                 <Radio value={2}>女</Radio>
                             </RadioGroup>*/}
                             <Button type="primary" onClick={this.register} style={{marginTop:15}}>注册</Button>
-                            <p>已有帐号 ？<span onClick={()=>this.props.toggleRegister(true,false)}>立即登录</span></p>
+                            <p>已有帐号 ？<span onClick={this.props.toggle}>立即登录</span></p>
                         </div>
                     </div>
                 </div>
-            </div>
         )
     }
 }

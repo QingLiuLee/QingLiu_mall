@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon,Input,Badge,Menu, Dropdown,Divider } from 'antd';
 import { Link,withRouter } from 'react-router-dom';
+import { setLocalStorage, getLocalStorage } from '../../utils/localStorage';
 
 import LeftBar from '../Bar/LeftBar';
 import RightBar from '../Bar/RightBar';
@@ -28,12 +29,22 @@ class App extends Component {
                 {color: 'themsSVGFZ', name: '粉紫色'},
                 {color: 'themsSVGGF', name: '橘粉色'},
             ],
-            showLogin:false,
-            showRegister:false,
+            // showLogin:false,
+            // showRegister:false,
+            isLogin: false
         };
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        console.log(getLocalStorage('auth_token'))
+        if(getLocalStorage('auth_token') != "null"){
+            this.setState({ isLogin: true });
+        }else{
+            if(location.href.split('/')[3] != 'login'){
+                location.href = "/login";
+            }
+        }
+    }
 
     //更改皮肤svg
 	setSkin = (item)=>{
@@ -41,11 +52,22 @@ class App extends Component {
 	}
 
     //隐藏显示登录 | 注册
-    toggle = (flag,flag2)=>{
+    /* toggle = (flag,flag2)=>{
         this.setState({
             showLogin:flag,
             showRegister:flag2
         });
+    } */
+
+    loginOpera = () => {
+        const { isLogin } = this.state;
+        if(isLogin){
+            // loginout
+            setLocalStorage('auth_token',  null);
+            location.href = "/login";
+        }else{
+            location.href = "/login";
+        }
     }
 
 	render() {
@@ -53,7 +75,8 @@ class App extends Component {
         const {
         	avatarDefault, search,toggle,
             skinColor, skinNormal, skinSvg,
-            showLogin, showRegister
+            isLogin
+            // showLogin, showRegister
         } = this.state;
 
         const menu  =
@@ -73,8 +96,11 @@ class App extends Component {
         const logins = (
             <Menu>
                 <Menu.Item>
-                    <div className="login-in"  onClick={()=>this.toggle(true,false)}>
-                        <Icon type="smile" />登录
+                    <div className="login-in" 
+                    // onClick={()=>this.toggle(true,false)}
+                    onClick={this.loginOpera}
+                    >
+                        <Icon type="smile" />{isLogin ? '退出' : '登录'}
                     </div>
                 </Menu.Item>
             </Menu>
@@ -84,14 +110,14 @@ class App extends Component {
 				<div className={`thems ${skinColor} ${toggle ? 'lee-in':''}`}>
 
                     {/*login*/}
-                    {this.state.showLogin ? <Login
+                    {/* {this.state.showLogin ? <Login
                         toggleLogin={this.toggle}
-                    /> : null}
+                    /> : null} */}
 
                     {/*login*/}
-                    {this.state.showRegister ? <Register
+                    {/* {this.state.showRegister ? <Register
                         toggleRegister={this.toggle}
-                    /> : null}
+                    /> : null} */}
 
                     <LeftBar toggle={toggle}/>
 					<div className="lee-rightBar">

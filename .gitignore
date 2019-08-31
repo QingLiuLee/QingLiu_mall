@@ -4,3 +4,5 @@
 /client/src/assert/css/style.css
 /client/src/assert/css/thems.css
 /client/src/assert/css/mixin.css
+/client/yarn.lock
+/client/build/
